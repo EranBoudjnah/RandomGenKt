@@ -87,6 +87,27 @@ class RandomGenTest(private val incompleteBuilderField: RandomGen.IncompleteBuil
 	}
 
 	@Test
+	fun `Given builder returning explicitly for lazy field when generate then instance has correct value`() {
+		// Given
+		val name = "Superman"
+
+		val explicitFieldDataProvider = mock<ExplicitFieldDataProvider<TestPerson, Boolean>>()
+		given(fieldDataProviderFactory.getExplicitFieldDataProvider(true)).willReturn(explicitFieldDataProvider)
+		given(explicitFieldDataProvider.generate(any<TestPerson>())).willReturn(true)
+
+		cut = incompleteBuilderField
+			.withField("isLazy")
+			.returningExplicitly(true)
+			.build()
+
+		// When
+		val testPerson = cut.generate()
+
+		// Then
+		assertTrue(testPerson.isLazy)
+	}
+
+	@Test
 	fun `Given builder returning from list when generate then instance has correct value`() {
 		// Given
 		val name1 = "Rocksteady"
