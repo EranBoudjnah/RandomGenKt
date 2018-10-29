@@ -1,0 +1,34 @@
+<resources>
+	<string name="app_name">RandomGen Demo</string>
+	<string name="button_person">Person</string>
+	<string name="age">Age</string>
+	<string name="occupation">Occupation</string>
+	<string name="phone_number">Phone Number</string>
+	<string name="gender_female">Female</string>
+	<string name="gender_male">Male</string>
+	<string name="button_flat">Flat</string>
+	<string name="button_solar_system">Solar System</string>
+	<string name="main_title">Choose a data type below to generate a random instance.</string>
+	<string name="planets">Planets</string>
+
+	<string name="star_age">Star Age</string>
+	<string name="star_age_value">%1.2fBY</string>
+	<string name="star_diameter">Star Diameter</string>
+	<string name="star_diameter_value">%1.2fSR</string>
+	<string name="star_mass">Star Mass</string>
+	<string name="star_mass_value">%1.2fS</string>
+
+	<string name="planet_name">Planet #%d</string>
+	<string name="planet_diameter">Diameter</string>
+	<string name="planet_diameter_value">%1.1f Earths</string>
+	<string name="planet_mass">Mass</string>
+	<string name="planet_mass_value">%1.2fS</string>
+	<string name="planet_orbital_period">Orbital Period</string>
+	<string name="planet_orbital_period_value">%1.1f years</string>
+	<string name="planet_rotation_period">Rotation Period</string>
+	<string name="planet_rotation_period_value">%1.1f days</string>
+	<string name="planet_moons">Moons</string>
+	<string name="planet_has_rings">Has Rings</string>
+	<string name="planet_no_rings">No Rings</string>
+	<string name="planet_atmosphere">Atmosphere</string>
+</resources>

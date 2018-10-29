@@ -1,0 +1,15 @@
+TODO:
+  Numeric string (ranged/fixed length)
+  From file
+  Coordinate
+  Char (random, fixed)
+  .withRandom() - Allowing for different random generators (useful to control deviation).
+  timestamp
+  bitmaps
+  standard date string
+  hex string (ranged/fixed length)
+  Android:
+    From resource?
+    Point
+
+  Pools of assets - room types, musical notes?, animals, gender, currencies, shapes, sizes, distance units, weight units

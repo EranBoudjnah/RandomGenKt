@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	>
+
+	<android.support.constraint.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		>
+
+		<View
+			android:id="@+id/render_frame"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:layout_marginEnd="0dp"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="16dp"
+			app:layout_constraintDimensionRatio="10:7"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintWidth_percent="0.45"
+			/>
+
+		<TextView
+			android:id="@+id/text_star_age"
+			android:layout_width="110dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:text="@string/star_age"
+			android:textColor="@android:color/white"
+			android:textStyle="bold"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/render_frame"
+			app:layout_constraintTop_toTopOf="parent"
+			/>
+
+		<TextView
+			android:id="@+id/text_star_age_value"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@android:color/white"
+			android:textSize="11sp"
+			android:textStyle="bold"
+			app:layout_constraintBottom_toBottomOf="@+id/text_star_age"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/text_star_age"
+			tools:text="4 BY"
+			/>
+
+		<TextView
+			android:id="@+id/text_star_diameter"
+			android:layout_width="110dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:text="@string/star_diameter"
+			android:textColor="@android:color/white"
+			android:textStyle="bold"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/render_frame"
+			app:layout_constraintTop_toBottomOf="@+id/text_star_age"
+			/>
+
+		<TextView
+			android:id="@+id/text_star_diameter_value"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@android:color/white"
+			android:textSize="11sp"
+			android:textStyle="bold"
+			app:layout_constraintBottom_toBottomOf="@+id/text_star_diameter"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/text_star_diameter"
+			tools:text="5.23 SR"
+			/>
+
+		<TextView
+			android:id="@+id/text_star_mass"
+			android:layout_width="110dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:text="@string/star_mass"
+			android:textColor="@android:color/white"
+			android:textStyle="bold"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/render_frame"
+			app:layout_constraintTop_toBottomOf="@+id/text_star_diameter"
+			/>
+
+		<TextView
+			android:id="@+id/text_star_mass_value"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@android:color/white"
+			android:textSize="11sp"
+			android:textStyle="bold"
+			app:layout_constraintBottom_toBottomOf="@+id/text_star_mass"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/text_star_mass"
+			tools:text="4.25 Suns"
+			/>
+
+		<TextView
+			android:id="@+id/text_planets_count"
+			android:layout_width="110dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:text="@string/planets"
+			android:textColor="@android:color/white"
+			android:textStyle="bold"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/render_frame"
+			app:layout_constraintTop_toBottomOf="@+id/text_star_mass"
+			/>
+
+		<TextView
+			android:id="@+id/text_planets_count_value"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@android:color/white"
+			android:textSize="11sp"
+			android:textStyle="bold"
+			app:layout_constraintBottom_toBottomOf="@+id/text_planets_count"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/text_planets_count"
+			tools:text="5"
+			/>
+
+		<TextView
+			android:id="@+id/text_planet_name_value"
+			android:layout_width="110dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="24dp"
+			android:textColor="@android:color/white"
+			android:textStyle="bold"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/render_frame"
+			app:layout_constraintTop_toBottomOf="@+id/text_planets_count"
+			tools:text="Planet #1"
+			/>
+
+		<TextView
+			android:id="@+id/text_planet_diameter"
+			android:layout_width="110dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:text="@string/planet_diameter"
+			android:textColor="@android:color/white"
+			android:textStyle="bold"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/render_frame"
+			app:layout_constraintTop_toBottomOf="@+id/text_planet_name_value"
+			/>
+
+		<TextView
+			android:id="@+id/text_planet_diameter_value"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@android:color/white"
+			android:textSize="11sp"
+			android:textStyle="bold"
+			app:layout_constraintBottom_toBottomOf="@+id/text_planet_diameter"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/text_planet_diameter"
+			tools:text="5.23 Earths"
+			/>
+
+		<TextView
+			android:id="@+id/text_planet_mass"
+			android:layout_width="110dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:text="@string/planet_mass"
+			android:textColor="@android:color/white"
+			android:textStyle="bold"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/render_frame"
+			app:layout_constraintTop_toBottomOf="@+id/text_planet_diameter"
+			/>
+
+		<TextView
+			android:id="@+id/text_planet_mass_value"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@android:color/white"
+			android:textSize="11sp"
+			android:textStyle="bold"
+			app:layout_constraintBottom_toBottomOf="@+id/text_planet_mass"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/text_planet_mass"
+			tools:text="5.23 SM"
+			/>
+
+		<TextView
+			android:id="@+id/text_planet_orbital_period"
+			android:layout_width="110dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:text="@string/planet_orbital_period"
+			android:textColor="@android:color/white"
+			android:textStyle="bold"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/render_frame"
+			app:layout_constraintTop_toBottomOf="@+id/text_planet_mass"
+			/>
+
+		<TextView
+			android:id="@+id/text_planet_orbital_period_value"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@android:color/white"
+			android:textSize="11sp"
+			android:textStyle="bold"
+			app:layout_constraintBottom_toBottomOf="@+id/text_planet_orbital_period"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/text_planet_orbital_period"
+			tools:text="3 Years"
+			/>
+
+		<TextView
+			android:id="@+id/text_planet_rotation_period"
+			android:layout_width="110dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:text="@string/planet_rotation_period"
+			android:textColor="@android:color/white"
+			android:textStyle="bold"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/render_frame"
+			app:layout_constraintTop_toBottomOf="@+id/text_planet_orbital_period"
+			/>
+
+		<TextView
+			android:id="@+id/text_planet_rotation_period_value"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@android:color/white"
+			android:textSize="11sp"
+			android:textStyle="bold"
+			app:layout_constraintBottom_toBottomOf="@+id/text_planet_rotation_period"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/text_planet_rotation_period"
+			tools:text="3 Days"
+			/>
+
+		<TextView
+			android:id="@+id/text_planet_moons"
+			android:layout_width="110dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:text="@string/planet_moons"
+			android:textColor="@android:color/white"
+			android:textStyle="bold"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/render_frame"
+			app:layout_constraintTop_toBottomOf="@+id/text_planet_rotation_period"
+			/>
+
+		<TextView
+			android:id="@+id/text_planet_moons_value"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@android:color/white"
+			android:textSize="11sp"
+			android:textStyle="bold"
+			app:layout_constraintBottom_toBottomOf="@+id/text_planet_moons"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/text_planet_moons"
+			tools:text="3"
+			/>
+
+		<TextView
+			android:id="@+id/text_planet_rings_value"
+			android:layout_width="110dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:textColor="@android:color/white"
+			android:textStyle="bold"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/render_frame"
+			app:layout_constraintTop_toBottomOf="@+id/text_planet_moons"
+			tools:text="Has Rings"
+			/>
+
+		<TextView
+			android:id="@+id/text_planet_atmosphere"
+			android:layout_width="110dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:text="@string/planet_atmosphere"
+			android:textColor="@android:color/white"
+			android:textStyle="bold"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/render_frame"
+			app:layout_constraintTop_toBottomOf="@+id/text_planet_rings_value"
+			/>
+
+		<TextView
+			android:id="@+id/text_planet_atmosphere_value"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="3dp"
+			android:lines="2"
+			android:textColor="@android:color/white"
+			android:textSize="11sp"
+			android:textStyle="bold"
+			app:layout_constraintHeight_percent="0.5"
+			app:layout_constraintStart_toEndOf="@+id/text_planet_atmosphere"
+			app:layout_constraintTop_toTopOf="@+id/text_planet_atmosphere"
+			tools:text="Ar\nHe"
+			/>
+
+	</android.support.constraint.ConstraintLayout>
+
+</FrameLayout>

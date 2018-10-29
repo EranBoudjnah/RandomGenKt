@@ -1,0 +1,6 @@
+language: android
+before_install:
+- yes | sdkmanager "platforms;android-27"
+
+script:
+- ./gradlew clean assembleDebug test lint
