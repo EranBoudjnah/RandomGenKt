@@ -6,8 +6,7 @@ import java.lang.reflect.Constructor
 
 internal class DefaultValuesInstanceProvider<GENERATED_INSTANCE>(
 	private val generatedInstanceClass: Class<GENERATED_INSTANCE>
-) : RandomGen.InstanceProvider<GENERATED_INSTANCE> {
-
+) : () -> GENERATED_INSTANCE {
 	private var validConstructor: Constructor<GENERATED_INSTANCE>? = null
 
 	private val allPublicConstructors: MutableList<Constructor<GENERATED_INSTANCE>>
@@ -18,7 +17,7 @@ internal class DefaultValuesInstanceProvider<GENERATED_INSTANCE>(
 		allPublicConstructors = typedConstructors.toMutableList()
 	}
 
-	override fun provideInstance(): GENERATED_INSTANCE {
+	override fun invoke(): GENERATED_INSTANCE {
 		try {
 			return instanceFromAnyConstructor()
 

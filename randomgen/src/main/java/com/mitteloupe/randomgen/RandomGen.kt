@@ -15,7 +15,7 @@ import kotlin.reflect.jvm.javaField
  * Created by Eran Boudjnah on 24/04/2018.
  */
 class RandomGen<GENERATED_INSTANCE> private constructor(
-	private val instanceProvider: InstanceProvider<GENERATED_INSTANCE>,
+	private val instanceProvider: () -> GENERATED_INSTANCE,
 	private val dataProviders: Map<String, FieldDataProvider<GENERATED_INSTANCE, *>>,
 	private val onGenerateCallbacks: List<OnGenerateCallback<GENERATED_INSTANCE>>
 ) : FieldDataProvider<Any, GENERATED_INSTANCE> {
@@ -32,7 +32,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 	}
 
 	override fun generate(instance: Any?): GENERATED_INSTANCE {
-		val providedInstance = instanceProvider.provideInstance()
+		val providedInstance = instanceProvider.invoke()
 
 		setAllFields(providedInstance)
 
@@ -118,7 +118,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 	}
 
 	private fun getAllFields() {
-		val instance = instanceProvider.provideInstance()
+		val instance = instanceProvider.invoke()
 		val allProperties = (instance as Any)::class.declaredMemberProperties
 		for (property in allProperties) {
 			val maybeField = property.javaField
@@ -142,12 +142,12 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 			return IncompleteBuilderField(generatedInstanceClass, factory)
 		}
 
-		fun withProvider(instanceProvider: InstanceProvider<GENERATED_INSTANCE>): IncompleteBuilderField<GENERATED_INSTANCE> {
+		fun withProvider(instanceProvider: () -> GENERATED_INSTANCE): IncompleteBuilderField<GENERATED_INSTANCE> {
 			return IncompleteBuilderField(instanceProvider, DefaultFieldDataProviderFactory())
 		}
 
-		internal fun withProviderAndFactory(instanceProvider: InstanceProvider<GENERATED_INSTANCE>,
-		                                    factory: FieldDataProviderFactory<GENERATED_INSTANCE>): IncompleteBuilderField<GENERATED_INSTANCE> {
+		internal fun withFactoryAndProvider(factory: FieldDataProviderFactory<GENERATED_INSTANCE>,
+		                                    instanceProvider: () -> GENERATED_INSTANCE): IncompleteBuilderField<GENERATED_INSTANCE> {
 			return IncompleteBuilderField(instanceProvider, factory)
 		}
 
@@ -169,7 +169,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 			copyFieldsFromIncompleteInstanceProvider(incompleteBuilderField)
 		}
 
-		internal constructor(instanceProvider: InstanceProvider<GENERATED_INSTANCE>,
+		internal constructor(instanceProvider: () -> GENERATED_INSTANCE,
 		                     incompleteBuilderField: IncompleteBuilderField<GENERATED_INSTANCE>) : super(instanceProvider, incompleteBuilderField.factory) {
 
 			copyFieldsFromIncompleteInstanceProvider(incompleteBuilderField)
@@ -256,7 +256,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 		internal val dataProviders: MutableMap<String, FieldDataProvider<GENERATED_INSTANCE, *>>
 		internal val onGenerateCallbacks: MutableList<OnGenerateCallback<GENERATED_INSTANCE>>
 
-		internal lateinit var instanceProvider: InstanceProvider<GENERATED_INSTANCE>
+		internal lateinit var instanceProvider: () -> GENERATED_INSTANCE
 		internal lateinit var initializeType: InitializeType
 		internal lateinit var generatedInstanceClass: Class<GENERATED_INSTANCE>
 		internal lateinit var lastUsedFieldName: String
@@ -274,7 +274,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 			initializeType = InitializeType.WITH_CLASS
 		}
 
-		internal constructor(instanceProvider: InstanceProvider<GENERATED_INSTANCE>,
+		internal constructor(instanceProvider: () -> GENERATED_INSTANCE,
 		                     factory: FieldDataProviderFactory<GENERATED_INSTANCE>) : this(factory) {
 
 			this.instanceProvider = instanceProvider

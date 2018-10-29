@@ -15,11 +15,7 @@ class FlatGeneratorFactory(private val random: Random) {
 
 	val newFlatGenerator: RandomGen<Flat>
 		get() = RandomGen.Builder<Flat>()
-			.withProvider(object : RandomGen.InstanceProvider<Flat> {
-				override fun provideInstance(): Flat {
-					return Flat(newRoom())
-				}
-			})
+			.withProvider { Flat(newRoom()) }
 			.withField("rooms")
 			.returning(newContainerRoomRandomGen())
 			.build()
@@ -66,13 +62,7 @@ class FlatGeneratorFactory(private val random: Random) {
 			.generate()
 	}
 
-	private fun getSpecificRoomProvider(room: Room): RandomGen.InstanceProvider<Room> {
-		return object : RandomGen.InstanceProvider<Room> {
-			override fun provideInstance(): Room {
-				return room
-			}
-		}
-	}
+	private fun getSpecificRoomProvider(room: Room) = { room }
 
 	private fun splitRooms(room: Room, roomsRemaining: Int, lastDivisionType: DivisionType) {
 		if (roomsRemaining == 0) return

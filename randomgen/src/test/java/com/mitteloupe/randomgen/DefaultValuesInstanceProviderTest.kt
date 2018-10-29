@@ -16,7 +16,7 @@ class DefaultValuesInstanceProviderTest {
 		cut = DefaultValuesInstanceProvider(TestClassWithFields::class.java)
 
 		// When
-		val result = cut.provideInstance() as TestClassWithFields
+		val result = cut.invoke() as TestClassWithFields
 
 		// Then
 		assertEquals(0, result.byteField.toLong())
@@ -37,7 +37,7 @@ class DefaultValuesInstanceProviderTest {
 		cut = DefaultValuesInstanceProvider(TestClassWithNoConstructor::class.java)
 
 		// When
-		val result = cut.provideInstance() as TestClassWithNoConstructor
+		val result = cut.invoke() as TestClassWithNoConstructor
 
 		// Then
 		assertNotNull(result)
@@ -49,7 +49,7 @@ class DefaultValuesInstanceProviderTest {
 		cut = DefaultValuesInstanceProvider(TestClassWithNoFields::class.java)
 
 		// When
-		val result = cut.provideInstance() as TestClassWithNoFields
+		val result = cut.invoke() as TestClassWithNoFields
 
 		// Then
 		assertTrue(result.isSet)

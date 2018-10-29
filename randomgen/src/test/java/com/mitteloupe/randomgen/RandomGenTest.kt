@@ -46,11 +46,7 @@ class RandomGenTest(private val incompleteBuilderField: RandomGen.IncompleteBuil
 		fun data(): Collection<Array<*>> {
 			val factory = mock<FieldDataProviderFactory<TestPerson>>()
 			val incompleteBuilderFieldWithProviderAndFactory = RandomGen.Builder<TestPerson>()
-				.withProviderAndFactory(object : RandomGen.InstanceProvider<TestPerson> {
-					override fun provideInstance(): TestPerson {
-						return TestPerson()
-					}
-				}, factory)
+				.withFactoryAndProvider(factory) { TestPerson() }
 
 			val incompleteBuilderFieldOfClassAndFactory = RandomGen.Builder<TestPerson>()
 				.ofClassWithFactory(TestPerson::class.java, factory)
