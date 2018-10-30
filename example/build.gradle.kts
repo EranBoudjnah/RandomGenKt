@@ -27,9 +27,13 @@ android {
 dependencies {
 	implementation("com.android.support:appcompat-v7:27.1.1")
 	implementation("com.android.support.constraint:constraint-layout:1.1.3")
+	implementation("android.arch.lifecycle:extensions:1.1.1")
+
 	testImplementation("junit:junit:4.12")
 	testImplementation("org.hamcrest:hamcrest-core:1.3")
+
 	androidTestImplementation("com.android.support.test:runner:1.0.2")
+
 //	implementation 'com.mitteloupe:randomgen:1.4.0'
 	implementation(project(":randomgen"))
 }

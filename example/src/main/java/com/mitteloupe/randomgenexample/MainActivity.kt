@@ -1,37 +1,24 @@
 package com.mitteloupe.randomgenexample
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
-import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.ViewFlipper
-
-import com.mitteloupe.randomgen.RandomGen
 import com.mitteloupe.randomgenexample.data.flat.Flat
 import com.mitteloupe.randomgenexample.data.person.Person
 import com.mitteloupe.randomgenexample.data.planet.PlanetarySystem
-import com.mitteloupe.randomgenexample.generator.FlatGeneratorFactory
-import com.mitteloupe.randomgenexample.generator.PersonGeneratorFactory
-import com.mitteloupe.randomgenexample.generator.PlanetarySystemGeneratorFactory
+import com.mitteloupe.randomgenexample.presentation.MainViewModel
+import com.mitteloupe.randomgenexample.presentation.ViewState
 import com.mitteloupe.randomgenexample.widget.FlatView
 import com.mitteloupe.randomgenexample.widget.PersonView
 import com.mitteloupe.randomgenexample.widget.PlanetarySystemView
 
-import java.util.Random
+class MainActivity : AppCompatActivity(), Observer<ViewState> {
+	private lateinit var viewModel: MainViewModel
 
-class MainActivity : AppCompatActivity() {
-	private lateinit var handler: Handler
-	private lateinit var flatGeneratorFactory: FlatGeneratorFactory
-	private lateinit var personGeneratorFactory: PersonGeneratorFactory
-	private lateinit var planetarySystemGeneratorFactory: PlanetarySystemGeneratorFactory
-
-	private lateinit var personRandomGen: RandomGen<Person>
 	private lateinit var personView: PersonView
-
-	private lateinit var planetarySystemRandomGen: RandomGen<PlanetarySystem>
 	private lateinit var planetarySystemView: PlanetarySystemView
-
-	private lateinit var flatRandomGen: RandomGen<Flat>
 	private lateinit var flatView: FlatView
 
 	private lateinit var viewFlipper: ViewFlipper
@@ -40,10 +27,32 @@ class MainActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 
-		handler = Handler()
+		viewModel = MainViewModel()
+
 		initViews()
 
-		handler.post { initGenerators() }
+		viewModel.viewState.observe(this, this)
+	}
+
+	override fun onChanged(viewState: ViewState?) {
+		when (viewState) {
+			is ViewState.ShowNone -> hideAllViews()
+			is ViewState.ShowPerson -> showPersonView(viewState.person)
+			is ViewState.ShowPlanetarySystem -> showPlanetarySystem(viewState.planetarySystem)
+			is ViewState.ShowFlat -> showFlatView(viewState.flat)
+		}
+	}
+
+	fun onPersonClick(view: View) {
+		viewModel.onGeneratePersonClick()
+	}
+
+	fun onPlanetarySystemClick(view: View) {
+		viewModel.onGeneratePlanetarySystemClick()
+	}
+
+	fun onFlatClick(view: View) {
+		viewModel.onGenerateFlatClick()
 	}
 
 	private fun initViews() {
@@ -53,42 +62,29 @@ class MainActivity : AppCompatActivity() {
 		flatView = findViewById(R.id.flat_view)
 	}
 
-	private fun initGenerators() {
-		flatGeneratorFactory = FlatGeneratorFactory(Random())
-		personGeneratorFactory = PersonGeneratorFactory()
-		planetarySystemGeneratorFactory = PlanetarySystemGeneratorFactory()
-		personRandomGen = personGeneratorFactory.newPersonGenerator
-		planetarySystemRandomGen = planetarySystemGeneratorFactory.newPlanetarySystemGenerator
-		flatRandomGen = flatGeneratorFactory.newFlatGenerator
-	}
-
-	fun onPersonClick(view: View) {
-		handler.post { generatePerson() }
-	}
-
-	fun onPlanetarySystemClick(view: View) {
-		handler.post { generatePlanetarySystem() }
-	}
-
-	fun onFlatClick(view: View) {
-		handler.post { generateFlat() }
-	}
-
-	private fun generatePerson() {
-		val person = personRandomGen.generate()
-		viewFlipper.displayedChild = 1
+	private fun showPersonView(person: Person) {
 		personView.setPerson(person)
+		viewFlipper.displayedChild = Page.PERSON.pageNumber
 	}
 
-	private fun generatePlanetarySystem() {
-		val planetarySystem = planetarySystemRandomGen.generate()
-		viewFlipper.displayedChild = 2
+	private fun showPlanetarySystem(planetarySystem: PlanetarySystem) {
 		planetarySystemView.setPlanetarySystem(planetarySystem)
+		viewFlipper.displayedChild = Page.PLANETARY_SYSTEM.pageNumber
 	}
 
-	private fun generateFlat() {
-		val flat = flatRandomGen.generate()
-		viewFlipper.displayedChild = 3
+	private fun showFlatView(flat: Flat) {
 		flatView.setFlat(flat)
+		viewFlipper.displayedChild = Page.FLAT.pageNumber
+	}
+
+	private fun hideAllViews() {
+		viewFlipper.displayedChild = Page.NONE.pageNumber
+	}
+
+	private enum class Page constructor(val pageNumber: Int) {
+		NONE(0),
+		PERSON(1),
+		PLANETARY_SYSTEM(2),
+		FLAT(3)
 	}
 }
