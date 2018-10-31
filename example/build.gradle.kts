@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-	compileSdkVersion(27)
+	compileSdkVersion(28)
 
 	defaultConfig {
 		applicationId = "com.mitteloupe.randomgenexample"
 		minSdkVersion(24)
-		targetSdkVersion(27)
+		targetSdkVersion(28)
 		versionCode = 1
 		versionName = "1.0"
 		testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
@@ -25,7 +25,7 @@ android {
 }
 
 dependencies {
-	implementation("com.android.support:appcompat-v7:27.1.1")
+	implementation("com.android.support:appcompat-v7:28.0.0")
 	implementation("com.android.support.constraint:constraint-layout:1.1.3")
 	implementation("android.arch.lifecycle:extensions:1.1.1")
 

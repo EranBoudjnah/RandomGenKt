@@ -1,6 +1,6 @@
 package com.mitteloupe.randomgenexample.generator
 
-import android.support.v4.util.Pair
+import androidx.core.util.Pair
 import com.mitteloupe.randomgen.RandomGen
 import com.mitteloupe.randomgenexample.data.planet.Material
 import com.mitteloupe.randomgenexample.data.planet.Planet

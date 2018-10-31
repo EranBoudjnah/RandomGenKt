@@ -1,6 +1,6 @@
 package com.mitteloupe.randomgenexample.data.planet
 
-import android.support.v4.util.Pair
+import androidx.core.util.Pair
 
 /**
  * Created by Eran Boudjnah on 19/08/2018.

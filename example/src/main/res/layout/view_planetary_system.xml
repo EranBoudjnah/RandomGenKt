@@ -7,7 +7,7 @@
 	android:layout_height="match_parent"
 	>
 
-	<android.support.constraint.ConstraintLayout
+	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		>
@@ -313,6 +313,6 @@
 			tools:text="Ar\nHe"
 			/>
 
-	</android.support.constraint.ConstraintLayout>
+	</androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

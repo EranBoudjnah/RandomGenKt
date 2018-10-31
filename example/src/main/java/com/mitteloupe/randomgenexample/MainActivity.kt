@@ -1,10 +1,10 @@
 package com.mitteloupe.randomgenexample
 
-import android.arch.lifecycle.Observer
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.ViewFlipper
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.mitteloupe.randomgenexample.data.flat.Flat
 import com.mitteloupe.randomgenexample.data.person.Person
 import com.mitteloupe.randomgenexample.data.planet.PlanetarySystem
