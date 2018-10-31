@@ -2,7 +2,6 @@ package com.mitteloupe.randomgenexample
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.mitteloupe.randomgenexample.data.flat.Flat
@@ -10,26 +9,19 @@ import com.mitteloupe.randomgenexample.data.person.Person
 import com.mitteloupe.randomgenexample.data.planet.PlanetarySystem
 import com.mitteloupe.randomgenexample.presentation.MainViewModel
 import com.mitteloupe.randomgenexample.presentation.ViewState
-import com.mitteloupe.randomgenexample.widget.FlatView
-import com.mitteloupe.randomgenexample.widget.PersonView
-import com.mitteloupe.randomgenexample.widget.PlanetarySystemView
+import kotlinx.android.synthetic.main.activity_main.content_container as viewFlipper
+import kotlinx.android.synthetic.main.activity_main.flat_view as flatView
+import kotlinx.android.synthetic.main.activity_main.person_view as personView
+import kotlinx.android.synthetic.main.activity_main.planetary_system_view as planetarySystemView
 
 class MainActivity : AppCompatActivity(), Observer<ViewState> {
 	private lateinit var viewModel: MainViewModel
-
-	private lateinit var personView: PersonView
-	private lateinit var planetarySystemView: PlanetarySystemView
-	private lateinit var flatView: FlatView
-
-	private lateinit var viewFlipper: ViewFlipper
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 
 		viewModel = MainViewModel()
-
-		initViews()
 
 		viewModel.viewState.observe(this, this)
 	}
@@ -43,23 +35,19 @@ class MainActivity : AppCompatActivity(), Observer<ViewState> {
 		}
 	}
 
+	@Suppress("UNUSED_PARAMETER")
 	fun onPersonClick(view: View) {
 		viewModel.onGeneratePersonClick()
 	}
 
+	@Suppress("UNUSED_PARAMETER")
 	fun onPlanetarySystemClick(view: View) {
 		viewModel.onGeneratePlanetarySystemClick()
 	}
 
+	@Suppress("UNUSED_PARAMETER")
 	fun onFlatClick(view: View) {
 		viewModel.onGenerateFlatClick()
-	}
-
-	private fun initViews() {
-		viewFlipper = findViewById(R.id.content_container)
-		personView = findViewById(R.id.person_view)
-		planetarySystemView = findViewById(R.id.planetary_system_view)
-		flatView = findViewById(R.id.flat_view)
 	}
 
 	private fun showPersonView(person: Person) {

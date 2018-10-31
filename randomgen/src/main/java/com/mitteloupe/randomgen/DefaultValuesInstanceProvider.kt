@@ -1,6 +1,6 @@
 package com.mitteloupe.randomgen
 
-import sun.misc.Unsafe
+import com.ironz.unsafe.UnsafeAndroid
 import sun.reflect.ReflectionFactory
 import java.lang.reflect.Constructor
 
@@ -112,12 +112,8 @@ internal class DefaultValuesInstanceProvider<GENERATED_INSTANCE>(
 
 	@Throws(Exception::class)
 	private fun generateInstanceWithNewConstructorUsingUnsafe(): GENERATED_INSTANCE {
-		val unsafeConstructor = Unsafe::class.java.getDeclaredConstructor()
-		unsafeConstructor.isAccessible = true
-		val unsafe = unsafeConstructor.newInstance()
-
-		@Suppress("UNCHECKED_CAST")
-		return unsafe.allocateInstance(generatedInstanceClass) as GENERATED_INSTANCE
+		val unsafe = UnsafeAndroid()
+		return unsafe.allocateInstance(generatedInstanceClass)
 	}
 
 	private class InstanceCreationException(pMessage: String, pException: Exception) : RuntimeException(pMessage, pException)
