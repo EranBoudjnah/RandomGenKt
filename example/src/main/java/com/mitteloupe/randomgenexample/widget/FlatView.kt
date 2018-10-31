@@ -9,9 +9,9 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.mitteloupe.randomgenexample.R
-import com.mitteloupe.randomgenexample.data.flat.DivisionType
-import com.mitteloupe.randomgenexample.data.flat.Flat
-import com.mitteloupe.randomgenexample.data.flat.Room
+import com.mitteloupe.randomgenexample.data.model.flat.DivisionType
+import com.mitteloupe.randomgenexample.data.model.flat.Flat
+import com.mitteloupe.randomgenexample.data.model.flat.Room
 
 /**
  * Created by Eran Boudjnah on 26/08/2018.

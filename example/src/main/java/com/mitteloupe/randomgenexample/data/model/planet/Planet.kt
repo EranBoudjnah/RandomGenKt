@@ -1,4 +1,4 @@
-package com.mitteloupe.randomgenexample.data.planet
+package com.mitteloupe.randomgenexample.data.model.planet
 
 /**
  * Created by Eran Boudjnah on 24/04/2018.

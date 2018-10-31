@@ -1,4 +1,4 @@
-package com.mitteloupe.randomgenexample.data.flat
+package com.mitteloupe.randomgenexample.data.model.flat
 
 /**
  * Created by Eran Boudjnah on 26/08/2018.

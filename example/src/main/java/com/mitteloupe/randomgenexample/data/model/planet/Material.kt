@@ -1,4 +1,4 @@
-package com.mitteloupe.randomgenexample.data.planet
+package com.mitteloupe.randomgenexample.data.model.planet
 
 import androidx.core.util.Pair
 

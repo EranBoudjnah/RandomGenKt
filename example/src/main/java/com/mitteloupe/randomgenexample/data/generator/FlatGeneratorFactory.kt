@@ -1,10 +1,10 @@
-package com.mitteloupe.randomgenexample.generator
+package com.mitteloupe.randomgenexample.data.generator
 
 import com.mitteloupe.randomgen.RandomGen
-import com.mitteloupe.randomgenexample.data.flat.DivisionType
-import com.mitteloupe.randomgenexample.data.flat.Flat
-import com.mitteloupe.randomgenexample.data.flat.Room
-import com.mitteloupe.randomgenexample.data.flat.RoomType
+import com.mitteloupe.randomgenexample.data.model.flat.DivisionType
+import com.mitteloupe.randomgenexample.data.model.flat.Flat
+import com.mitteloupe.randomgenexample.data.model.flat.Room
+import com.mitteloupe.randomgenexample.data.model.flat.RoomType
 
 import java.util.Random
 

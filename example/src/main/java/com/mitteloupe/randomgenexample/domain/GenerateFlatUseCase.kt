@@ -1,7 +1,7 @@
 package com.mitteloupe.randomgenexample.domain
 
-import com.mitteloupe.randomgenexample.data.flat.Flat
-import com.mitteloupe.randomgenexample.generator.FlatGeneratorFactory
+import com.mitteloupe.randomgenexample.data.model.flat.Flat
+import com.mitteloupe.randomgenexample.data.generator.FlatGeneratorFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

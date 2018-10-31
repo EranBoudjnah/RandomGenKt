@@ -16,9 +16,9 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import com.mitteloupe.randomgenexample.R
-import com.mitteloupe.randomgenexample.data.planet.Material
-import com.mitteloupe.randomgenexample.data.planet.Planet
-import com.mitteloupe.randomgenexample.data.planet.PlanetarySystem
+import com.mitteloupe.randomgenexample.data.model.planet.Material
+import com.mitteloupe.randomgenexample.data.model.planet.Planet
+import com.mitteloupe.randomgenexample.data.model.planet.PlanetarySystem
 
 private const val ANIMATION_DELAY_MILLIS: Long = 40
 private const val PLANET_DATA_DELAY_MILLIS: Long = 3000

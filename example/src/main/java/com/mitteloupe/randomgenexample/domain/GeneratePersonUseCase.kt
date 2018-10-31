@@ -1,7 +1,7 @@
 package com.mitteloupe.randomgenexample.domain
 
-import com.mitteloupe.randomgenexample.data.person.Person
-import com.mitteloupe.randomgenexample.generator.PersonGeneratorFactory
+import com.mitteloupe.randomgenexample.data.model.person.Person
+import com.mitteloupe.randomgenexample.data.generator.PersonGeneratorFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

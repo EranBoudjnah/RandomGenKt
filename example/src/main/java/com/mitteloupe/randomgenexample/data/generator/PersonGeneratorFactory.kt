@@ -1,4 +1,4 @@
-package com.mitteloupe.randomgenexample.generator
+package com.mitteloupe.randomgenexample.data.generator
 
 import com.mitteloupe.randomgen.FieldDataProvider
 import com.mitteloupe.randomgen.RandomGen
@@ -7,9 +7,9 @@ import com.mitteloupe.randomgen.fielddataprovider.ExplicitFieldDataProvider
 import com.mitteloupe.randomgen.fielddataprovider.GenericListFieldDataProvider
 import com.mitteloupe.randomgen.fielddataprovider.IntFieldDataProvider
 import com.mitteloupe.randomgen.fielddataprovider.PaddedFieldDataProvider
-import com.mitteloupe.randomgenexample.data.person.Gender
-import com.mitteloupe.randomgenexample.data.person.Occupation
-import com.mitteloupe.randomgenexample.data.person.Person
+import com.mitteloupe.randomgenexample.data.model.person.Gender
+import com.mitteloupe.randomgenexample.data.model.person.Occupation
+import com.mitteloupe.randomgenexample.data.model.person.Person
 import java.util.Random
 
 /**

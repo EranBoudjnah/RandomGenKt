@@ -3,16 +3,16 @@ package com.mitteloupe.randomgenexample.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.mitteloupe.randomgenexample.data.flat.Flat
-import com.mitteloupe.randomgenexample.data.person.Person
-import com.mitteloupe.randomgenexample.data.planet.PlanetarySystem
+import com.mitteloupe.randomgenexample.data.model.flat.Flat
+import com.mitteloupe.randomgenexample.data.model.person.Person
+import com.mitteloupe.randomgenexample.data.model.planet.PlanetarySystem
 import com.mitteloupe.randomgenexample.domain.GenerateFlatUseCase
 import com.mitteloupe.randomgenexample.domain.GeneratePersonUseCase
 import com.mitteloupe.randomgenexample.domain.GeneratePlanetarySystemUseCase
 import com.mitteloupe.randomgenexample.domain.UseCaseExecutor
-import com.mitteloupe.randomgenexample.generator.FlatGeneratorFactory
-import com.mitteloupe.randomgenexample.generator.PersonGeneratorFactory
-import com.mitteloupe.randomgenexample.generator.PlanetarySystemGeneratorFactory
+import com.mitteloupe.randomgenexample.data.generator.FlatGeneratorFactory
+import com.mitteloupe.randomgenexample.data.generator.PersonGeneratorFactory
+import com.mitteloupe.randomgenexample.data.generator.PlanetarySystemGeneratorFactory
 import java.util.Random
 
 /**

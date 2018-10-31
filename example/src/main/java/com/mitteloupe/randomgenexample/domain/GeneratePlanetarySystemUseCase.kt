@@ -1,7 +1,7 @@
 package com.mitteloupe.randomgenexample.domain
 
-import com.mitteloupe.randomgenexample.data.planet.PlanetarySystem
-import com.mitteloupe.randomgenexample.generator.PlanetarySystemGeneratorFactory
+import com.mitteloupe.randomgenexample.data.model.planet.PlanetarySystem
+import com.mitteloupe.randomgenexample.data.generator.PlanetarySystemGeneratorFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

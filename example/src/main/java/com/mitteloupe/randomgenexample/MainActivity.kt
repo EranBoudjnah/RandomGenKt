@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.mitteloupe.randomgenexample.data.flat.Flat
-import com.mitteloupe.randomgenexample.data.person.Person
-import com.mitteloupe.randomgenexample.data.planet.PlanetarySystem
+import com.mitteloupe.randomgenexample.data.model.flat.Flat
+import com.mitteloupe.randomgenexample.data.model.person.Person
+import com.mitteloupe.randomgenexample.data.model.planet.PlanetarySystem
 import com.mitteloupe.randomgenexample.presentation.MainViewModel
 import com.mitteloupe.randomgenexample.presentation.ViewState
 import kotlinx.android.synthetic.main.activity_main.content_container as viewFlipper

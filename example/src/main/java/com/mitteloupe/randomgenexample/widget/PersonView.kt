@@ -6,8 +6,8 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import com.mitteloupe.randomgenexample.R
-import com.mitteloupe.randomgenexample.data.person.Gender
-import com.mitteloupe.randomgenexample.data.person.Person
+import com.mitteloupe.randomgenexample.data.model.person.Gender
+import com.mitteloupe.randomgenexample.data.model.person.Person
 
 /**
  * Created by Eran Boudjnah on 18/08/2018.
