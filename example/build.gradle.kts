@@ -29,6 +29,9 @@ dependencies {
 	implementation("com.android.support.constraint:constraint-layout:1.1.3")
 	implementation("android.arch.lifecycle:extensions:1.1.1")
 
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0")
+
 	testImplementation("junit:junit:4.12")
 	testImplementation("org.hamcrest:hamcrest-core:1.3")
 

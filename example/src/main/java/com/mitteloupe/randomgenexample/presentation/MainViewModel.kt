@@ -3,10 +3,13 @@ package com.mitteloupe.randomgenexample.presentation
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.mitteloupe.randomgen.RandomGen
 import com.mitteloupe.randomgenexample.data.flat.Flat
 import com.mitteloupe.randomgenexample.data.person.Person
 import com.mitteloupe.randomgenexample.data.planet.PlanetarySystem
+import com.mitteloupe.randomgenexample.domain.GenerateFlatUseCase
+import com.mitteloupe.randomgenexample.domain.GeneratePersonUseCase
+import com.mitteloupe.randomgenexample.domain.GeneratePlanetarySystemUseCase
+import com.mitteloupe.randomgenexample.domain.UseCaseExecutor
 import com.mitteloupe.randomgenexample.generator.FlatGeneratorFactory
 import com.mitteloupe.randomgenexample.generator.PersonGeneratorFactory
 import com.mitteloupe.randomgenexample.generator.PlanetarySystemGeneratorFactory
@@ -15,17 +18,15 @@ import java.util.Random
 /**
  * Created by Eran Boudjnah on 29/10/2018.
  */
-class MainViewModel: ViewModel() {
+class MainViewModel : ViewModel() {
 	private val _viewState = MutableLiveData<ViewState>()
 	val viewState: LiveData<ViewState>
 		get() = _viewState
 
-	private lateinit var personGeneratorFactory: PersonGeneratorFactory
-	private lateinit var personRandomGen: RandomGen<Person>
-	private lateinit var planetarySystemGeneratorFactory: PlanetarySystemGeneratorFactory
-	private lateinit var planetarySystemRandomGen: RandomGen<PlanetarySystem>
-	private lateinit var flatGeneratorFactory: FlatGeneratorFactory
-	private lateinit var flatRandomGen: RandomGen<Flat>
+	private lateinit var useCaseExecutor: UseCaseExecutor
+	private lateinit var generatePersonUseCase: GeneratePersonUseCase
+	private lateinit var generatePlanetarySystemUseCase: GeneratePlanetarySystemUseCase
+	private lateinit var generateFlatUseCase: GenerateFlatUseCase
 
 	init {
 		initGenerators()
@@ -33,34 +34,43 @@ class MainViewModel: ViewModel() {
 		_viewState.value = ViewState.ShowNone
 	}
 
-	fun onGeneratePersonClick() {
-		_viewState.value = ViewState.ShowPerson(generatePerson())
+	override fun onCleared() {
+		super.onCleared()
+
+		useCaseExecutor.abortAll()
 	}
 
-	fun onGeneratePlanetarySystemClick() {
-		_viewState.value = ViewState.ShowPlanetarySystem(generatePlanetarySystem())
-	}
+	fun onGeneratePersonClick() =
+		generatePerson()
 
-	fun onGenerateFlatClick() {
-		_viewState.value = ViewState.ShowFlat(generateFlat())
-	}
+	fun onGeneratePlanetarySystemClick() =
+		generatePlanetarySystem()
+
+	fun onGenerateFlatClick() =
+		generateFlat()
 
 	private fun initGenerators() {
-		flatGeneratorFactory = FlatGeneratorFactory(Random())
-		flatRandomGen = flatGeneratorFactory.newFlatGenerator
+		useCaseExecutor = UseCaseExecutor()
 
-		personGeneratorFactory = PersonGeneratorFactory()
-		personRandomGen = personGeneratorFactory.newPersonGenerator
-
-		planetarySystemGeneratorFactory = PlanetarySystemGeneratorFactory()
-		planetarySystemRandomGen = planetarySystemGeneratorFactory.newPlanetarySystemGenerator
+		generatePersonUseCase = GeneratePersonUseCase(PersonGeneratorFactory())
+		generatePlanetarySystemUseCase = GeneratePlanetarySystemUseCase(PlanetarySystemGeneratorFactory())
+		generateFlatUseCase = GenerateFlatUseCase(FlatGeneratorFactory(Random()))
 	}
 
-	private fun generatePerson() = personRandomGen.generate()
+	private fun generatePerson() =
+		useCaseExecutor.execute(generatePersonUseCase) { person ->
+			_viewState.value = ViewState.ShowPerson(person)
+		}
 
-	private fun generatePlanetarySystem() = planetarySystemRandomGen.generate()
+	private fun generatePlanetarySystem() =
+		useCaseExecutor.execute(generatePlanetarySystemUseCase) { planetarySystem ->
+			_viewState.value = ViewState.ShowPlanetarySystem(planetarySystem)
+		}
 
-	private fun generateFlat() = flatRandomGen.generate()
+	private fun generateFlat() =
+		useCaseExecutor.execute(generateFlatUseCase) { flat ->
+			_viewState.value = ViewState.ShowFlat(flat)
+		}
 }
 
 sealed class ViewState {
