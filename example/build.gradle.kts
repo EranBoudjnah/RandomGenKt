@@ -34,6 +34,9 @@ dependencies {
 
 	testImplementation("junit:junit:4.12")
 	testImplementation("org.hamcrest:hamcrest-core:1.3")
+	testImplementation("org.mockito:mockito-core:2.23.0")
+	testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC3")
+	testImplementation("android.arch.core:core-testing:1.1.1")
 
 	androidTestImplementation("com.android.support.test:runner:1.0.2")
 

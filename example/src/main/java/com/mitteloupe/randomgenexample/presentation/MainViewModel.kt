@@ -1,5 +1,6 @@
 package com.mitteloupe.randomgenexample.presentation
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,31 +11,26 @@ import com.mitteloupe.randomgenexample.domain.GenerateFlatUseCase
 import com.mitteloupe.randomgenexample.domain.GeneratePersonUseCase
 import com.mitteloupe.randomgenexample.domain.GeneratePlanetarySystemUseCase
 import com.mitteloupe.randomgenexample.domain.UseCaseExecutor
-import com.mitteloupe.randomgenexample.data.generator.FlatGeneratorFactory
-import com.mitteloupe.randomgenexample.data.generator.PersonGeneratorFactory
-import com.mitteloupe.randomgenexample.data.generator.PlanetarySystemGeneratorFactory
-import java.util.Random
 
 /**
  * Created by Eran Boudjnah on 29/10/2018.
  */
-class MainViewModel : ViewModel() {
+class MainViewModel(
+	private val useCaseExecutor: UseCaseExecutor,
+	private val generatePersonUseCase: GeneratePersonUseCase,
+	private val generatePlanetarySystemUseCase: GeneratePlanetarySystemUseCase,
+	private val generateFlatUseCase: GenerateFlatUseCase
+) : ViewModel() {
 	private val _viewState = MutableLiveData<ViewState>()
 	val viewState: LiveData<ViewState>
 		get() = _viewState
 
-	private lateinit var useCaseExecutor: UseCaseExecutor
-	private lateinit var generatePersonUseCase: GeneratePersonUseCase
-	private lateinit var generatePlanetarySystemUseCase: GeneratePlanetarySystemUseCase
-	private lateinit var generateFlatUseCase: GenerateFlatUseCase
-
 	init {
-		initGenerators()
-
 		_viewState.value = ViewState.ShowNone
 	}
 
-	override fun onCleared() {
+	@VisibleForTesting
+	public override fun onCleared() {
 		super.onCleared()
 
 		useCaseExecutor.abortAll()
@@ -48,14 +44,6 @@ class MainViewModel : ViewModel() {
 
 	fun onGenerateFlatClick() =
 		generateFlat()
-
-	private fun initGenerators() {
-		useCaseExecutor = UseCaseExecutor()
-
-		generatePersonUseCase = GeneratePersonUseCase(PersonGeneratorFactory())
-		generatePlanetarySystemUseCase = GeneratePlanetarySystemUseCase(PlanetarySystemGeneratorFactory())
-		generateFlatUseCase = GenerateFlatUseCase(FlatGeneratorFactory(Random()))
-	}
 
 	private fun generatePerson() =
 		useCaseExecutor.execute(generatePersonUseCase) { person ->

@@ -4,11 +4,19 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.mitteloupe.randomgenexample.data.generator.FlatGeneratorFactory
+import com.mitteloupe.randomgenexample.data.generator.PersonGeneratorFactory
+import com.mitteloupe.randomgenexample.data.generator.PlanetarySystemGeneratorFactory
 import com.mitteloupe.randomgenexample.data.model.flat.Flat
 import com.mitteloupe.randomgenexample.data.model.person.Person
 import com.mitteloupe.randomgenexample.data.model.planet.PlanetarySystem
+import com.mitteloupe.randomgenexample.domain.GenerateFlatUseCase
+import com.mitteloupe.randomgenexample.domain.GeneratePersonUseCase
+import com.mitteloupe.randomgenexample.domain.GeneratePlanetarySystemUseCase
+import com.mitteloupe.randomgenexample.domain.UseCaseExecutor
 import com.mitteloupe.randomgenexample.presentation.MainViewModel
 import com.mitteloupe.randomgenexample.presentation.ViewState
+import java.util.Random
 import kotlinx.android.synthetic.main.activity_main.content_container as viewFlipper
 import kotlinx.android.synthetic.main.activity_main.flat_view as flatView
 import kotlinx.android.synthetic.main.activity_main.person_view as personView
@@ -21,7 +29,11 @@ class MainActivity : AppCompatActivity(), Observer<ViewState> {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 
-		viewModel = MainViewModel()
+		viewModel = MainViewModel(UseCaseExecutor(),
+			GeneratePersonUseCase(PersonGeneratorFactory()),
+			GeneratePlanetarySystemUseCase(PlanetarySystemGeneratorFactory()),
+			GenerateFlatUseCase(FlatGeneratorFactory(Random()))
+		)
 
 		viewModel.viewState.observe(this, this)
 	}
