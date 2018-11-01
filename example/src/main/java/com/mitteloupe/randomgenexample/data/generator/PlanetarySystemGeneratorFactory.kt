@@ -5,11 +5,14 @@ import com.mitteloupe.randomgen.RandomGen
 import com.mitteloupe.randomgenexample.data.model.planet.Material
 import com.mitteloupe.randomgenexample.data.model.planet.Planet
 import com.mitteloupe.randomgenexample.data.model.planet.PlanetarySystem
+import javax.inject.Inject
 
 /**
  * Created by Eran Boudjnah on 28/08/2018.
  */
-class PlanetarySystemGeneratorFactory {
+class PlanetarySystemGeneratorFactory
+@Inject
+constructor() {
 	// Create a random star system with 2 to 4 planets
 	val newPlanetarySystemGenerator: RandomGen<PlanetarySystem>
 		get() = RandomGen.Builder<PlanetarySystem>()

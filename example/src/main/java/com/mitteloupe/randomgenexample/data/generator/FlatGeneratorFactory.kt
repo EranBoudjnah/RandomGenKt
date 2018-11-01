@@ -7,11 +7,14 @@ import com.mitteloupe.randomgenexample.data.model.flat.Room
 import com.mitteloupe.randomgenexample.data.model.flat.RoomType
 
 import java.util.Random
+import javax.inject.Inject
 
 /**
  * Created by Eran Boudjnah on 19/08/2018.
  */
-class FlatGeneratorFactory(private val random: Random) {
+class FlatGeneratorFactory
+@Inject
+constructor(private val random: Random) {
 
 	val newFlatGenerator: RandomGen<Flat>
 		get() = RandomGen.Builder<Flat>()

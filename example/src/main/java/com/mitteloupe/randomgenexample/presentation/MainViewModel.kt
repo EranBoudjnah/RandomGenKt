@@ -11,11 +11,14 @@ import com.mitteloupe.randomgenexample.domain.GenerateFlatUseCase
 import com.mitteloupe.randomgenexample.domain.GeneratePersonUseCase
 import com.mitteloupe.randomgenexample.domain.GeneratePlanetarySystemUseCase
 import com.mitteloupe.randomgenexample.domain.UseCaseExecutor
+import javax.inject.Inject
 
 /**
  * Created by Eran Boudjnah on 29/10/2018.
  */
-class MainViewModel(
+class MainViewModel
+@Inject
+constructor(
 	private val useCaseExecutor: UseCaseExecutor,
 	private val generatePersonUseCase: GeneratePersonUseCase,
 	private val generatePlanetarySystemUseCase: GeneratePlanetarySystemUseCase,

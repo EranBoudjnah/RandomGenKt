@@ -1,39 +1,31 @@
-package com.mitteloupe.randomgenexample
+package com.mitteloupe.randomgenexample.ui.main
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.mitteloupe.randomgenexample.data.generator.FlatGeneratorFactory
-import com.mitteloupe.randomgenexample.data.generator.PersonGeneratorFactory
-import com.mitteloupe.randomgenexample.data.generator.PlanetarySystemGeneratorFactory
+import com.mitteloupe.randomgenexample.R
 import com.mitteloupe.randomgenexample.data.model.flat.Flat
 import com.mitteloupe.randomgenexample.data.model.person.Person
 import com.mitteloupe.randomgenexample.data.model.planet.PlanetarySystem
-import com.mitteloupe.randomgenexample.domain.GenerateFlatUseCase
-import com.mitteloupe.randomgenexample.domain.GeneratePersonUseCase
-import com.mitteloupe.randomgenexample.domain.GeneratePlanetarySystemUseCase
-import com.mitteloupe.randomgenexample.domain.UseCaseExecutor
 import com.mitteloupe.randomgenexample.presentation.MainViewModel
 import com.mitteloupe.randomgenexample.presentation.ViewState
-import java.util.Random
+import dagger.android.AndroidInjection
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.activity_main.content_container as viewFlipper
 import kotlinx.android.synthetic.main.activity_main.flat_view as flatView
 import kotlinx.android.synthetic.main.activity_main.person_view as personView
 import kotlinx.android.synthetic.main.activity_main.planetary_system_view as planetarySystemView
 
 class MainActivity : AppCompatActivity(), Observer<ViewState> {
-	private lateinit var viewModel: MainViewModel
+	@Inject
+	lateinit var viewModel: MainViewModel
 
 	override fun onCreate(savedInstanceState: Bundle?) {
+		AndroidInjection.inject(this)
+
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
-
-		viewModel = MainViewModel(UseCaseExecutor(),
-			GeneratePersonUseCase(PersonGeneratorFactory()),
-			GeneratePlanetarySystemUseCase(PlanetarySystemGeneratorFactory()),
-			GenerateFlatUseCase(FlatGeneratorFactory(Random()))
-		)
 
 		viewModel.viewState.observe(this, this)
 	}

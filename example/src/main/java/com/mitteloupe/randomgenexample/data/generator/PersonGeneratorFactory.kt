@@ -11,11 +11,14 @@ import com.mitteloupe.randomgenexample.data.model.person.Gender
 import com.mitteloupe.randomgenexample.data.model.person.Occupation
 import com.mitteloupe.randomgenexample.data.model.person.Person
 import java.util.Random
+import javax.inject.Inject
 
 /**
  * Created by Eran Boudjnah on 28/08/2018.
  */
-class PersonGeneratorFactory {
+class PersonGeneratorFactory
+@Inject
+constructor() {
 	val newPersonGenerator: RandomGen<Person>
 		get() {
 			val random = Random()
