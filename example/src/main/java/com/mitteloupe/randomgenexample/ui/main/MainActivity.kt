@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.mitteloupe.randomgenexample.R
 import com.mitteloupe.randomgenexample.data.model.flat.Flat
 import com.mitteloupe.randomgenexample.data.model.person.Person
 import com.mitteloupe.randomgenexample.data.model.planet.PlanetarySystem
 import com.mitteloupe.randomgenexample.presentation.MainViewModel
+import com.mitteloupe.randomgenexample.presentation.MainViewModelFactory
 import com.mitteloupe.randomgenexample.presentation.ViewState
 import dagger.android.AndroidInjection
 import javax.inject.Inject
@@ -19,6 +21,8 @@ import kotlinx.android.synthetic.main.activity_main.planetary_system_view as pla
 
 class MainActivity : AppCompatActivity(), Observer<ViewState> {
 	@Inject
+	lateinit var viewModelFactory: MainViewModelFactory
+
 	lateinit var viewModel: MainViewModel
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,10 +31,17 @@ class MainActivity : AppCompatActivity(), Observer<ViewState> {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 
+		viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
 		viewModel.viewState.observe(this, this)
+
+		updateViewWithViewState(viewModel.viewState.value)
 	}
 
 	override fun onChanged(viewState: ViewState?) {
+		updateViewWithViewState(viewState)
+	}
+
+	private fun updateViewWithViewState(viewState: ViewState?) {
 		when (viewState) {
 			is ViewState.ShowNone -> hideAllViews()
 			is ViewState.ShowPerson -> showPersonView(viewState.person)
