@@ -242,7 +242,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 		) {
 			val lastFieldDataProvider = dataProviders[lastUsedFieldName]
 
-
+			@Suppress("UNCHECKED_CAST")
 			val qualifiedLastFieldDataProvider = lastFieldDataProvider as WeightedFieldDataProvidersFieldDataProvider<GENERATED_INSTANCE, FIELD_DATA_TYPE>
 
 			qualifiedLastFieldDataProvider.addFieldDataProvider(fieldDataProvider, weight)
