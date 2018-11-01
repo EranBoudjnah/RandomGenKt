@@ -1,15 +1,14 @@
 package com.mitteloupe.randomgenexample.domain
 
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 
 /**
  * Created by Eran Boudjnah on 30/10/2018.
  */
-abstract class BaseUseCase<TYPE> {
+abstract class BaseUseCase<TYPE>(coroutineContextProvider: CoroutineContextProvider) {
 	private val job = Job()
-	protected val uiScope = CoroutineScope(Dispatchers.Main + job)
+	protected val uiScope = CoroutineScope(coroutineContextProvider.main + job)
 
 	protected lateinit var callback: (TYPE) -> Unit
 

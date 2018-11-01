@@ -16,19 +16,16 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnit
-import org.mockito.junit.MockitoRule
+import org.mockito.junit.MockitoJUnitRunner
 
 
 /**
  * Created by Eran Boudjnah on 31/10/2018.
  */
+@RunWith(MockitoJUnitRunner::class)
 class MainViewModelTest {
-	@get:Rule
-	val rule: MockitoRule = MockitoJUnit.rule()
-
 	@get:Rule
 	val taskExecutorRule = InstantTaskExecutorRule()
 
@@ -45,8 +42,6 @@ class MainViewModelTest {
 
 	@Before
 	fun setUp() {
-		MockitoAnnotations.initMocks(this)
-
 		cut = MainViewModel(useCaseExecutor, generatePersonUseCase, generatePlanetarySystemUseCase, generateFlatUseCase)
 	}
 

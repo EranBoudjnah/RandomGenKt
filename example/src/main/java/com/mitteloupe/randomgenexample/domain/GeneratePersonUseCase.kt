@@ -2,7 +2,6 @@ package com.mitteloupe.randomgenexample.domain
 
 import com.mitteloupe.randomgenexample.data.generator.PersonGeneratorFactory
 import com.mitteloupe.randomgenexample.data.model.person.Person
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -13,8 +12,9 @@ import javax.inject.Inject
 class GeneratePersonUseCase
 @Inject
 constructor(
+	private val coroutineContextProvider: CoroutineContextProvider,
 	personGeneratorFactory: PersonGeneratorFactory
-) : BaseUseCase<Person>() {
+) : BaseUseCase<Person>(coroutineContextProvider) {
 	private var personRandomGen = personGeneratorFactory.newPersonGenerator
 
 	override suspend fun execute(callback: (Person) -> Unit) {
@@ -23,7 +23,7 @@ constructor(
 		uiScope.launch {
 			var person: Person? = null
 
-			withContext(Dispatchers.IO) {
+			withContext(coroutineContextProvider.io) {
 				person = executeAsync()
 			}
 

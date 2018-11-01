@@ -2,7 +2,6 @@ package com.mitteloupe.randomgenexample.domain
 
 import com.mitteloupe.randomgenexample.data.generator.FlatGeneratorFactory
 import com.mitteloupe.randomgenexample.data.model.flat.Flat
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -13,8 +12,9 @@ import javax.inject.Inject
 class GenerateFlatUseCase
 @Inject
 constructor(
+	private val coroutineContextProvider: CoroutineContextProvider,
 	flatGeneratorFactory: FlatGeneratorFactory
-): BaseUseCase<Flat>() {
+): BaseUseCase<Flat>(coroutineContextProvider) {
 	private var flatRandomGen = flatGeneratorFactory.newFlatGenerator
 
 	override suspend fun execute(callback: (Flat) -> Unit) {
@@ -23,7 +23,7 @@ constructor(
 		uiScope.launch {
 			var flat: Flat? = null
 
-			withContext(Dispatchers.IO) {
+			withContext(coroutineContextProvider.io) {
 				flat = executeAsync()
 			}
 

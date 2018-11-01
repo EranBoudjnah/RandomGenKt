@@ -2,7 +2,6 @@ package com.mitteloupe.randomgenexample.domain
 
 import com.mitteloupe.randomgenexample.data.generator.PlanetarySystemGeneratorFactory
 import com.mitteloupe.randomgenexample.data.model.planet.PlanetarySystem
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -13,8 +12,9 @@ import javax.inject.Inject
 class GeneratePlanetarySystemUseCase
 @Inject
 constructor(
+	private val coroutineContextProvider: CoroutineContextProvider,
 	planetarySystemGeneratorFactory: PlanetarySystemGeneratorFactory
-) : BaseUseCase<PlanetarySystem>() {
+) : BaseUseCase<PlanetarySystem>(coroutineContextProvider) {
 	private var planetarySystemRandomGen = planetarySystemGeneratorFactory.newPlanetarySystemGenerator
 
 	override suspend fun execute(callback: (PlanetarySystem) -> Unit) {
@@ -23,7 +23,7 @@ constructor(
 		uiScope.launch {
 			var planetarySystem: PlanetarySystem? = null
 
-			withContext(Dispatchers.IO) {
+			withContext(coroutineContextProvider.io) {
 				planetarySystem = executeAsync()
 			}
 
