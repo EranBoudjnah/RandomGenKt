@@ -13,7 +13,6 @@ import com.mitteloupe.randomgenexample.domain.GeneratePersonUseCase
 import com.mitteloupe.randomgenexample.domain.GeneratePlanetarySystemUseCase
 import com.mitteloupe.randomgenexample.domain.UseCaseExecutor
 import javax.inject.Inject
-import javax.inject.Provider
 
 /**
  * Created by Eran Boudjnah on 29/10/2018.
@@ -62,12 +61,6 @@ class MainViewModel(
 		useCaseExecutor.execute(generateFlatUseCase) { flat ->
 			_viewState.value = ViewState.ShowFlat(flat)
 		}
-
-	class Factory(val provider: Provider<MainViewModel>) : ViewModelProvider.Factory {
-		override fun <T : ViewModel> create(modelClass: Class<T>): T {
-			return provider.get() as T // Delegate call to provider
-		}
-	}
 }
 
 class MainViewModelFactory
@@ -80,10 +73,8 @@ constructor(
 ) :
 	ViewModelProvider.Factory {
 	override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-		if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-			return MainViewModel(useCaseExecutor, generatePersonUseCase, generatePlanetarySystemUseCase, generateFlatUseCase) as T
-		}
-		throw IllegalArgumentException("Unknown ViewModel class")
+		@Suppress("UNCHECKED_CAST")
+		return MainViewModel(useCaseExecutor, generatePersonUseCase, generatePlanetarySystemUseCase, generateFlatUseCase) as T
 	}
 }
 
