@@ -1,4 +1,4 @@
-# RandomGen
+# RandomGenKt
 >
 > Initialize instances of any class with generated data.
 >
@@ -7,7 +7,7 @@
 
 ![Example](https://github.com/EranBoudjnah/RandomGen/raw/master/example/videocap.gif)
 
-Inspired by [Cesar Ferreira](https://cesarferreira.com)'s [RxPeople](https://github.com/cesarferreira/RxPeople), I thought I'd implement an abstraction of the idea, so you could generate random instances of any class.
+This is a Kotlin port of the Java library designed to generate random instances of any class.
 
 This is great for demoing your app with interesting content, manually testing it with varying data, and even populating it with smart, random generated data in production.
 
@@ -73,6 +73,10 @@ ObjectClass instance = randomGen.generate();
 ```kotlin
 val instance = randomGen.generate()
 ```
+
+### What's New?
+
+The Kotlin version adds support for fields with lazy init and lambdas. 
 
 ## Created by
 [Eran Boudjnah](https://www.linkedin.com/in/eranboudjnah)
