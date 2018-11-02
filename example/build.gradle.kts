@@ -14,7 +14,7 @@ android {
 		targetSdkVersion(28)
 		versionCode = 1
 		versionName = "1.0"
-		testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 	}
 	buildTypes {
 		getByName("release") {
@@ -48,7 +48,11 @@ dependencies {
 	testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC3")
 	testImplementation("android.arch.core:core-testing:1.1.1")
 
-	androidTestImplementation("com.android.support.test:runner:1.0.2")
+	androidTestImplementation("androidx.test.espresso:espresso-core:3.1.0")
+	androidTestImplementation("androidx.test.espresso:espresso-contrib:3.1.0")
+	androidTestImplementation("androidx.test:runner:1.1.0")
+	androidTestImplementation("androidx.test:rules:1.1.0")
+	androidTestImplementation("androidx.test.ext:junit:1.0.0")
 
 //	implementation 'com.mitteloupe:randomgen:1.4.0'
 	implementation(project(":randomgen"))

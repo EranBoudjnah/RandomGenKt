@@ -8,7 +8,7 @@
 	<string name="gender_male">Male</string>
 	<string name="button_flat">Flat</string>
 	<string name="button_planetary_system">Planetary System</string>
-	<string name="main_title">Choose a data type below to generate a random instance.</string>
+	<string name="main_instructions">Choose a data type below to generate a random instance.</string>
 	<string name="planets">Planets</string>
 
 	<string name="star_age">Star Age</string>
