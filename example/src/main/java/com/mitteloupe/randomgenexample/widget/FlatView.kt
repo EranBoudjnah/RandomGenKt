@@ -53,7 +53,7 @@ constructor(context: Context,
 
 	private fun setUpBackground() {
 		val drawable = resources.getDrawable(android.R.drawable.dialog_holo_light_frame, null)
-		drawable.colorFilter = PorterDuffColorFilter(resources.getColor(R.color.colorPrimary, null), PorterDuff.Mode.MULTIPLY)
+		drawable.colorFilter = PorterDuffColorFilter(resources.getColor(R.color.primary, null), PorterDuff.Mode.MULTIPLY)
 		background = drawable
 	}
 

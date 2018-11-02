@@ -7,7 +7,7 @@
 	<string name="gender_female">Female</string>
 	<string name="gender_male">Male</string>
 	<string name="button_flat">Flat</string>
-	<string name="button_solar_system">Solar System</string>
+	<string name="button_planetary_system">Planetary System</string>
 	<string name="main_title">Choose a data type below to generate a random instance.</string>
 	<string name="planets">Planets</string>
 
