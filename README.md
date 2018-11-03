@@ -3,7 +3,7 @@
 > Initialize instances of any class with generated data.
 >
 
-[![Build Status](https://travis-ci.com/EranBoudjnah/RandomGen.svg?branch=master)](https://travis-ci.com/EranBoudjnah/RandomGen)
+[![Build Status](https://travis-ci.com/EranBoudjnah/RandomGenKt.svg?branch=master)](https://travis-ci.com/EranBoudjnah/RandomGenKt)
 
 ![Example](https://github.com/EranBoudjnah/RandomGen/raw/master/example/videocap.gif)
 
