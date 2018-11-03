@@ -2,6 +2,7 @@ package com.mitteloupe.randomgenexample
 
 import android.app.Activity
 import android.app.Application
+import com.mitteloupe.randomgenexample.di.AppComponent
 import com.mitteloupe.randomgenexample.di.DaggerAppComponent
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -14,14 +15,17 @@ class ExampleApplication : Application(), HasActivityInjector {
 	@Inject
 	internal lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 
-	override fun onCreate() {
-		super.onCreate()
-
+	private val appComponent: AppComponent by lazy {
 		DaggerAppComponent
 			.builder()
 			.application(this)
 			.build()
-			.inject(this)
+	}
+
+	override fun onCreate() {
+		super.onCreate()
+
+		appComponent.inject(this)
 	}
 
 	override fun activityInjector(): DispatchingAndroidInjector<Activity> {

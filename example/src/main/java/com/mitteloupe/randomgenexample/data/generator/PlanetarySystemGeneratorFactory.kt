@@ -1,7 +1,7 @@
 package com.mitteloupe.randomgenexample.data.generator
 
 import androidx.core.util.Pair
-import com.mitteloupe.randomgen.RandomGen
+import com.mitteloupe.randomgenkt.RandomGen
 import com.mitteloupe.randomgenexample.data.model.planet.Material
 import com.mitteloupe.randomgenexample.data.model.planet.Planet
 import com.mitteloupe.randomgenexample.data.model.planet.PlanetarySystem

@@ -1,6 +1,6 @@
 package com.mitteloupe.randomgenexample.domain
 
-import com.mitteloupe.randomgen.RandomGen
+import com.mitteloupe.randomgenkt.RandomGen
 import com.mitteloupe.randomgenexample.data.generator.PersonGeneratorFactory
 import com.mitteloupe.randomgenexample.data.model.person.Person
 import com.nhaarman.mockitokotlin2.mock

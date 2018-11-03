@@ -19,9 +19,9 @@ import javax.inject.Inject
  */
 class MainViewModel(
 	private val useCaseExecutor: UseCaseExecutor,
-	private val generatePersonUseCase: GeneratePersonUseCase,
-	private val generatePlanetarySystemUseCase: GeneratePlanetarySystemUseCase,
-	private val generateFlatUseCase: GenerateFlatUseCase
+	private val generatePersonUseCase: dagger.Lazy<GeneratePersonUseCase>,
+	private val generatePlanetarySystemUseCase: dagger.Lazy<GeneratePlanetarySystemUseCase>,
+	private val generateFlatUseCase: dagger.Lazy<GenerateFlatUseCase>
 ) : ViewModel() {
 	private val _viewState = MutableLiveData<ViewState>()
 	val viewState: LiveData<ViewState>
@@ -48,17 +48,17 @@ class MainViewModel(
 		generateFlat()
 
 	private fun generatePerson() =
-		useCaseExecutor.execute(generatePersonUseCase) { person ->
+		useCaseExecutor.execute(generatePersonUseCase.get()) { person ->
 			_viewState.value = ViewState.ShowPerson(person)
 		}
 
 	private fun generatePlanetarySystem() =
-		useCaseExecutor.execute(generatePlanetarySystemUseCase) { planetarySystem ->
+		useCaseExecutor.execute(generatePlanetarySystemUseCase.get()) { planetarySystem ->
 			_viewState.value = ViewState.ShowPlanetarySystem(planetarySystem)
 		}
 
 	private fun generateFlat() =
-		useCaseExecutor.execute(generateFlatUseCase) { flat ->
+		useCaseExecutor.execute(generateFlatUseCase.get()) { flat ->
 			_viewState.value = ViewState.ShowFlat(flat)
 		}
 }
@@ -67,9 +67,9 @@ class MainViewModelFactory
 @Inject
 constructor(
 	private val useCaseExecutor: UseCaseExecutor,
-	private val generatePersonUseCase: GeneratePersonUseCase,
-	private val generatePlanetarySystemUseCase: GeneratePlanetarySystemUseCase,
-	private val generateFlatUseCase: GenerateFlatUseCase
+	private val generatePersonUseCase: dagger.Lazy<GeneratePersonUseCase>,
+	private val generatePlanetarySystemUseCase: dagger.Lazy<GeneratePlanetarySystemUseCase>,
+	private val generateFlatUseCase: dagger.Lazy<GenerateFlatUseCase>
 ) :
 	ViewModelProvider.Factory {
 	override fun <T : ViewModel?> create(modelClass: Class<T>): T {

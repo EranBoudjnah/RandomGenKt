@@ -12,6 +12,7 @@ import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -32,9 +33,15 @@ class MainViewModelTest {
 	@Mock
 	lateinit var useCaseExecutor: UseCaseExecutor
 	@Mock
+	lateinit var generatePersonUseCaseLazy: dagger.Lazy<GeneratePersonUseCase>
+	@Mock
 	lateinit var generatePersonUseCase: GeneratePersonUseCase
 	@Mock
+	lateinit var generatePlanetarySystemUseCaseLazy: dagger.Lazy<GeneratePlanetarySystemUseCase>
+	@Mock
 	lateinit var generatePlanetarySystemUseCase: GeneratePlanetarySystemUseCase
+	@Mock
+	lateinit var generateFlatUseCaseLazy: dagger.Lazy<GenerateFlatUseCase>
 	@Mock
 	lateinit var generateFlatUseCase: GenerateFlatUseCase
 
@@ -42,7 +49,11 @@ class MainViewModelTest {
 
 	@Before
 	fun setUp() {
-		cut = MainViewModel(useCaseExecutor, generatePersonUseCase, generatePlanetarySystemUseCase, generateFlatUseCase)
+		whenever(generatePersonUseCaseLazy.get()).thenReturn(generatePersonUseCase)
+		whenever(generatePlanetarySystemUseCaseLazy.get()).thenReturn(generatePlanetarySystemUseCase)
+		whenever(generateFlatUseCaseLazy.get()).thenReturn(generateFlatUseCase)
+
+		cut = MainViewModel(useCaseExecutor, generatePersonUseCaseLazy, generatePlanetarySystemUseCaseLazy, generateFlatUseCaseLazy)
 	}
 
 	@Test

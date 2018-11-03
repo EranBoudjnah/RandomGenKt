@@ -1,1 +1,1 @@
-include(":example", ":randomgen", ":randomgen.datasource")
+include(":example", ":randomgenkt", ":randomgenkt.datasource")

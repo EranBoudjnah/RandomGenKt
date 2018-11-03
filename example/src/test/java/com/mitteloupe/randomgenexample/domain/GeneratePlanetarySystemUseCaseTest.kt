@@ -1,6 +1,6 @@
 package com.mitteloupe.randomgenexample.domain
 
-import com.mitteloupe.randomgen.RandomGen
+import com.mitteloupe.randomgenkt.RandomGen
 import com.mitteloupe.randomgenexample.data.generator.PlanetarySystemGeneratorFactory
 import com.mitteloupe.randomgenexample.data.model.planet.PlanetarySystem
 import com.nhaarman.mockitokotlin2.mock

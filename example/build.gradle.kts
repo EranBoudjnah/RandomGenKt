@@ -55,6 +55,6 @@ dependencies {
 	androidTestImplementation("androidx.test.ext:junit:1.0.0")
 
 //	implementation 'com.mitteloupe:randomgen:1.4.0'
-	implementation(project(":randomgen"))
+	implementation(project(":randomgenkt"))
 }
 

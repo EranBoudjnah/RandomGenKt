@@ -1,8 +1,8 @@
 package com.mitteloupe.randomgenexample.domain
 
-import com.mitteloupe.randomgen.RandomGen
 import com.mitteloupe.randomgenexample.data.generator.FlatGeneratorFactory
 import com.mitteloupe.randomgenexample.data.model.flat.Flat
+import com.mitteloupe.randomgenkt.RandomGen
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.runBlocking

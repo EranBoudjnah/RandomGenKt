@@ -1,6 +1,6 @@
 package com.mitteloupe.randomgenexample.data.generator
 
-import com.mitteloupe.randomgen.RandomGen
+import com.mitteloupe.randomgenkt.RandomGen
 import com.mitteloupe.randomgenexample.data.model.flat.DivisionType
 import com.mitteloupe.randomgenexample.data.model.flat.Flat
 import com.mitteloupe.randomgenexample.data.model.flat.Room
@@ -27,10 +27,10 @@ constructor(private val random: Random) {
 		RandomGen.Builder<Room>()
 			.ofClass<Room>()
 			.onGenerate(object : RandomGen.OnGenerateCallback<Room> {
-				override fun onGenerate(pGeneratedInstance: Room) {
+				override fun onGenerate(generatedInstance: Room) {
 					val divisionType = if (random.nextBoolean()) DivisionType.HORIZONTAL else DivisionType.VERTICAL
 					val roomsRemaining = random.nextInt(7) + 1
-					splitRooms(pGeneratedInstance, roomsRemaining - 1, divisionType)
+					splitRooms(generatedInstance, roomsRemaining - 1, divisionType)
 				}
 			})
 			.withField("roomType")
