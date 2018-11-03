@@ -80,7 +80,7 @@ The Kotlin version adds the following:
 
 * Support for fields with lazy init
 * Lambdas
-* ofClass<Type>() instead of ofClass(Type::class.java)  
+* `ofClass<Type>()` instead of `ofClass(Type::class.java)`
 
 ## Created by
 [Eran Boudjnah](https://www.linkedin.com/in/eranboudjnah)
