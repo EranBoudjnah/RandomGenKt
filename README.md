@@ -38,17 +38,6 @@ repositories {
 
 ## Usage
 
-### Java
-```java
-RandomGen<ObjectClass> randomGen = new RandomGen.Builder<ObjectClass>()
-	.ofClass(ObjectClass.class)
-	.withField("id")
-	.returningSequentialInteger()
-	.withField("uuid")
-	.returningUuid()
-	.build();
-```
-
 ### Kotlin
 ```kotlin
 val randomGen = RandomGen.Builder<ObjectClass>()
@@ -60,23 +49,38 @@ val randomGen = RandomGen.Builder<ObjectClass>()
 	.build()
 ```
 
+### Java
+```java
+RandomGen<ObjectClass> randomGen = new RandomGen.Builder<ObjectClass>()
+	.ofClass(ObjectClass.class)
+	.withField("id")
+	.returningSequentialInteger()
+	.withField("uuid")
+	.returningUuid()
+	.build();
+```
+
 This will create a `RandomGen` instance producing `ObjectClass` instances with sequential IDs and random UUIDs.
 
 To use the newly generated `RandomGen`, simply call:
-
-### Java
-```java
-ObjectClass instance = randomGen.generate();
-```
 
 ### Kotlin
 ```kotlin
 val instance = randomGen.generate()
 ```
 
+### Java
+```java
+ObjectClass instance = randomGen.generate();
+```
+
 ### What's New?
 
-The Kotlin version adds support for fields with lazy init and lambdas. 
+The Kotlin version adds the following:
+
+* Support for fields with lazy init
+* Lambdas
+* ofClass<Type>() instead of ofClass(Type::class.java)  
 
 ## Created by
 [Eran Boudjnah](https://www.linkedin.com/in/eranboudjnah)
