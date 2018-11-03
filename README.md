@@ -5,7 +5,7 @@
 
 [![Build Status](https://travis-ci.com/EranBoudjnah/RandomGenKt.svg?branch=master)](https://travis-ci.com/EranBoudjnah/RandomGenKt)
 
-![Example](https://github.com/EranBoudjnah/RandomGen/raw/master/example/videocap.gif)
+![Example](https://github.com/EranBoudjnah/RandomGenKt/raw/master/example/videocap.gif)
 
 This is a Kotlin port of the Java library designed to generate random instances of any class.
 
