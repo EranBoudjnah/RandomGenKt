@@ -6,12 +6,7 @@
 		<item name="colorPrimary">@color/primary</item>
 		<item name="colorPrimaryDark">@color/primaryDark</item>
 		<item name="colorAccent">@color/accent</item>
-	</style>
-
-	<style name="PrimaryFlatButton" parent="Theme.AppCompat.Light">
-		<item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
 		<item name="colorControlHighlight">@color/accent</item>
-		<item name="colorAccent">@color/primary</item>
 	</style>
 
 </resources>

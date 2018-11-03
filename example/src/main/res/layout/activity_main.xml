@@ -68,7 +68,6 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:background="@color/primary"
-		app:itemBackground="@color/primary"
 		app:itemIconTint="@drawable/bottom_navigation_color_state"
 		app:itemTextColor="@drawable/bottom_navigation_color_state"
 		app:layout_constraintBottom_toBottomOf="parent"

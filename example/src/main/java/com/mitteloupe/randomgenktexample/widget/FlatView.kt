@@ -12,6 +12,7 @@ import com.mitteloupe.randomgenktexample.R
 import com.mitteloupe.randomgenktexample.data.model.flat.DivisionType
 import com.mitteloupe.randomgenktexample.data.model.flat.Flat
 import com.mitteloupe.randomgenktexample.data.model.flat.Room
+import com.mitteloupe.randomgenktexample.utils.StringFormatter.formatEnumValue
 
 /**
  * Created by Eran Boudjnah on 26/08/2018.
@@ -46,7 +47,7 @@ constructor(context: Context,
 		val flatWidth = (width - 100).toFloat()
 		val flatHeight = (height - 100).toFloat()
 		boundingWalls.set(50f, 50f, flatWidth + 50, flatHeight + 50)
-		canvas.drawRect(boundingWalls, paint)
+		drawWall(canvas, boundingWalls)
 
 		drawWallOrRoomType(canvas, flat!!.rooms, boundingWalls)
 	}
@@ -57,18 +58,16 @@ constructor(context: Context,
 		background = drawable
 	}
 
-	private fun setUpPaint() {
+	private fun setUpPaint() =
 		with(paint) {
-			style = Paint.Style.STROKE
 			color = -0x1
 			textAlign = Paint.Align.CENTER
 			textSize = 24f
 		}
-	}
 
 	private fun drawWallOrRoomType(canvas: Canvas, room: Room, boundingWalls: RectF) {
 		if (!room.isDivided()) {
-			canvas.drawText(room.formattedType(), boundingWalls.centerX(), boundingWalls.centerY(), paint)
+			writeRoomType(canvas, room, boundingWalls)
 			return
 		}
 
@@ -80,16 +79,26 @@ constructor(context: Context,
 				room.divideHorizontally(boundingWalls, firstInnerWalls, secondInnerWalls)
 				drawWallOrRoomType(canvas, room.firstRoom!!, firstInnerWalls)
 				drawWallOrRoomType(canvas, room.secondRoom!!, secondInnerWalls)
-				canvas.drawRect(secondInnerWalls, paint)
+				drawWall(canvas, secondInnerWalls)
 			}
 
 			else -> {
 				room.divideVertically(boundingWalls, firstInnerWalls, secondInnerWalls)
 				drawWallOrRoomType(canvas, room.firstRoom!!, firstInnerWalls)
 				drawWallOrRoomType(canvas, room.secondRoom!!, secondInnerWalls)
-				canvas.drawRect(secondInnerWalls, paint)
+				drawWall(canvas, secondInnerWalls)
 			}
 		}
+	}
+
+	private fun writeRoomType(canvas: Canvas, room: Room, boundingWalls: RectF) {
+		paint.style = Paint.Style.FILL
+		canvas.drawText(formatEnumValue(room.roomType), boundingWalls.centerX(), boundingWalls.centerY(), paint)
+	}
+
+	private fun drawWall(canvas: Canvas, wall: RectF) {
+		paint.style = Paint.Style.STROKE
+		canvas.drawRect(wall, paint)
 	}
 }
 
@@ -128,19 +137,4 @@ fun Room.divideVertically(boundingWalls: RectF, firstInnerWalls: RectF, secondIn
 		left = firstInnerWalls.right
 		right = boundingWalls.right
 	}
-}
-
-fun Room.formattedType(): String {
-	val type = this.roomType.toString()
-	val words = type.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-	val stringBuilder = StringBuilder()
-	for (i in words.indices) {
-		val word = words[i]
-		stringBuilder.append(word.substring(0, 1).toUpperCase())
-			.append(word.substring(1).toLowerCase())
-		if (i < words.size - 1) {
-			stringBuilder.append(" ")
-		}
-	}
-	return stringBuilder.toString()
 }

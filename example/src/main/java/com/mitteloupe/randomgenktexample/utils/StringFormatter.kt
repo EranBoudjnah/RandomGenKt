@@ -3,24 +3,24 @@ package com.mitteloupe.randomgenktexample.utils
 /**
  * Created by Eran Boudjnah on 29/08/2018.
  */
-class StringFormatter<TYPE : Enum<*>> {
-	private val mStringBuilder = StringBuilder()
+object StringFormatter {
+	private val stringBuilder = StringBuilder()
 
-	fun formatEnumValue(pEnum: TYPE): String {
-		val words = getWordsFromEnum(pEnum)
+	fun <TYPE : Enum<*>> formatEnumValue(enum: TYPE): String {
+		val words = getWordsFromEnum(enum)
 		clearStringBuilder()
 		concatWordsWithSpaces(words)
-		return mStringBuilder.toString()
+		return stringBuilder.toString()
 	}
 
-	private fun getWordsFromEnum(pEnum: TYPE): Array<String> {
-		return pEnum.toString().split("_".toRegex())
+	private fun <TYPE : Enum<*>> getWordsFromEnum(enum: TYPE): Array<String> {
+		return enum.toString().split("_".toRegex())
 			.dropLastWhile { it.isEmpty() }
 			.toTypedArray()
 	}
 
 	private fun clearStringBuilder() {
-		mStringBuilder.delete(0, mStringBuilder.length)
+		stringBuilder.delete(0, stringBuilder.length)
 	}
 
 	private fun concatWordsWithSpaces(pWords: Array<String>) {
@@ -29,13 +29,13 @@ class StringFormatter<TYPE : Enum<*>> {
 		pWords.forEachIndexed { characterPosition, word ->
 			addCapitalizedWord(word)
 			if (characterPosition < lastCharacter) {
-				mStringBuilder.append(" ")
+				stringBuilder.append(" ")
 			}
 		}
 	}
 
 	private fun addCapitalizedWord(pWord: String) {
-		mStringBuilder
+		stringBuilder
 			.append(pWord.first().toUpperCase())
 			.append(pWord.substring(1).toLowerCase())
 	}
