@@ -133,6 +133,11 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 	}
 
 	class Builder<GENERATED_INSTANCE> {
+		inline fun <reified CLASS_TYPE : GENERATED_INSTANCE> ofClass(): IncompleteBuilderField<GENERATED_INSTANCE> {
+			@Suppress("UNCHECKED_CAST")
+			return ofClass(CLASS_TYPE::class.java as Class<GENERATED_INSTANCE>)
+		}
+
 		fun ofClass(generatedInstanceClass: Class<GENERATED_INSTANCE>): IncompleteBuilderField<GENERATED_INSTANCE> {
 			return IncompleteBuilderField(generatedInstanceClass, DefaultFieldDataProviderFactory())
 		}
@@ -463,6 +468,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 			// Use Array native method to create array of a type only known at run time
 			val newInstance = java.lang.reflect.Array.newInstance(elementClass, capacity)
 
+			@Suppress("UNCHECKED_CAST")
 			typedArray = newInstance as Array<ELEMENT_TYPE>
 		}
 

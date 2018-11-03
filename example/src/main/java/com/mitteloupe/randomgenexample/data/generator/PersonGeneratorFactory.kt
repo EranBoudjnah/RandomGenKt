@@ -24,7 +24,7 @@ constructor() {
 			val random = Random()
 
 			return RandomGen.Builder<Person>()
-				.ofClass(Person::class.java)
+				.ofClass<Person>()
 				.withField("gender")
 				.returning(Gender::class.java)
 				.withField("name")

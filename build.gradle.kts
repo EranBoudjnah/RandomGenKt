@@ -32,10 +32,10 @@ dependencies {
 
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {
-	jvmTarget = "1.8"
+	jvmTarget = "1.6"
 }
 
 val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
-	jvmTarget = "1.8"
+	jvmTarget = "1.6"
 }

@@ -16,7 +16,7 @@ constructor() {
 	// Create a random star system with 2 to 4 planets
 	val newPlanetarySystemGenerator: RandomGen<PlanetarySystem>
 		get() = RandomGen.Builder<PlanetarySystem>()
-			.ofClass(PlanetarySystem::class.java)
+			.ofClass<PlanetarySystem>()
 			.withField("starAgeBillionYears")
 			.returning(1f, 10f)
 			.withField("starDiameterSunRadii")
@@ -29,7 +29,7 @@ constructor() {
 
 	private fun newPlanetGenerator(): RandomGen<Planet> {
 		return RandomGen.Builder<Planet>()
-			.ofClass(Planet::class.java)
+			.ofClass<Planet>()
 			.withField("id")
 			.returningSequentialInteger()
 			.withField("diameterEarthRatio")
@@ -59,7 +59,7 @@ constructor() {
 		val materialO2 = listOf(Pair("O", 2))
 
 		return RandomGen.Builder<Material>()
-			.ofClass(Material::class.java)
+			.ofClass<Material>()
 			.withField("compound")
 			.returning(listOf(materialAr, materialCH4, materialCO2, materialH2, materialHe, materialN2, materialO2))
 			.build()

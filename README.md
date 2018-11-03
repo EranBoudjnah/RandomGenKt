@@ -52,7 +52,7 @@ RandomGen<ObjectClass> randomGen = new RandomGen.Builder<ObjectClass>()
 ### Kotlin
 ```kotlin
 val randomGen = RandomGen.Builder<ObjectClass>()
-	.ofClass(ObjectClass::class.java)
+	.ofClass<ObjectClass>()
 	.withField("id")
 	.returningSequentialInteger()
 	.withField("uuid")
