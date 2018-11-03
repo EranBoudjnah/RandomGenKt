@@ -27,8 +27,8 @@ constructor() {
 			.returning(0, 15, newPlanetGenerator())
 			.build()
 
-	private fun newPlanetGenerator(): RandomGen<Planet> {
-		return RandomGen.Builder<Planet>()
+	private fun newPlanetGenerator() =
+		RandomGen.Builder<Planet>()
 			.ofClass<Planet>()
 			.withField("id")
 			.returningSequentialInteger()
@@ -47,7 +47,6 @@ constructor() {
 			.withField("atmosphere")
 			.returning(0, 3, newMaterialGenerator())
 			.build()
-	}
 
 	private fun newMaterialGenerator(): RandomGen<Material> {
 		val materialAr = listOf(Pair("Ar", 1))

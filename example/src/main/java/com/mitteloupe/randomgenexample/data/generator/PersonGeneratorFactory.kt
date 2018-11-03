@@ -46,19 +46,17 @@ constructor() {
 		val femaleConcatenateFieldDataProvider = ConcatenateFieldDataProvider(femaleNameFieldDataProvider, lastNameFieldDataProvider, delimiter = " ")
 
 		return object : FieldDataProvider<Person, String> {
-			override fun generate(instance: Person?): String {
-				return if (instance?.gender == Gender.MALE) {
+			override fun generate(instance: Person?) =
+				if (instance?.gender == Gender.MALE) {
 					maleConcatenateFieldDataProvider.generate(instance)
 
 				} else {
 					femaleConcatenateFieldDataProvider.generate(instance)
 				}
-			}
 		}
 	}
 
 	private fun newPhoneFieldDataProvider(random: Random): FieldDataProvider<Person, String> {
-
 		val plusProvider = ExplicitFieldDataProvider<Person, String>("+")
 		val phoneCountryFieldDataProvider = IntFieldDataProvider<Person>(random, 1, 99)
 		val spaceProvider = ExplicitFieldDataProvider<Person, String>(" ")
@@ -77,8 +75,5 @@ constructor() {
 		random: Random,
 		length: Int,
 		maximumValue: Int
-	): PaddedFieldDataProvider<Person> {
-		return PaddedFieldDataProvider(length, "0",
-			IntFieldDataProvider(random, 0, maximumValue))
-	}
+	) = PaddedFieldDataProvider<Person>(length, "0", IntFieldDataProvider(random, 0, maximumValue))
 }

@@ -23,8 +23,8 @@ constructor(private val random: Random) {
 			.returning(newContainerRoomRandomGen())
 			.build()
 
-	private fun newContainerRoomRandomGen(): RandomGen<Room> {
-		return RandomGen.Builder<Room>()
+	private fun newContainerRoomRandomGen() =
+		RandomGen.Builder<Room>()
 			.ofClass<Room>()
 			.onGenerate(object : RandomGen.OnGenerateCallback<Room> {
 				override fun onGenerate(pGeneratedInstance: Room) {
@@ -36,21 +36,17 @@ constructor(private val random: Random) {
 			.withField("roomType")
 			.returning(RoomType::class.java)
 			.build()
-	}
 
-	private fun newRoomRandomGen(): RandomGen<Room> {
-		return RandomGen.Builder<Room>()
+	private fun newRoomRandomGen() =
+		RandomGen.Builder<Room>()
 			.ofClass<Room>()
 			.withField("roomType")
 			.returning(RoomType::class.java)
 			.build()
-	}
 
-	private fun newRoom(): Room {
-		return Room(RoomType.LIVING_ROOM, DivisionType.NONE, 0f, null, null)
-	}
+	private fun newRoom() = Room(RoomType.LIVING_ROOM, DivisionType.NONE, 0f, null, null)
 
-	private fun splitRoomUsingRandomGen(room: Room, roomRandomGen: RandomGen<Room>, divisionType: DivisionType) {
+	private fun splitRoomUsingRandomGen(room: Room, roomRandomGen: RandomGen<Room>, divisionType: DivisionType) =
 		RandomGen.Builder<Room>()
 			.withProvider(getSpecificRoomProvider(room))
 			.withField("firstRoom")
@@ -63,7 +59,6 @@ constructor(private val random: Random) {
 			.returning(0.25f, 0.75f)
 			.build()
 			.generate()
-	}
 
 	private fun getSpecificRoomProvider(room: Room) = { room }
 
