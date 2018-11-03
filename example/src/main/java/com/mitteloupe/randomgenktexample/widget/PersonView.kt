@@ -8,6 +8,7 @@ import android.widget.TextView
 import com.mitteloupe.randomgenktexample.R
 import com.mitteloupe.randomgenktexample.data.model.person.Gender
 import com.mitteloupe.randomgenktexample.data.model.person.Person
+import com.mitteloupe.randomgenktexample.utils.StringFormatter.formatEnumValue
 
 /**
  * Created by Eran Boudjnah on 18/08/2018.
@@ -38,28 +39,8 @@ class PersonView @JvmOverloads constructor(context: Context, attrs: AttributeSet
 
 			nameView.text = name
 			ageView.text = age.toString()
-			occupationView.text = formattedOccupation()
+			occupationView.text = formatEnumValue(occupation)
 			phoneNumberView.text = phoneNumber
 		}
 	}
-}
-
-private fun Person.formattedOccupation(): String {
-	val words = this.occupation.toString()
-		.split("_".toRegex())
-		.dropLastWhile { it.isEmpty() }
-		.toTypedArray()
-	val stringBuilder = StringBuilder()
-	words.forEachIndexed {
-		index, word ->
-		stringBuilder
-			.append(word.first().toUpperCase())
-			.append(word.substring(1).toLowerCase())
-
-		if (index < words.size - 1) {
-			stringBuilder.append(" ")
-		}
-	}
-
-	return stringBuilder.toString()
 }
