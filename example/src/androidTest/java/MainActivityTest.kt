@@ -11,8 +11,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import com.mitteloupe.randomgenexample.R
-import com.mitteloupe.randomgenexample.ui.main.MainActivity
+import com.mitteloupe.randomgenktexample.R
+import com.mitteloupe.randomgenktexample.ui.main.MainActivity
 import org.hamcrest.CoreMatchers.allOf
 import org.junit.Rule
 import org.junit.Test

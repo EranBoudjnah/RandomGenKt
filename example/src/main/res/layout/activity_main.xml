@@ -42,20 +42,20 @@
 
 		</FrameLayout>
 
-		<com.mitteloupe.randomgenexample.widget.PersonView
+		<com.mitteloupe.randomgenktexample.widget.PersonView
 			android:id="@+id/person_view"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:background="@android:drawable/dialog_holo_light_frame"
 			/>
 
-		<com.mitteloupe.randomgenexample.widget.PlanetarySystemView
+		<com.mitteloupe.randomgenktexample.widget.PlanetarySystemView
 			android:id="@+id/planetary_system_view"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			/>
 
-		<com.mitteloupe.randomgenexample.widget.FlatView
+		<com.mitteloupe.randomgenktexample.widget.FlatView
 			android:id="@+id/flat_view"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
