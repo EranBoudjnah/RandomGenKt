@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.jetbrains.kotlin.jvm")
+	kotlin("jvm")
 	id("com.android.lint")
 }
 
@@ -24,8 +24,8 @@ lintOptions {
 
 ext {
 	set("PUBLISH_GROUP_ID", "com.mitteloupe")
-	set("PUBLISH_ARTIFACT_ID", "randomgen")
-	set("PUBLISH_VERSION", "1.4.0")
+	set("PUBLISH_ARTIFACT_ID", "randomgenkt")
+	set("PUBLISH_VERSION", "1.0.0")
 }
 
 apply {
