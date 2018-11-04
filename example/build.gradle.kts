@@ -24,6 +24,15 @@ android {
 	}
 }
 
+repositories {
+	google()
+	jcenter()
+	mavenCentral()
+	maven {
+		setUrl("https://dl.bintray.com/shadowcra/RandomGenKt")
+	}
+}
+
 dependencies {
 	implementation("androidx.appcompat:appcompat:1.0.0")
 	implementation("androidx.constraintlayout:constraintlayout:1.1.3")
@@ -54,7 +63,6 @@ dependencies {
 	androidTestImplementation("androidx.test:rules:1.1.0")
 	androidTestImplementation("androidx.test.ext:junit:1.0.0")
 
-//	implementation 'com.mitteloupe:randomgen:1.4.0'
-	implementation(project(":randomgenkt"))
+	implementation("com.mitteloupe:randomgenkt:1.0.0")
 }
 

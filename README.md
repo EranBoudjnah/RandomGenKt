@@ -17,7 +17,7 @@ In your `build.gradle`, add the following:
 
 ```groovy
 dependencies {
-	implementation 'com.mitteloupe:randomgen:1.4.0'
+	implementation 'com.mitteloupe:randomgenkt:1.0.0'
 }
 ```
 
@@ -30,7 +30,7 @@ Note: To add the BinTray repository in your maven repositories, also add the fol
 ```groovy
 repositories {
 	maven {
-		url "https://dl.bintray.com/shadowcra/RandomGen"
+		url "https://dl.bintray.com/shadowcra/RandomGenKt"
 	}
 }
 ```
