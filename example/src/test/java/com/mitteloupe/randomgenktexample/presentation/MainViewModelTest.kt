@@ -73,7 +73,7 @@ class MainViewModelTest {
 		callback.invoke(person)
 
 		// Then
-		assertEquals(ViewState.ShowPerson(person), cut.viewState.value)
+		assertEquals(ViewState.ShowPeople(person), cut.viewState.value)
 	}
 
 	@Test

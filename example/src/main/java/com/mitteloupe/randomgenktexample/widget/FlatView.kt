@@ -3,9 +3,8 @@ package com.mitteloupe.randomgenktexample.widget
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.graphics.RectF
+import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.mitteloupe.randomgenktexample.R
@@ -32,7 +31,6 @@ constructor(context: Context,
 		setWillNotDraw(false)
 		setUpBackground()
 		setUpPaint()
-
 	}
 
 	fun setFlat(flat: Flat) {
@@ -53,9 +51,7 @@ constructor(context: Context,
 	}
 
 	private fun setUpBackground() {
-		val drawable = resources.getDrawable(android.R.drawable.dialog_holo_light_frame, null)
-		drawable.colorFilter = PorterDuffColorFilter(resources.getColor(R.color.primary, null), PorterDuff.Mode.MULTIPLY)
-		background = drawable
+		background = ColorDrawable(resources.getColor(R.color.primary, null))
 	}
 
 	private fun setUpPaint() =

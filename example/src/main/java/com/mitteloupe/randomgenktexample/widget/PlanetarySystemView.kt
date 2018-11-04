@@ -4,8 +4,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.PointF
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.graphics.RectF
 import android.os.Handler
 import android.os.Message
@@ -48,6 +46,8 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
 
 	private val planetRingRect = RectF()
 
+	private val backgroundColor: Int by lazy { resources.getColor(R.color.primary, null) }
+
 	private val renderFrame: View
 	private lateinit var starAgeTextView: TextView
 	private lateinit var starDiameterTextView: TextView
@@ -72,7 +72,6 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
 		View.inflate(context, R.layout.view_planetary_system, this)
 
 		setWillNotDraw(false)
-		setUpBackground()
 
 		renderFrame = findViewById(R.id.render_frame)
 
@@ -81,12 +80,6 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
 		initPlanetTextViews()
 
 		initTimers()
-	}
-
-	private fun setUpBackground() {
-		val drawable = resources.getDrawable(android.R.drawable.dialog_holo_light_frame, null)
-		drawable.colorFilter = PorterDuffColorFilter(resources.getColor(R.color.primary, null), PorterDuff.Mode.MULTIPLY)
-		background = drawable
 	}
 
 	private fun initTimers() {
@@ -246,18 +239,29 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
 		return stringBuilder.toString()
 	}
 
-	override fun onDraw(pCanvas: Canvas) {
-		super.onDraw(pCanvas)
+	override fun onDraw(canvas: Canvas) {
+		super.onDraw(canvas)
+
+		drawBackground(canvas)
 
 		if (planetarySystem == null) return
 
-		drawOrbitRings(pCanvas)
+		drawOrbitRings(canvas)
 
-		drawStar(pCanvas)
+		drawStar(canvas)
 
 		advanceAllPlanetAnimations()
 
-		drawPlanets(pCanvas)
+		drawPlanets(canvas)
+	}
+
+	private fun drawBackground(canvas: Canvas) {
+		with(paint) {
+			style = Paint.Style.FILL
+			color = backgroundColor
+		}
+
+		canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
 	}
 
 	private fun drawStar(canvas: Canvas) {
@@ -282,15 +286,15 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
 		}
 	}
 
-	private fun drawOrbitRing(pCanvas: Canvas, pPosition: Int) {
-		val relativeRadius = 0.1f + orbitRingSpacing * pPosition
+	private fun drawOrbitRing(canvas: Canvas, position: Int) {
+		val relativeRadius = 0.1f + orbitRingSpacing * position
 		val orbitRingWidth = visualSize * relativeRadius
 		val orbitRingHeight = orbitRingWidth * ASPECT_RATIO
 		planetRingRect.set(
 			visualCenter.x - orbitRingWidth, visualCenter.y - orbitRingHeight,
 			visualCenter.x + orbitRingWidth, visualCenter.y + orbitRingHeight
 		)
-		pCanvas.drawArc(planetRingRect, 0f, 360f, false, paint)
+		canvas.drawArc(planetRingRect, 0f, 360f, false, paint)
 	}
 
 	private fun drawPlanetAtIndex(canvas: Canvas, pIndex: Int) {

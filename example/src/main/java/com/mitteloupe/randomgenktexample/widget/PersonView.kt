@@ -4,43 +4,40 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.TextView
 import com.mitteloupe.randomgenktexample.R
 import com.mitteloupe.randomgenktexample.data.model.person.Gender
 import com.mitteloupe.randomgenktexample.data.model.person.Person
 import com.mitteloupe.randomgenktexample.utils.StringFormatter.formatEnumValue
+import kotlinx.android.synthetic.main.view_person.view.content_wrapper as contentWrapper
+import kotlinx.android.synthetic.main.view_person.view.icon_female as iconFemale
+import kotlinx.android.synthetic.main.view_person.view.icon_male as iconMale
+import kotlinx.android.synthetic.main.view_person.view.text_age_value as textAgeValue
+import kotlinx.android.synthetic.main.view_person.view.text_name_value as textNameValue
+import kotlinx.android.synthetic.main.view_person.view.text_occupation_value as textOccupationValue
+import kotlinx.android.synthetic.main.view_person.view.text_phone_value as textPhoneValue
 
 /**
  * Created by Eran Boudjnah on 18/08/2018.
  */
 class PersonView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr) {
-	private val iconFemaleView: View
-	private val iconMaleView: View
-	private val nameView: TextView
-	private val ageView: TextView
-	private val occupationView: TextView
-	private val phoneNumberView: TextView
+	private val maleColor: Int by lazy { resources.getColor(R.color.male) }
+	private val femaleColor: Int by lazy { resources.getColor(R.color.female) }
 
 	init {
 		View.inflate(context, R.layout.view_person, this)
-
-		iconFemaleView = findViewById(R.id.icon_female)
-		iconMaleView = findViewById(R.id.icon_male)
-		nameView = findViewById(R.id.text_name_value)
-		ageView = findViewById(R.id.text_age_value)
-		occupationView = findViewById(R.id.text_occupation_value)
-		phoneNumberView = findViewById(R.id.text_phone_value)
 	}
 
 	fun setPerson(person: Person) {
-		with (person) {
-			iconFemaleView.visibility = if (gender == Gender.FEMALE) View.VISIBLE else View.GONE
-			iconMaleView.visibility = if (gender == Gender.MALE) View.VISIBLE else View.GONE
+		with(person) {
+			iconFemale.visibility = if (gender == Gender.FEMALE) View.VISIBLE else View.GONE
+			iconMale.visibility = if (gender == Gender.MALE) View.VISIBLE else View.GONE
 
-			nameView.text = name
-			ageView.text = age.toString()
-			occupationView.text = formatEnumValue(occupation)
-			phoneNumberView.text = phoneNumber
+			contentWrapper.setBackgroundColor(if (gender == Gender.MALE) maleColor else femaleColor)
+
+			textNameValue.text = name
+			textAgeValue.text = age.toString()
+			textOccupationValue.text = formatEnumValue(occupation)
+			textPhoneValue.text = phoneNumber
 		}
 	}
 }

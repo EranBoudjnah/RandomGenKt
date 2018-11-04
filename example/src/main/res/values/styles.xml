@@ -1,12 +1,15 @@
 <resources>
 
 	<!-- Base application theme. -->
-	<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+	<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
 		<!-- Customize your theme here. -->
 		<item name="colorPrimary">@color/primary</item>
 		<item name="colorPrimaryDark">@color/primaryDark</item>
 		<item name="colorAccent">@color/accent</item>
 		<item name="colorControlHighlight">@color/accent</item>
+	</style>
+
+	<style name="TextAppearance.ExampleApp.Headline" parent="TextAppearance.AppCompat.Subhead">
 	</style>
 
 </resources>

@@ -27,6 +27,8 @@ class MainViewModel(
 	val viewState: LiveData<ViewState>
 		get() = _viewState
 
+	private val people = mutableListOf<Person>()
+
 	init {
 		_viewState.value = ViewState.ShowNone
 	}
@@ -49,7 +51,8 @@ class MainViewModel(
 
 	private fun generatePerson() =
 		useCaseExecutor.execute(generatePersonUseCase.get()) { person ->
-			_viewState.value = ViewState.ShowPerson(person)
+			people.add(0, person)
+			_viewState.value = ViewState.ShowPeople(people)
 		}
 
 	private fun generatePlanetarySystem() =
@@ -79,7 +82,7 @@ constructor(
 }
 
 sealed class ViewState {
-	data class ShowPerson(val person: Person) : ViewState()
+	data class ShowPeople(val people: List<Person>) : ViewState()
 	data class ShowPlanetarySystem(val planetarySystem: PlanetarySystem) : ViewState()
 	data class ShowFlat(val flat: Flat) : ViewState()
 	object ShowNone : ViewState()

@@ -5,34 +5,61 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:background="@color/accent"
 	tools:context=".ui.main.MainActivity">
 
-	<TextView
-		android:id="@+id/instructions"
-		android:layout_width="wrap_content"
+	<androidx.cardview.widget.CardView
+		android:id="@+id/instructions_container"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:padding="17dp"
-		android:text="@string/main_instructions"
+		app:cardCornerRadius="3dp"
+		app:cardElevation="4dp"
+		app:cardUseCompatPadding="true"
 		app:layout_constraintLeft_toLeftOf="parent"
 		app:layout_constraintRight_toRightOf="parent"
-		app:layout_constraintTop_toTopOf="parent"/>
+		app:layout_constraintTop_toTopOf="parent">
 
-	<ViewFlipper
-		android:id="@+id/content_container"
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical"
+			android:padding="8dp">
+
+			<TextView
+				android:id="@+id/title"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/app_name"
+				android:textAppearance="@style/TextAppearance.ExampleApp.Headline"
+				/>
+
+			<TextView
+				android:id="@+id/instructions"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/main_instructions"
+				/>
+
+		</LinearLayout>
+
+	</androidx.cardview.widget.CardView>
+
+	<androidx.cardview.widget.CardView
+		android:id="@+id/content_card"
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
-		android:padding="8dp"
+		app:cardCornerRadius="3dp"
+		app:cardElevation="4dp"
+		app:cardUseCompatPadding="true"
 		app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
 		app:layout_constraintLeft_toLeftOf="parent"
 		app:layout_constraintRight_toRightOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/instructions"
-		tools:background="@color/accent">
+		app:layout_constraintTop_toBottomOf="@+id/instructions_container">
 
-		<FrameLayout
+		<ViewFlipper
+			android:id="@+id/content_container"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:background="@android:drawable/dialog_holo_light_frame"
-			>
+			android:layout_height="match_parent">
 
 			<View
 				android:layout_width="match_parent"
@@ -40,28 +67,26 @@
 				android:background="@color/blank"
 				/>
 
-		</FrameLayout>
+			<androidx.recyclerview.widget.RecyclerView
+				android:id="@+id/people_view"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent" />
 
-		<com.mitteloupe.randomgenktexample.widget.PersonView
-			android:id="@+id/person_view"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:background="@android:drawable/dialog_holo_light_frame"
-			/>
+			<com.mitteloupe.randomgenktexample.widget.PlanetarySystemView
+				android:id="@+id/planetary_system_view"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				/>
 
-		<com.mitteloupe.randomgenktexample.widget.PlanetarySystemView
-			android:id="@+id/planetary_system_view"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			/>
+			<com.mitteloupe.randomgenktexample.widget.FlatView
+				android:id="@+id/flat_view"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				/>
 
-		<com.mitteloupe.randomgenktexample.widget.FlatView
-			android:id="@+id/flat_view"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			/>
+		</ViewFlipper>
 
-	</ViewFlipper>
+	</androidx.cardview.widget.CardView>
 
 	<com.google.android.material.bottomnavigation.BottomNavigationView
 		android:id="@+id/bottom_navigation"

@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<color name="white">#FFFFFFFF</color>
+	<color name="blue">#4858A5</color>
+	<color name="pink">#C86080</color>
 
-	<color name="blank">#A1AADE</color>
-	<color name="primary">#4858A5</color>
+	<color name="blank">@color/white</color>
+	<color name="primary">@color/blue</color>
 	<color name="primaryDark">#303F9F</color>
-	<color name="accent">#FFAAAAAA</color>
+	<color name="accent">#FFCCCCCC</color>
+
+	<color name="male">@color/blue</color>
+	<color name="female">@color/pink</color>
+
 </resources>

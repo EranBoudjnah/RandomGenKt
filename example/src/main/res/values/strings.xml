@@ -1,5 +1,5 @@
 <resources>
-	<string name="app_name">RandomGen Demo</string>
+	<string name="app_name">RandomGenKt Demo</string>
 	<string name="button_person">Person</string>
 	<string name="age">Age</string>
 	<string name="occupation">Occupation</string>

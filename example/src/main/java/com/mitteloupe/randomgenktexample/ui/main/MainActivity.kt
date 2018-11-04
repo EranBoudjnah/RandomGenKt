@@ -5,6 +5,9 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.mitteloupe.randomgenktexample.R
 import com.mitteloupe.randomgenktexample.data.model.flat.Flat
 import com.mitteloupe.randomgenktexample.data.model.person.Person
@@ -17,14 +20,17 @@ import javax.inject.Inject
 import kotlinx.android.synthetic.main.activity_main.bottom_navigation as bottomNavigation
 import kotlinx.android.synthetic.main.activity_main.content_container as viewFlipper
 import kotlinx.android.synthetic.main.activity_main.flat_view as flatView
-import kotlinx.android.synthetic.main.activity_main.person_view as personView
+import kotlinx.android.synthetic.main.activity_main.people_view as peopleView
 import kotlinx.android.synthetic.main.activity_main.planetary_system_view as planetarySystemView
+
 
 class MainActivity : AppCompatActivity(), Observer<ViewState> {
 	@Inject
 	lateinit var viewModelFactory: MainViewModelFactory
 
-	lateinit var viewModel: MainViewModel
+	private lateinit var viewModel: MainViewModel
+
+	private val peopleAdapter = PeopleAdapter()
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		AndroidInjection.inject(this)
@@ -34,10 +40,18 @@ class MainActivity : AppCompatActivity(), Observer<ViewState> {
 
 		setUpNavigation()
 
+		setUpPeopleView()
+
 		viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
 		viewModel.viewState.observe(this, this)
 
 		updateViewWithViewState(viewModel.viewState.value)
+	}
+
+	private fun setUpPeopleView() {
+		peopleView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+		peopleView.adapter = peopleAdapter
+		peopleView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 	}
 
 	private fun setUpNavigation() {
@@ -62,16 +76,17 @@ class MainActivity : AppCompatActivity(), Observer<ViewState> {
 	private fun updateViewWithViewState(viewState: ViewState?) {
 		when (viewState) {
 			is ViewState.ShowNone -> hideAllViews()
-			is ViewState.ShowPerson -> showPersonView(viewState.person)
+			is ViewState.ShowPeople -> showPeopleView(viewState.people)
 			is ViewState.ShowPlanetarySystem -> showPlanetarySystem(viewState.planetarySystem)
 			is ViewState.ShowFlat -> showFlatView(viewState.flat)
 		}
 	}
 
-	private fun showPersonView(person: Person) {
-		personView.setPerson(person)
+	private fun showPeopleView(people: List<Person>) {
+		peopleAdapter.setPeople(people)
 		viewFlipper.displayedChild = Page.PERSON.pageNumber
 		bottomNavigation.selectedItemId = Page.PERSON.pageNumber
+		peopleView.scrollToPosition(0)
 	}
 
 	private fun showPlanetarySystem(planetarySystem: PlanetarySystem) {
