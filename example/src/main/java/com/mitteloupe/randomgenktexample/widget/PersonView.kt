@@ -20,8 +20,8 @@ import kotlinx.android.synthetic.main.view_person.view.text_phone_value as textP
  * Created by Eran Boudjnah on 18/08/2018.
  */
 class PersonView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr) {
-	private val maleColor: Int by lazy { resources.getColor(R.color.male) }
-	private val femaleColor: Int by lazy { resources.getColor(R.color.female) }
+	private val maleColor: Int by lazy { resources.getColor(R.color.male, null) }
+	private val femaleColor: Int by lazy { resources.getColor(R.color.female, null) }
 
 	init {
 		View.inflate(context, R.layout.view_person, this)
