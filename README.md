@@ -23,7 +23,7 @@ dependencies {
 
 To include the default data generators, also include
 ```groovy
-implementation 'com.mitteloupe:randomgen.datasource:1.0.0'
+implementation 'com.mitteloupe:randomgenkt.datasource:1.0.0'
 ```
 
 Note: To add the BinTray repository in your maven repositories, also add the following:
