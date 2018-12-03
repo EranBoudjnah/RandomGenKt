@@ -10,11 +10,10 @@ import javax.inject.Inject
  * Created by Eran Boudjnah on 30/10/2018.
  */
 class GenerateFlatUseCase
-@Inject
-constructor(
+@Inject constructor(
 	private val coroutineContextProvider: CoroutineContextProvider,
 	flatGeneratorFactory: FlatGeneratorFactory
-): BaseUseCase<Flat>(coroutineContextProvider) {
+) : BaseUseCase<Flat>(coroutineContextProvider) {
 	private var flatRandomGen = flatGeneratorFactory.newFlatGenerator
 
 	override suspend fun execute(callback: (Flat) -> Unit) {
@@ -31,7 +30,5 @@ constructor(
 		}
 	}
 
-	fun executeAsync(): Flat {
-		return flatRandomGen.generate()
-	}
+	private fun executeAsync() = flatRandomGen.generate()
 }

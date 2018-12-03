@@ -3,7 +3,6 @@ package com.mitteloupe.randomgenktexample.ui.main
 import dagger.Subcomponent
 import dagger.android.AndroidInjector
 
-
 /**
  * Created by Eran Boudjnah on 31/10/2018.
  */

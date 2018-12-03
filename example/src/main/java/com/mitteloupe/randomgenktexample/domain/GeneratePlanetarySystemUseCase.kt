@@ -10,8 +10,7 @@ import javax.inject.Inject
  * Created by Eran Boudjnah on 30/10/2018.
  */
 class GeneratePlanetarySystemUseCase
-@Inject
-constructor(
+@Inject constructor(
 	private val coroutineContextProvider: CoroutineContextProvider,
 	planetarySystemGeneratorFactory: PlanetarySystemGeneratorFactory
 ) : BaseUseCase<PlanetarySystem>(coroutineContextProvider) {
@@ -31,7 +30,5 @@ constructor(
 		}
 	}
 
-	fun executeAsync(): PlanetarySystem {
-		return planetarySystemRandomGen.generate()
-	}
+	private fun executeAsync() = planetarySystemRandomGen.generate()
 }
