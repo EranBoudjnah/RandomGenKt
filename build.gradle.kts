@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	kotlin("jvm") version "1.3.10"
+	kotlin("jvm") version "1.3.21"
 }
 
 buildscript {
@@ -12,7 +12,7 @@ buildscript {
 	}
 	dependencies {
 		classpath("com.android.tools.build:gradle:3.3.2")
-		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.10")
+		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.21")
 	}
 }
 
