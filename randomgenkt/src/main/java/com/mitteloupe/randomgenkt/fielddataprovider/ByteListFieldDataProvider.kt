@@ -16,10 +16,11 @@ private constructor(
 	private val minSize: Int,
 	private val maxSize: Int
 ) : FieldDataProvider<OUTPUT_TYPE, List<Byte>>() {
-private constructor(
-	random: Random,
-	size: Int
-) : this(random, size, size)
+	private constructor(
+		random: Random,
+		size: Int
+	) : this(random, size, size)
+
 	private val bytes = ByteArray(maxSize)
 
 	override fun invoke(instance: OUTPUT_TYPE?): List<Byte> {
@@ -39,9 +40,8 @@ private constructor(
 		 * @param random A random value generator
 		 * @param size   The number of [Byte]s to generate
 		 */
-		fun <OUTPUT_TYPE> getInstanceWithSize(random: Random, size: Int): ByteListFieldDataProvider<OUTPUT_TYPE> {
-			return ByteListFieldDataProvider(random, size)
-		}
+		fun <OUTPUT_TYPE> getInstanceWithSize(random: Random, size: Int) =
+			ByteListFieldDataProvider<OUTPUT_TYPE>(random, size)
 
 		/**
 		 * Returns a new instance of [ByteListFieldDataProvider] generating between [minSize] and [maxSize] [Byte]s (inclusive).
@@ -50,8 +50,7 @@ private constructor(
 		 * @param minSize The minimal number of [Byte]s to generate
 		 * @param maxSize The maximal number of [Byte]s to generate
 		 */
-		fun <OUTPUT_TYPE> getInstanceWithSizeRange(random: Random, minSize: Int, maxSize: Int): ByteListFieldDataProvider<OUTPUT_TYPE> {
-			return ByteListFieldDataProvider(random, minSize, maxSize)
-		}
+		fun <OUTPUT_TYPE> getInstanceWithSizeRange(random: Random, minSize: Int, maxSize: Int) =
+			ByteListFieldDataProvider<OUTPUT_TYPE>(random, minSize, maxSize)
 	}
 }

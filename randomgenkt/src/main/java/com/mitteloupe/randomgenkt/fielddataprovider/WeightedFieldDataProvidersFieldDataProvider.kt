@@ -21,14 +21,11 @@ constructor(
 	private val weightedFieldDataProviders: MutableList<WeightedFieldDataProvider>
 
 	private val lastFieldDataProviderWeight: Double
-		get() {
-			if (weightedFieldDataProviders.isEmpty()) {
-				return 0.0
+		get() =
+			when {
+				weightedFieldDataProviders.isEmpty() -> 0.0
+				else -> weightedFieldDataProviders.last().weight
 			}
-
-			val lastFieldDataProvider = weightedFieldDataProviders[weightedFieldDataProviders.size - 1]
-			return lastFieldDataProvider.weight
-		}
 
 	init {
 		weightedFieldDataProviders = ArrayList(1)
@@ -85,8 +82,8 @@ constructor(
 	}
 
 	private inner class WeightedFieldDataProvider(
-		internal var fieldDataProvider: (OUTPUT_TYPE?) -> VALUE_TYPE,
-		internal var weight: Double,
-		internal var summedWeight: Double
+		internal val fieldDataProvider: (OUTPUT_TYPE?) -> VALUE_TYPE,
+		internal val weight: Double,
+		internal val summedWeight: Double
 	)
 }

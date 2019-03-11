@@ -17,9 +17,9 @@ internal class DefaultValuesInstanceProvider<GENERATED_INSTANCE>(
 		allPublicConstructors = typedConstructors.toMutableList()
 	}
 
-	override fun invoke(): GENERATED_INSTANCE {
+	override fun invoke() =
 		try {
-			return instanceFromAnyConstructor()
+			instanceFromAnyConstructor()
 
 		} catch (exception: Exception) {
 			throw InstanceCreationException(
@@ -27,7 +27,6 @@ internal class DefaultValuesInstanceProvider<GENERATED_INSTANCE>(
 				exception
 			)
 		}
-	}
 
 	@Throws(Exception::class)
 	private fun instanceFromAnyConstructor(): GENERATED_INSTANCE {
@@ -53,24 +52,24 @@ internal class DefaultValuesInstanceProvider<GENERATED_INSTANCE>(
 	}
 
 	@Throws(Exception::class)
-	private fun getInstance(constructorToUse: Constructor<GENERATED_INSTANCE>?): GENERATED_INSTANCE =
-		if (constructorToUse == null) {
-			generateInstanceWithNewConstructor()
+	private fun getInstance(constructorToUse: Constructor<GENERATED_INSTANCE>?) =
+		when (constructorToUse) {
+			null -> generateInstanceWithNewConstructor()
+			else -> {
+				val parameterTypes = constructorToUse.parameterTypes
+				val parameterValues = getParameterValues(parameterTypes)
 
-		} else {
-			val parameterTypes = constructorToUse.parameterTypes
-			val parameterValues = getParameterValues(parameterTypes)
-
-			generatedInstanceWithParameters(constructorToUse, *parameterValues)
+				generatedInstanceWithParameters(constructorToUse, *parameterValues)
+			}
 		}
 
-	private fun getPreferredConstructor(pConstructors: List<Constructor<GENERATED_INSTANCE>>) =
-		pConstructors.firstOrNull()
+	private fun getPreferredConstructor(constructors: List<Constructor<GENERATED_INSTANCE>>) =
+		constructors.firstOrNull()
 
-	private fun getParameterValues(pParameters: Array<Class<*>>) = pParameters
-		.map {
+	private fun getParameterValues(parameters: Array<Class<*>>) =
+		parameters.map { parameter ->
 			@Suppress("IMPLICIT_CAST_TO_ANY")
-			when (it) {
+			when (parameter) {
 				Short::class.javaPrimitiveType -> 0.toShort()
 				Int::class.javaPrimitiveType -> 0
 				Long::class.javaPrimitiveType -> 0L
@@ -80,8 +79,7 @@ internal class DefaultValuesInstanceProvider<GENERATED_INSTANCE>(
 				Boolean::class.javaPrimitiveType -> false
 				else -> null
 			}
-		}
-		.toTypedArray()
+		}.toTypedArray()
 
 	@Throws(Exception::class)
 	private fun generatedInstanceWithParameters(constructor: Constructor<GENERATED_INSTANCE>, vararg parameterValues: Any?): GENERATED_INSTANCE {
@@ -111,10 +109,8 @@ internal class DefaultValuesInstanceProvider<GENERATED_INSTANCE>(
 	}
 
 	@Throws(Exception::class)
-	private fun generateInstanceWithNewConstructorUsingUnsafe(): GENERATED_INSTANCE {
-		val unsafe = UnsafeAndroid()
-		return unsafe.allocateInstance(generatedInstanceClass)
-	}
+	private fun generateInstanceWithNewConstructorUsingUnsafe() =
+		UnsafeAndroid().allocateInstance(generatedInstanceClass)
 
 	private class InstanceCreationException(pMessage: String, pException: Exception) : RuntimeException(pMessage, pException)
 }

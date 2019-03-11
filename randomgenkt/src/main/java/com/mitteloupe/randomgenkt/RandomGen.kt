@@ -164,13 +164,13 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 			copyFieldsFromIncompleteInstanceProvider(incompleteBuilderField)
 		}
 
-		override fun <FIELD_DATA_TYPE> returning(fieldDataProvider: (GENERATED_INSTANCE?) -> FIELD_DATA_TYPE): IncompleteBuilderField<GENERATED_INSTANCE> =
-			if (wrappedInWeightedFieldDataProvider()) {
-				addFieldDataProviderToWeightedFieldDataProvider(fieldDataProvider, lastWeight)
-				this
-
-			} else {
-				super.returning(fieldDataProvider)
+		override fun <FIELD_DATA_TYPE> returning(fieldDataProvider: (GENERATED_INSTANCE?) -> FIELD_DATA_TYPE) =
+			when {
+				wrappedInWeightedFieldDataProvider() -> {
+					addFieldDataProviderToWeightedFieldDataProvider(fieldDataProvider, lastWeight)
+					this
+				}
+				else -> super.returning(fieldDataProvider)
 			}
 
 		private fun copyFieldsFromIncompleteInstanceProvider(incompleteBuilderField: IncompleteBuilderField<GENERATED_INSTANCE>) {
@@ -192,7 +192,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 		}
 
 		fun build(): RandomGen<GENERATED_INSTANCE> {
-			if (initializeType == InitializeType.WITH_CLASS) {
+			if (initializeType == IncompleteBuilderField.InitializeType.WITH_CLASS) {
 				instanceProvider = DefaultValuesInstanceProvider(generatedInstanceClass)
 			}
 
@@ -242,10 +242,13 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 		internal lateinit var lastUsedFieldName: String
 
 		internal val builderReturnValueForInstance: BuilderReturnValue<GENERATED_INSTANCE>
-			get() = BuilderReturnValue(when (initializeType) {
-				InitializeType.WITH_CLASS -> BuilderField(generatedInstanceClass, this)
-				else -> BuilderField(instanceProvider, this)
-			}, factory)
+			get() = BuilderReturnValue(
+				when (initializeType) {
+					InitializeType.WITH_CLASS -> RandomGen.BuilderField(generatedInstanceClass, this)
+					else -> RandomGen.BuilderField(instanceProvider, this)
+					},
+				factory
+			)
 
 		internal constructor(generatedInstanceClass: Class<GENERATED_INSTANCE>,
 		                     factory: FieldDataProviderFactory<GENERATED_INSTANCE>) : this(factory) {
@@ -409,14 +412,16 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 		                           fieldDataProvider: (RETURN_TYPE?) -> VALUE_TYPE) =
 			getBuilderFieldFromIncomplete(builderField.returning(factory.getCustomListRangeFieldDataProvider(minInstances, maxInstances, fieldDataProvider)))
 
-		private fun getBuilderFieldFromIncomplete(incompleteBuilderField: IncompleteBuilderField<RETURN_TYPE>): BuilderField<RETURN_TYPE> {
-			return if (incompleteBuilderField.initializeType == IncompleteBuilderField.InitializeType.WITH_CLASS) {
+		private fun getBuilderFieldFromIncomplete(incompleteBuilderField: IncompleteBuilderField<RETURN_TYPE>) =
+			if (incompleteBuilderField.initializeType == IncompleteBuilderField.InitializeType.WITH_CLASS) {
 				BuilderField(incompleteBuilderField.generatedInstanceClass, incompleteBuilderField)
 
 			} else {
 				BuilderField(incompleteBuilderField.instanceProvider, incompleteBuilderField)
 			}
-		}
+
+		private fun initializedWithClass(incompleteBuilderField: IncompleteBuilderField<RETURN_TYPE>) =
+			incompleteBuilderField.initializeType == IncompleteBuilderField.InitializeType.WITH_CLASS
 	}
 
 	private inner class TypedArray<ELEMENT_TYPE> internal constructor(elementClass: Class<ELEMENT_TYPE>, capacity: Int) {

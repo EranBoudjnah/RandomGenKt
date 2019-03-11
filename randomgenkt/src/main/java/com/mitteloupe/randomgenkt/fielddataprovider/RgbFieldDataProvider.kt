@@ -1,7 +1,6 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
 import com.mitteloupe.randomgenkt.FieldDataProvider
-
 import java.util.Random
 
 /**
@@ -26,12 +25,12 @@ constructor(
 		val red = random.nextInt(255)
 		val green = random.nextInt(255)
 		val blue = random.nextInt(255)
-		return if (provideAlpha) {
-			val alpha = random.nextInt(255)
-			String.format("#%02x%02x%02x%02x", alpha, red, green, blue)
-
-		} else {
-			String.format("#%02x%02x%02x", red, green, blue)
+		return when {
+			provideAlpha -> {
+				val alpha = random.nextInt(255)
+				String.format("#%02x%02x%02x%02x", alpha, red, green, blue)
+			}
+			else -> String.format("#%02x%02x%02x", red, green, blue)
 		}
 	}
 }
