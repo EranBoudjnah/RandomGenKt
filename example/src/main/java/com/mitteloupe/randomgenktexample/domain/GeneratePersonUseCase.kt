@@ -10,8 +10,7 @@ import javax.inject.Inject
  * Created by Eran Boudjnah on 30/10/2018.
  */
 class GeneratePersonUseCase
-@Inject
-constructor(
+@Inject constructor(
 	private val coroutineContextProvider: CoroutineContextProvider,
 	personGeneratorFactory: PersonGeneratorFactory
 ) : BaseUseCase<Person>(coroutineContextProvider) {
@@ -31,7 +30,5 @@ constructor(
 		}
 	}
 
-	fun executeAsync(): Person {
-		return personRandomGen.generate()
-	}
+	private fun executeAsync() = personRandomGen.generate()
 }
