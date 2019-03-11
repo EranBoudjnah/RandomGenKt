@@ -30,7 +30,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 	fun generate(): GENERATED_INSTANCE = invoke(null)
 
 	override fun invoke(instance: Any?): GENERATED_INSTANCE {
-		val providedInstance = instanceProvider.invoke()
+		val providedInstance = instanceProvider()
 
 		setAllFields(providedInstance)
 
@@ -40,21 +40,20 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 	}
 
 	private fun setAllFields(instance: GENERATED_INSTANCE) {
-		for ((fieldName, fieldDataProvider) in dataProviders) {
+		dataProviders.forEach { fieldName, fieldDataProvider ->
 			if (!fields.containsKey(fieldName)) {
 				throw IllegalArgumentException("Cannot set field $fieldName - field not found")
 			}
 
 			try {
 				fields[fieldName]?.let { field ->
-					val generatedValue = fieldDataProvider.invoke(instance)
+					val generatedValue = fieldDataProvider(instance)
 					setField(instance, field, generatedValue)
 				}
 
 			} catch (exception: AssignmentException) {
 				throw IllegalArgumentException("Cannot set field $fieldName due to invalid value", exception)
 			}
-
 		}
 	}
 
@@ -102,22 +101,21 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 		}
 
 	private fun notifyOnGenerateCallbacks(instance: GENERATED_INSTANCE) {
-		for (onGenerateCallbacks in onGenerateCallbacks) {
-			onGenerateCallbacks.onGenerate(instance)
+		onGenerateCallbacks.forEach { onGenerateCallback ->
+			onGenerateCallback.onGenerate(instance)
 		}
 	}
 
 	private fun getAllFields() {
-		val instance = instanceProvider.invoke()
+		val instance = instanceProvider()
 		val allProperties = (instance as Any)::class.declaredMemberProperties
-		for (property in allProperties) {
-			val maybeField = property.javaField
-			maybeField?.let { field ->
+		allProperties.forEach { property ->
+			property.javaField?.let { field ->
 				if (Modifier.isPrivate(field.modifiers)) {
 					field.isAccessible = true
 				}
 
-				fields[property.name] =	field
+				fields[property.name] = field
 			}
 		}
 	}
@@ -152,6 +150,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 
 	class BuilderField<GENERATED_INSTANCE> : IncompleteBuilderField<GENERATED_INSTANCE> {
 		private var lastWeight: Double = 0.toDouble()
+		private val lastFieldDataProvider get() = dataProviders[lastUsedFieldName]
 
 		internal constructor(generatedInstanceClass: Class<GENERATED_INSTANCE>,
 		                     incompleteBuilderField: IncompleteBuilderField<GENERATED_INSTANCE>) : super(generatedInstanceClass, incompleteBuilderField.factory) {
@@ -208,8 +207,6 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 		}
 
 		private fun wrapInWeightedFieldDataProviderIfNotWrapped() {
-			val lastFieldDataProvider = dataProviders[lastUsedFieldName]
-
 			if (!wrappedInWeightedFieldDataProvider()) {
 				lastFieldDataProvider?.let {
 					val wrapper = factory.getWeightedFieldDataProvidersFieldDataProvider(it)
@@ -218,18 +215,13 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 			}
 		}
 
-		private fun wrappedInWeightedFieldDataProvider(): Boolean {
-			val lastFieldDataProvider = dataProviders[lastUsedFieldName]
-
-			return lastFieldDataProvider is WeightedFieldDataProvidersFieldDataProvider<*, *>
-		}
+		private fun wrappedInWeightedFieldDataProvider() =
+			lastFieldDataProvider is WeightedFieldDataProvidersFieldDataProvider<*, *>
 
 		private fun <FIELD_DATA_TYPE> addFieldDataProviderToWeightedFieldDataProvider(
 			fieldDataProvider: (GENERATED_INSTANCE?) -> FIELD_DATA_TYPE,
 			weight: Double
 		) {
-			val lastFieldDataProvider = dataProviders[lastUsedFieldName]
-
 			@Suppress("UNCHECKED_CAST")
 			val qualifiedLastFieldDataProvider = lastFieldDataProvider as WeightedFieldDataProvidersFieldDataProvider<GENERATED_INSTANCE, FIELD_DATA_TYPE>
 
@@ -250,10 +242,10 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 		internal lateinit var lastUsedFieldName: String
 
 		internal val builderReturnValueForInstance: BuilderReturnValue<GENERATED_INSTANCE>
-			get() = when (initializeType) {
-				InitializeType.WITH_CLASS -> BuilderReturnValue(BuilderField(generatedInstanceClass, this), factory)
-				else -> BuilderReturnValue(BuilderField(instanceProvider, this), factory)
-			}
+			get() = BuilderReturnValue(when (initializeType) {
+				InitializeType.WITH_CLASS -> BuilderField(generatedInstanceClass, this)
+				else -> BuilderField(instanceProvider, this)
+			}, factory)
 
 		internal constructor(generatedInstanceClass: Class<GENERATED_INSTANCE>,
 		                     factory: FieldDataProviderFactory<GENERATED_INSTANCE>) : this(factory) {
@@ -391,7 +383,6 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 		/**
 		 * Adds a generator of random enum values for the given field.
 		 *
-		 * @param enumClass  An enum class
 		 * @param <ENUM_TYPE> Implicit. The enum type to use
 		 * @return A builder with a data provider
 		</ENUM_TYPE> */

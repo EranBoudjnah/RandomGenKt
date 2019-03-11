@@ -60,8 +60,7 @@ constructor(
 		val position = getFieldDataProviderPositionByWeight(randomWeightInRange)
 
 		return weightedFieldDataProviders[position]
-			.fieldDataProvider
-			.invoke(instance)
+			.fieldDataProvider(instance)
 	}
 
 	private fun getFieldDataProviderPositionByWeight(pWeight: Double): Int {

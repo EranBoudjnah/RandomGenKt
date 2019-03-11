@@ -23,9 +23,9 @@ constructor(
 	override fun invoke(instance: OUTPUT_TYPE?): String {
 		val result = StringBuilder()
 
-		for (fieldDataProvider in fieldDataProviders) {
+		fieldDataProviders.forEach { fieldDataProvider ->
 			result
-				.append(fieldDataProvider.invoke(instance))
+				.append(fieldDataProvider(instance))
 				.append(delimiter)
 		}
 

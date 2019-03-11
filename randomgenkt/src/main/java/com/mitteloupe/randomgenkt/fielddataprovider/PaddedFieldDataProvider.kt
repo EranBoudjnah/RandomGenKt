@@ -51,5 +51,5 @@ constructor(
 		return stringBuilder
 	}
 
-	private fun getGeneratedString(instance: OUTPUT_TYPE?) = fieldDataProvider.invoke(instance).toString()
+	private fun getGeneratedString(instance: OUTPUT_TYPE?) = fieldDataProvider(instance).toString()
 }

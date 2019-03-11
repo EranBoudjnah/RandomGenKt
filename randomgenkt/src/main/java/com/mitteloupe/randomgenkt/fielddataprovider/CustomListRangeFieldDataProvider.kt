@@ -18,7 +18,7 @@ class CustomListRangeFieldDataProvider<OUTPUT_TYPE, VALUE_TYPE>(
 		val ret = ArrayList<VALUE_TYPE>(instances)
 
 		repeat(instances) {
-			ret.add(fieldDataProvider.invoke(instance))
+			ret.add(fieldDataProvider(instance))
 		}
 
 		return ret
