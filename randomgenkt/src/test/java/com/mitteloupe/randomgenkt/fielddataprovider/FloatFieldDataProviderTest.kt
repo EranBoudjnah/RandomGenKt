@@ -1,6 +1,6 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.given
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,10 +19,10 @@ class FloatFieldDataProviderTest {
 	private lateinit var random: Random
 
 	@Test
-	fun givenRandomFloatValueWhenGenerateThenReturnsSameValue() {
+	fun givenRandomFloatValueWhenGeneratewillReturnsSameValue() {
 		// Given
 		cut = FloatFieldDataProvider(random)
-		whenever(random.nextFloat()).thenReturn(0f)
+		given(random.nextFloat()).willReturn(0f)
 
 		// When
 		var result = cut.invoke()
@@ -31,7 +31,7 @@ class FloatFieldDataProviderTest {
 		assertEquals(0.0f, result, 0.00001f)
 
 		// Given
-		whenever(random.nextFloat()).thenReturn(1f)
+		given(random.nextFloat()).willReturn(1f)
 
 		// When
 		result = cut.invoke()
@@ -41,10 +41,10 @@ class FloatFieldDataProviderTest {
 	}
 
 	@Test
-	fun givenRandomFloatValueAndRangeWhenGenerateThenReturnsCorrectValue() {
+	fun givenRandomFloatValueAndRangeWhenGeneratewillReturnsCorrectValue() {
 		// Given
 		cut = FloatFieldDataProvider(random, Float.MIN_VALUE, Float.MAX_VALUE)
-		whenever(random.nextFloat()).thenReturn(0f)
+		given(random.nextFloat()).willReturn(0f)
 
 		// When
 		var result = cut.invoke()
@@ -53,7 +53,7 @@ class FloatFieldDataProviderTest {
 		assertEquals(Float.MIN_VALUE, result, 0.00001f)
 
 		// Given
-		whenever(random.nextFloat()).thenReturn(1f)
+		given(random.nextFloat()).willReturn(1f)
 
 		// When
 		result = cut.invoke()

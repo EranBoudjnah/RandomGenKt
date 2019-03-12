@@ -1,6 +1,6 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.given
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -45,6 +45,6 @@ class RgbFieldDataProviderTest {
 	}
 
 	private fun givenRandomValues(value: Int, vararg moreValues: Int) {
-		whenever(random.nextInt(255)).thenReturn(value, *moreValues.toTypedArray())
+		given(random.nextInt(255)).willReturn(value, *moreValues.toTypedArray())
 	}
 }

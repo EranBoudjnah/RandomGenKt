@@ -1,7 +1,7 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
 import com.mitteloupe.randomgenkt.FieldDataProvider
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.given
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -35,8 +35,8 @@ class CustomListRangeFieldDataProviderTest {
 		val expectedResult1 = "I'm the king of the world!"
 		val expectedResult2 = "I'm on a boat!"
 		val expectedResult3 = "I'm cold!"
-		whenever(fieldDataProvider.invoke(null)).thenReturn(expectedResult1, expectedResult2, expectedResult3)
-		whenever(random.nextInt(5)).thenReturn(2)
+		given(fieldDataProvider.invoke(null)).willReturn(expectedResult1, expectedResult2, expectedResult3)
+		given(random.nextInt(5)).willReturn(2)
 
 		// When
 		val result = cut.invoke()

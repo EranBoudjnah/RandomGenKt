@@ -3,8 +3,8 @@ package com.mitteloupe.randomgenktexample.domain
 import com.mitteloupe.randomgenkt.RandomGen
 import com.mitteloupe.randomgenktexample.data.generator.PlanetarySystemGeneratorFactory
 import com.mitteloupe.randomgenktexample.data.model.planet.PlanetarySystem
+import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -29,7 +29,7 @@ class GeneratePlanetarySystemUseCaseTest {
 	@Before
 	fun setUp() {
 		coroutineContextProvider = testCoroutineContextProvider()
-		whenever(planetarySystemGeneratorFactory.newPlanetarySystemGenerator).thenReturn(planetarySystemGenerator)
+		given(planetarySystemGeneratorFactory.newPlanetarySystemGenerator).willReturn(planetarySystemGenerator)
 
 		cut = GeneratePlanetarySystemUseCase(coroutineContextProvider, planetarySystemGeneratorFactory)
 	}
@@ -39,7 +39,7 @@ class GeneratePlanetarySystemUseCaseTest {
 		// Given
 		val expectedResult = mock<PlanetarySystem>()
 		var actualResult: PlanetarySystem? = null
-		whenever(planetarySystemGenerator.generate()).thenReturn(expectedResult)
+		given(planetarySystemGenerator.generate()).willReturn(expectedResult)
 
 		// When
 		runBlocking {

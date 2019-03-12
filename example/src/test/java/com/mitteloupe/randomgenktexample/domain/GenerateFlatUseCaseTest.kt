@@ -1,10 +1,10 @@
 package com.mitteloupe.randomgenktexample.domain
 
+import com.mitteloupe.randomgenkt.RandomGen
 import com.mitteloupe.randomgenktexample.data.generator.FlatGeneratorFactory
 import com.mitteloupe.randomgenktexample.data.model.flat.Flat
-import com.mitteloupe.randomgenkt.RandomGen
+import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -29,7 +29,7 @@ class GenerateFlatUseCaseTest {
 	@Before
 	fun setUp() {
 		coroutineContextProvider = testCoroutineContextProvider()
-		whenever(flatGeneratorFactory.newFlatGenerator).thenReturn(flatGenerator)
+		given(flatGeneratorFactory.newFlatGenerator).willReturn(flatGenerator)
 
 		cut = GenerateFlatUseCase(coroutineContextProvider, flatGeneratorFactory)
 	}
@@ -39,7 +39,7 @@ class GenerateFlatUseCaseTest {
 		// Given
 		val expectedResult = mock<Flat>()
 		var actualResult: Flat? = null
-		whenever(flatGenerator.generate()).thenReturn(expectedResult)
+		given(flatGenerator.generate()).willReturn(expectedResult)
 
 		// When
 		runBlocking {

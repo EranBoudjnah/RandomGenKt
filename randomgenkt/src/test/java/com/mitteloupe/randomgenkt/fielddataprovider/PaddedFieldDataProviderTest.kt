@@ -1,7 +1,7 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
 import com.mitteloupe.randomgenkt.FieldDataProvider
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.given
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,7 +23,7 @@ class PaddedFieldDataProviderTest {
 	@Test
 	fun givenSinglePaddingCharacterAndMinimumLengthWhenGenerateThenReturnsExpectedString() {
 		cut = PaddedFieldDataProvider(3, "0", fieldDataProvider)
-		whenever(fieldDataProvider.invoke(instance)).thenReturn("7")
+		given(fieldDataProvider.invoke(instance)).willReturn("7")
 
 		val result = cut.invoke(instance)
 
@@ -33,7 +33,7 @@ class PaddedFieldDataProviderTest {
 	@Test
 	fun givenPaddingStringAndMinimumLengthWhenGenerateThenReturnsExpectedString() {
 		cut = PaddedFieldDataProvider(3, "000", fieldDataProvider)
-		whenever(fieldDataProvider.invoke(instance)).thenReturn("7")
+		given(fieldDataProvider.invoke(instance)).willReturn("7")
 
 		val result = cut.invoke(instance)
 
@@ -43,7 +43,7 @@ class PaddedFieldDataProviderTest {
 	@Test
 	fun givenStringAsLongAsPaddingWhenGenerateThenReturnsUnmodifiedString() {
 		cut = PaddedFieldDataProvider(3, "000", fieldDataProvider)
-		whenever(fieldDataProvider.invoke(instance)).thenReturn("123")
+		given(fieldDataProvider.invoke(instance)).willReturn("123")
 
 		val result = cut.invoke(instance)
 
@@ -53,7 +53,7 @@ class PaddedFieldDataProviderTest {
 	@Test
 	fun givenStringLongerThanPaddingWhenGenerateThenReturnsUnmodifiedString() {
 		cut = PaddedFieldDataProvider(3, "000", fieldDataProvider)
-		whenever(fieldDataProvider.invoke(instance)).thenReturn("1337")
+		given(fieldDataProvider.invoke(instance)).willReturn("1337")
 
 		val result = cut.invoke(instance)
 

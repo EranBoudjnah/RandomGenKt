@@ -2,33 +2,19 @@ package com.mitteloupe.randomgenktexample.domain
 
 import com.mitteloupe.randomgenktexample.data.generator.PlanetarySystemGeneratorFactory
 import com.mitteloupe.randomgenktexample.data.model.planet.PlanetarySystem
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import dagger.Reusable
 import javax.inject.Inject
 
 /**
  * Created by Eran Boudjnah on 30/10/2018.
  */
+@Reusable
 class GeneratePlanetarySystemUseCase
 @Inject constructor(
-	private val coroutineContextProvider: CoroutineContextProvider,
+	coroutineContextProvider: CoroutineContextProvider,
 	planetarySystemGeneratorFactory: PlanetarySystemGeneratorFactory
 ) : BaseUseCase<PlanetarySystem>(coroutineContextProvider) {
-	private var planetarySystemRandomGen = planetarySystemGeneratorFactory.newPlanetarySystemGenerator
+	private val planetarySystemRandomGen by lazy { planetarySystemGeneratorFactory.newPlanetarySystemGenerator }
 
-	override suspend fun execute(callback: (PlanetarySystem) -> Unit) {
-		this.callback = callback
-
-		uiScope.launch {
-			var planetarySystem: PlanetarySystem? = null
-
-			withContext(coroutineContextProvider.io) {
-				planetarySystem = executeAsync()
-			}
-
-			planetarySystem?.let(callback)
-		}
-	}
-
-	private fun executeAsync() = planetarySystemRandomGen.generate()
+	override fun executeAsync() = planetarySystemRandomGen.generate()
 }

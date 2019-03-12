@@ -1,8 +1,8 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
 import com.mitteloupe.randomgenkt.FieldDataProvider
+import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -30,7 +30,7 @@ class WeightedFieldDataProvidersFieldDataProviderTest {
 
 	@Before
 	fun setUp() {
-		whenever(fieldDataProvider.invoke(any(TestClass::class.java))).thenReturn(FIRST_VALUE)
+		given(fieldDataProvider.invoke(any(TestClass::class.java))).willReturn(FIRST_VALUE)
 
 		cut = WeightedFieldDataProvidersFieldDataProvider(random, fieldDataProvider)
 	}
@@ -52,12 +52,12 @@ class WeightedFieldDataProvidersFieldDataProviderTest {
 		// Given
 		val instance = TestClass()
 		val fieldDataProvider2 = mock<FieldDataProvider<TestClass, String>>()
-		whenever(fieldDataProvider2.invoke(instance)).thenReturn(SECOND_VALUE)
+		given(fieldDataProvider2.invoke(instance)).willReturn(SECOND_VALUE)
 		cut.addFieldDataProvider(fieldDataProvider2, 2.0)
 		val fieldDataProvider3 = mock<FieldDataProvider<TestClass, String>>()
-		whenever(fieldDataProvider3.invoke(instance)).thenReturn(THIRD_VALUE)
+		given(fieldDataProvider3.invoke(instance)).willReturn(THIRD_VALUE)
 		cut.addFieldDataProvider(fieldDataProvider3, 3.0)
-		whenever(random.nextDouble()).thenReturn(0.7)
+		given(random.nextDouble()).willReturn(0.7)
 
 		// When
 		var result = cut.invoke(instance)
@@ -66,7 +66,7 @@ class WeightedFieldDataProvidersFieldDataProviderTest {
 		assertEquals(THIRD_VALUE, result)
 
 		// Given
-		whenever(random.nextDouble()).thenReturn(0.3)
+		given(random.nextDouble()).willReturn(0.3)
 
 		// When
 		result = cut.invoke(instance)
@@ -75,7 +75,7 @@ class WeightedFieldDataProvidersFieldDataProviderTest {
 		assertEquals(SECOND_VALUE, result)
 
 		// Given
-		whenever(random.nextDouble()).thenReturn(0.1)
+		given(random.nextDouble()).willReturn(0.1)
 
 		// When
 		result = cut.invoke(instance)

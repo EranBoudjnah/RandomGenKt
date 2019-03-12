@@ -1,6 +1,6 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.given
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -47,7 +47,7 @@ class ByteListFieldDataProviderTest {
 		// Given
 		val expectedResult = listOf(123.toByte(), 12.toByte(), 1.toByte())
 
-		whenever(random.nextInt(5)).thenReturn(2)
+		given(random.nextInt(5)).willReturn(2)
 		doAnswer { invocation ->
 			val result = invocation.getArgument<ByteArray>(0)
 			result[0] = expectedResult[0]

@@ -10,9 +10,9 @@ import com.mitteloupe.randomgenktexample.domain.GeneratePlanetarySystemUseCase
 import com.mitteloupe.randomgenktexample.domain.UseCaseExecutor
 import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -20,7 +20,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-
 
 /**
  * Created by Eran Boudjnah on 31/10/2018.
@@ -49,9 +48,9 @@ class MainViewModelTest {
 
 	@Before
 	fun setUp() {
-		whenever(generatePersonUseCaseLazy.get()).thenReturn(generatePersonUseCase)
-		whenever(generatePlanetarySystemUseCaseLazy.get()).thenReturn(generatePlanetarySystemUseCase)
-		whenever(generateFlatUseCaseLazy.get()).thenReturn(generateFlatUseCase)
+		given(generatePersonUseCaseLazy.get()).willReturn(generatePersonUseCase)
+		given(generatePlanetarySystemUseCaseLazy.get()).willReturn(generatePlanetarySystemUseCase)
+		given(generateFlatUseCaseLazy.get()).willReturn(generateFlatUseCase)
 
 		cut = MainViewModel(useCaseExecutor, generatePersonUseCaseLazy, generatePlanetarySystemUseCaseLazy, generateFlatUseCaseLazy)
 	}

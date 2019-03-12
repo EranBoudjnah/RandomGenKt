@@ -1,6 +1,6 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.given
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -32,7 +32,7 @@ class GenericListFieldDataProviderTest {
 	@Test
 	fun givenMinRandomValueWhenGenerateThenReturnsFirstValue() {
 		// Given
-		whenever(random.nextDouble()).thenReturn(0.0)
+		given(random.nextDouble()).willReturn(0.0)
 
 		// When
 		val result = cut.invoke()
@@ -44,7 +44,7 @@ class GenericListFieldDataProviderTest {
 	@Test
 	fun givenMaxRandomValueWhenGenerateThenReturnsLastValue() {
 		// Given
-		whenever(random.nextDouble()).thenReturn(0.99999999999)
+		given(random.nextDouble()).willReturn(0.99999999999)
 
 		// When
 		val result = cut.invoke()
@@ -56,7 +56,7 @@ class GenericListFieldDataProviderTest {
 	@Test
 	fun givenListIsModifiedWhenGenerateThenReturnsUnmodifiedValue() {
 		// Given
-		whenever(random.nextDouble()).thenReturn(0.0)
+		given(random.nextDouble()).willReturn(0.0)
 		values[0] = "The Firstest"
 
 		// When

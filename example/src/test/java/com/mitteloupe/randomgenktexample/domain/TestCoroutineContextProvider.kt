@@ -1,7 +1,7 @@
 package com.mitteloupe.randomgenktexample.domain
 
+import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
 
 /**
@@ -9,8 +9,8 @@ import kotlinx.coroutines.Dispatchers
  */
 fun testCoroutineContextProvider(): CoroutineContextProvider {
 	val coroutineContextProvider = mock<CoroutineContextProvider>()
-	whenever(coroutineContextProvider.main).thenReturn(Dispatchers.Unconfined)
-	whenever(coroutineContextProvider.io).thenReturn(Dispatchers.Unconfined)
+	given(coroutineContextProvider.main).willReturn(Dispatchers.Unconfined)
+	given(coroutineContextProvider.io).willReturn(Dispatchers.Unconfined)
 
 	return coroutineContextProvider
 }

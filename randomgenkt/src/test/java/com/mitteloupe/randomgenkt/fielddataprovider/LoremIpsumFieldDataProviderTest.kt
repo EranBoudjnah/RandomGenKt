@@ -1,6 +1,6 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.given
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -60,7 +60,7 @@ class LoremIpsumFieldDataProviderTest {
 	fun givenLengthRangeWhenGenerateThenReturnsCorrectLengthOfLoremIpsum() {
 		// Given
 		cut = LoremIpsumFieldDataProvider.getInstanceWithRange(random, 39, 41)
-		whenever(random.nextInt(3)).thenReturn(0)
+		given(random.nextInt(3)).willReturn(0)
 
 		// When
 		var result = cut.invoke()
@@ -69,7 +69,7 @@ class LoremIpsumFieldDataProviderTest {
 		assertEquals("Lorem ipsum dolor sit amet, consectetur", result)
 
 		// Given
-		whenever(random.nextInt(3)).thenReturn(2)
+		given(random.nextInt(3)).willReturn(2)
 
 		// When
 		result = cut.invoke()
@@ -82,7 +82,7 @@ class LoremIpsumFieldDataProviderTest {
 	fun givenLengthRangeAndDelimiterWhenGenerateThenReturnsCorrectLengthOfLoremIpsum() {
 		// Given
 		cut = LoremIpsumFieldDataProvider.getInstanceWithRange(random, 444, 449, "**")
-		whenever(random.nextInt(6)).thenReturn(5)
+		given(random.nextInt(6)).willReturn(5)
 
 		// When
 		var result = cut.invoke()
@@ -92,7 +92,7 @@ class LoremIpsumFieldDataProviderTest {
 			result)
 
 		// Given
-		whenever(random.nextInt(6)).thenReturn(0)
+		given(random.nextInt(6)).willReturn(0)
 
 		// When
 		result = cut.invoke()

@@ -3,8 +3,8 @@ package com.mitteloupe.randomgenktexample.domain
 import com.mitteloupe.randomgenkt.RandomGen
 import com.mitteloupe.randomgenktexample.data.generator.PersonGeneratorFactory
 import com.mitteloupe.randomgenktexample.data.model.person.Person
+import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -29,7 +29,7 @@ class GeneratePersonUseCaseTest {
 	@Before
 	fun setUp() {
 		coroutineContextProvider = testCoroutineContextProvider()
-		whenever(personGeneratorFactory.newPersonGenerator).thenReturn(personGenerator)
+		given(personGeneratorFactory.newPersonGenerator).willReturn(personGenerator)
 
 		cut = GeneratePersonUseCase(coroutineContextProvider, personGeneratorFactory)
 	}
@@ -39,7 +39,7 @@ class GeneratePersonUseCaseTest {
 		// Given
 		val expectedResult = mock<Person>()
 		var actualResult: Person? = null
-		whenever(personGenerator.generate()).thenReturn(expectedResult)
+		given(personGenerator.generate()).willReturn(expectedResult)
 
 		// When
 		runBlocking {

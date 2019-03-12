@@ -1,6 +1,6 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.given
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -24,7 +24,7 @@ class LongFieldDataProviderTest {
 	fun givenRandomDoubleValueWhenGenerateThenReturnsLongValue() {
 		// Given
 		cut = LongFieldDataProvider(random)
-		whenever(random.nextDouble()).thenReturn(0.0)
+		given(random.nextDouble()).willReturn(0.0)
 
 		// When
 		var result = cut.invoke()
@@ -33,7 +33,7 @@ class LongFieldDataProviderTest {
 		assertEquals(Long.MIN_VALUE, result)
 
 		// Given
-		whenever(random.nextDouble()).thenReturn(0.99999999999999999999999)
+		given(random.nextDouble()).willReturn(0.99999999999999999999999)
 
 		// When
 		result = cut.invoke()
@@ -46,7 +46,7 @@ class LongFieldDataProviderTest {
 	fun givenRandomFloatValueAndRangeWhenGenerateThenReturnsCorrectValue() {
 		// Given
 		cut = LongFieldDataProvider(random, 0L, 100L)
-		whenever(random.nextDouble()).thenReturn(0.0)
+		given(random.nextDouble()).willReturn(0.0)
 
 		// When
 		var result = cut.invoke()
@@ -55,7 +55,7 @@ class LongFieldDataProviderTest {
 		assertEquals(0, result)
 
 		// Given
-		whenever(random.nextDouble()).thenReturn(0.9999999999999999)
+		given(random.nextDouble()).willReturn(0.9999999999999999)
 
 		// When
 		result = cut.invoke()

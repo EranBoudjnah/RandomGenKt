@@ -1,6 +1,6 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.given
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -12,8 +12,6 @@ import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 import java.util.Arrays
 import java.util.Random
-
-
 
 /**
  * Created by Eran Boudjnah on 11/08/2018.
@@ -51,7 +49,7 @@ class RandomEnumFieldDataProviderTest(
 	@Test
 	fun givenRandomIntValueWhenGenerateThenReturnsIntegerValue() {
 		// Given
-		whenever(random.nextInt(5)).thenReturn(randomValue)
+		given(random.nextInt(5)).willReturn(randomValue)
 
 		// When
 		val result = cut.invoke()

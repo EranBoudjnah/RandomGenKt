@@ -1,6 +1,6 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.given
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -22,7 +22,7 @@ class IntFieldDataProviderTest {
 	fun givenRandomDoubleValueWhenGenerateThenReturnsIntegerValue() {
 		// Given
 		cut = IntFieldDataProvider(random)
-		whenever(random.nextDouble()).thenReturn(0.0)
+		given(random.nextDouble()).willReturn(0.0)
 
 		// When
 		var result = cut.invoke()
@@ -31,7 +31,7 @@ class IntFieldDataProviderTest {
 		assertEquals(Int.MIN_VALUE, result)
 
 		// Given
-		whenever(random.nextDouble()).thenReturn(0.99999999999)
+		given(random.nextDouble()).willReturn(0.99999999999)
 
 		// When
 		result = cut.invoke()
@@ -44,7 +44,7 @@ class IntFieldDataProviderTest {
 	fun givenRandomFloatValueAndRangeWhenGenerateThenReturnsCorrectValue() {
 		// Given
 		cut = IntFieldDataProvider(random, 0, 100)
-		whenever(random.nextDouble()).thenReturn(0.0)
+		given(random.nextDouble()).willReturn(0.0)
 
 		// When
 		var result = cut.invoke()
@@ -53,7 +53,7 @@ class IntFieldDataProviderTest {
 		assertEquals(0, result)
 
 		// Given
-		whenever(random.nextDouble()).thenReturn(0.99999999999)
+		given(random.nextDouble()).willReturn(0.99999999999)
 
 		// When
 		result = cut.invoke()

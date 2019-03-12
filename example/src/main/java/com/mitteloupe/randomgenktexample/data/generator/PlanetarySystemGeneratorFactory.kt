@@ -5,17 +5,19 @@ import com.mitteloupe.randomgenkt.RandomGen
 import com.mitteloupe.randomgenktexample.data.model.planet.Material
 import com.mitteloupe.randomgenktexample.data.model.planet.Planet
 import com.mitteloupe.randomgenktexample.data.model.planet.PlanetarySystem
+import dagger.Reusable
 import javax.inject.Inject
 
 /**
  * Created by Eran Boudjnah on 28/08/2018.
  */
+@Reusable
 class PlanetarySystemGeneratorFactory
 @Inject
 constructor() {
 	// Create a random star system with 2 to 4 planets
-	val newPlanetarySystemGenerator: RandomGen<PlanetarySystem>
-		get() = RandomGen.Builder<PlanetarySystem>()
+	val newPlanetarySystemGenerator by lazy {
+		RandomGen.Builder<PlanetarySystem>()
 			.ofClass<PlanetarySystem>()
 			.withField("starAgeBillionYears")
 			.returning(1f, 10f)
@@ -26,6 +28,7 @@ constructor() {
 			.withField("planets")
 			.returning(0, 15, newPlanetGenerator())
 			.build()
+	}
 
 	private fun newPlanetGenerator() =
 		RandomGen.Builder<Planet>()

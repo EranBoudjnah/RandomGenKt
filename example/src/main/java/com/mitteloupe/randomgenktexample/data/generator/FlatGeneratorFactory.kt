@@ -5,6 +5,7 @@ import com.mitteloupe.randomgenktexample.data.model.flat.DivisionType
 import com.mitteloupe.randomgenktexample.data.model.flat.Flat
 import com.mitteloupe.randomgenktexample.data.model.flat.Room
 import com.mitteloupe.randomgenktexample.data.model.flat.RoomType
+import dagger.Reusable
 
 import java.util.Random
 import javax.inject.Inject
@@ -12,16 +13,18 @@ import javax.inject.Inject
 /**
  * Created by Eran Boudjnah on 19/08/2018.
  */
+@Reusable
 class FlatGeneratorFactory
 @Inject
 constructor(private val random: Random) {
 
-	val newFlatGenerator: RandomGen<Flat>
-		get() = RandomGen.Builder<Flat>()
+	val newFlatGenerator by lazy {
+		RandomGen.Builder<Flat>()
 			.withProvider { Flat(newRoom()) }
 			.withField("rooms")
 			.returning(newContainerRoomRandomGen())
 			.build()
+	}
 
 	private fun newContainerRoomRandomGen() =
 		RandomGen.Builder<Room>()

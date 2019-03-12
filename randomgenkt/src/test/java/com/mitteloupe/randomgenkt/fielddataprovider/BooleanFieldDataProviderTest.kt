@@ -1,6 +1,6 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.given
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -28,7 +28,7 @@ class BooleanFieldDataProviderTest {
 	@Test
 	fun givenFalseRandomValueWhenGenerateThenReturnsFalse() {
 		// Given
-		whenever(random.nextBoolean()).thenReturn(false)
+		given(random.nextBoolean()).willReturn(false)
 
 		// When
 		val result = cut.invoke()
@@ -40,7 +40,7 @@ class BooleanFieldDataProviderTest {
 	@Test
 	fun givenTrueRandomValueWhenGenerateThenReturnsTrue() {
 		// Given
-		whenever(random.nextBoolean()).thenReturn(true)
+		given(random.nextBoolean()).willReturn(true)
 
 		// When
 		val result = cut.invoke()

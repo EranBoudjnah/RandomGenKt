@@ -9,33 +9,34 @@ import com.mitteloupe.randomgenkt.fielddataprovider.PaddedFieldDataProvider
 import com.mitteloupe.randomgenktexample.data.model.person.Gender
 import com.mitteloupe.randomgenktexample.data.model.person.Occupation
 import com.mitteloupe.randomgenktexample.data.model.person.Person
+import dagger.Reusable
 import java.util.Random
 import javax.inject.Inject
 
 /**
  * Created by Eran Boudjnah on 28/08/2018.
  */
+@Reusable
 class PersonGeneratorFactory
 @Inject
 constructor() {
-	val newPersonGenerator: RandomGen<Person>
-		get() {
-			val random = Random()
+	val newPersonGenerator by lazy {
+		val random = Random()
 
-			return RandomGen.Builder<Person>()
-				.ofClass<Person>()
-				.withField("gender")
-				.returning<Gender>()
-				.withField("name")
-				.returning(newFullNameFieldDataProvider(random))
-				.withField("age")
-				.returning(18, 70)
-				.withField("occupation")
-				.returning(Occupation::class.java)
-				.withField("phoneNumber")
-				.returning(newPhoneFieldDataProvider(random))
-				.build()
-		}
+		RandomGen.Builder<Person>()
+			.ofClass<Person>()
+			.withField("gender")
+			.returning<Gender>()
+			.withField("name")
+			.returning(newFullNameFieldDataProvider(random))
+			.withField("age")
+			.returning(18, 70)
+			.withField("occupation")
+			.returning(Occupation::class.java)
+			.withField("phoneNumber")
+			.returning(newPhoneFieldDataProvider(random))
+			.build()
+	}
 
 	private fun newFullNameFieldDataProvider(random: Random): (Person?) -> String {
 		val maleNameFieldDataProvider = GenericListFieldDataProvider<Person, String>(random, listOf("Dave", "George", "Jack", "James", "John", "Oliver", "Russel", "Steve"))

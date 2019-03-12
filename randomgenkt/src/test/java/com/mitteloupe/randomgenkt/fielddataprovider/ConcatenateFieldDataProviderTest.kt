@@ -1,7 +1,7 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
 import com.mitteloupe.randomgenkt.FieldDataProvider
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.given
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -25,8 +25,8 @@ class ConcatenateFieldDataProviderTest {
 
 	@Before
 	fun setUp() {
-		whenever(fieldDataProvider1.invoke(instance)).thenReturn("Test1")
-		whenever(fieldDataProvider2.invoke(instance)).thenReturn("Test2")
+		given(fieldDataProvider1.invoke(instance)).willReturn("Test1")
+		given(fieldDataProvider2.invoke(instance)).willReturn("Test2")
 	}
 
 	@Test
