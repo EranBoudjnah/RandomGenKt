@@ -246,7 +246,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 				when (initializeType) {
 					InitializeType.WITH_CLASS -> RandomGen.BuilderField(generatedInstanceClass, this)
 					else -> RandomGen.BuilderField(instanceProvider, this)
-					},
+				},
 				factory
 			)
 
@@ -386,9 +386,9 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 		/**
 		 * Adds a generator of random enum values for the given field.
 		 *
-		 * @param <ENUM_TYPE> Implicit. The enum type to use
+		 * @param &lt;ENUM_TYPE&gt; Implicit. The enum type to use
 		 * @return A builder with a data provider
-		</ENUM_TYPE> */
+		 */
 		inline fun <reified ENUM_TYPE : Enum<*>> returning() =
 			returning(ENUM_TYPE::class.java)
 
@@ -399,9 +399,9 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 		 * Adds a lambda generated value for the given field.
 		 *
 		 * @param fieldDataProvider An instance of the lambda to use
-		 * @param <VALUE_TYPE>      The type returned from the lambda
+		 * @param &lt;VALUE_TYPE&gt;      The type returned from the lambda
 		 * @return An instance of the specified `VALUE_TYPE`
-		</VALUE_TYPE> */
+		 */
 		fun <VALUE_TYPE> returning(fieldDataProvider: (RETURN_TYPE?) -> VALUE_TYPE) =
 			getBuilderFieldFromIncomplete(builderField.returning(fieldDataProvider))
 
@@ -441,8 +441,8 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 	/**
 	 * Classes implementing this interface provide a new instance of the desired type that will get populated by [RandomGen].
 	 *
-	 * @param <INSTANCE_TYPE> The type of instance to be returned
-	</INSTANCE_TYPE> */
+	 * @param &lt;INSTANCE_TYPE&gt; The type of instance to be returned
+	 */
 	interface InstanceProvider<INSTANCE_TYPE> {
 		fun provideInstance(): INSTANCE_TYPE
 	}
