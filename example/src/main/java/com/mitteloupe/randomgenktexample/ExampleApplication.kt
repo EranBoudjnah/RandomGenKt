@@ -28,7 +28,5 @@ class ExampleApplication : Application(), HasActivityInjector {
 		appComponent.inject(this)
 	}
 
-	override fun activityInjector(): DispatchingAndroidInjector<Activity> {
-		return activityDispatchingAndroidInjector
-	}
+	override fun activityInjector() = activityDispatchingAndroidInjector
 }
