@@ -1,14 +1,14 @@
 package com.mitteloupe.randomgenktexample.data.generator
 
-import com.mitteloupe.randomgenktexample.data.model.person.Gender
-import com.mitteloupe.randomgenktexample.data.model.person.Occupation
-import com.mitteloupe.randomgenktexample.data.model.person.Person
 import com.mitteloupe.randomgenkt.RandomGen
 import com.mitteloupe.randomgenkt.fielddataprovider.ConcatenateFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.ExplicitFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.GenericListFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.IntFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.PaddedFieldDataProvider
+import com.mitteloupe.randomgenktexample.data.model.person.Gender
+import com.mitteloupe.randomgenktexample.data.model.person.Occupation
+import com.mitteloupe.randomgenktexample.data.model.person.Person
 import java.util.Random
 import javax.inject.Inject
 
@@ -45,10 +45,9 @@ constructor() {
 		val femaleConcatenateFieldDataProvider = ConcatenateFieldDataProvider(femaleNameFieldDataProvider, lastNameFieldDataProvider, delimiter = " ")
 
 		return { instance ->
-			if (instance?.gender == Gender.MALE) {
-				maleConcatenateFieldDataProvider
-			} else {
-				femaleConcatenateFieldDataProvider
+			when (instance?.gender) {
+				Gender.MALE -> maleConcatenateFieldDataProvider
+				else -> femaleConcatenateFieldDataProvider
 			}.invoke(instance)
 		}
 	}
