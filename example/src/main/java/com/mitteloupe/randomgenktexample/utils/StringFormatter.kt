@@ -23,20 +23,24 @@ object StringFormatter {
 		stringBuilder.delete(0, stringBuilder.length)
 	}
 
-	private fun concatWordsWithSpaces(pWords: Array<String>) {
-		val lastCharacter = pWords.size - 1
+	private fun concatWordsWithSpaces(words: Array<String>) {
+		val lastCharacter = words.size - 1
 
-		pWords.forEachIndexed { characterPosition, word ->
+		words.forEachIndexed { characterPosition, word ->
 			addCapitalizedWord(word)
 			if (characterPosition < lastCharacter) {
-				stringBuilder.append(" ")
+				addSpace()
 			}
 		}
 	}
 
-	private fun addCapitalizedWord(pWord: String) {
+	private fun addCapitalizedWord(word: String) {
 		stringBuilder
-			.append(pWord.first().toUpperCase())
-			.append(pWord.substring(1).toLowerCase())
+			.append(word.first().toUpperCase())
+			.append(word.substring(1).toLowerCase())
+	}
+
+	private fun addSpace() {
+		stringBuilder.append(" ")
 	}
 }

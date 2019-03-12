@@ -112,5 +112,5 @@ internal class DefaultValuesInstanceProvider<GENERATED_INSTANCE>(
 	private fun generateInstanceWithNewConstructorUsingUnsafe() =
 		UnsafeAndroid().allocateInstance(generatedInstanceClass)
 
-	private class InstanceCreationException(pMessage: String, pException: Exception) : RuntimeException(pMessage, pException)
+	private class InstanceCreationException(message: String, exception: Exception) : RuntimeException(message, exception)
 }

@@ -366,10 +366,10 @@ class SimpleFieldDataProviderFactoryTest {
 	}
 
 
-	private fun <DATA_TYPE> assertFieldEquals(pObject: Any, pFieldName: String, pExpectedValue: DATA_TYPE?) {
-		val value = getFieldValue<DATA_TYPE>(pObject, pFieldName)
+	private fun <DATA_TYPE> assertFieldEquals(anyObject: Any, fieldName: String, expectedValue: DATA_TYPE?) {
+		val value = getFieldValue<DATA_TYPE>(anyObject, fieldName)
 
-		assertEquals(pExpectedValue, value)
+		assertEquals(expectedValue, value)
 	}
 
 	private fun <DATA_TYPE> getFieldValue(fieldOwner: Any, fieldName: String): DATA_TYPE {

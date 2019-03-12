@@ -60,7 +60,7 @@ constructor(
 			.fieldDataProvider(instance)
 	}
 
-	private fun getFieldDataProviderPositionByWeight(pWeight: Double): Int {
+	private fun getFieldDataProviderPositionByWeight(weight: Double): Int {
 		var lowIndex = 0
 		var highIndex = weightedFieldDataProviders.size - 1
 
@@ -72,8 +72,8 @@ constructor(
 			val weightAtGuess = weightedFieldDataProvider.weight
 
 			when {
-				weightSumAtGuess < pWeight -> lowIndex = currentIndex + 1
-				weightSumAtGuess - weightAtGuess > pWeight -> highIndex = currentIndex - 1
+				weightSumAtGuess < weight -> lowIndex = currentIndex + 1
+				weightSumAtGuess - weightAtGuess > weight -> highIndex = currentIndex - 1
 				else -> return currentIndex
 			}
 		}

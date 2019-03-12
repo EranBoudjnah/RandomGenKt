@@ -31,7 +31,7 @@ private const val RING_TO_STAR_RATIO = 1.4f
 class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr) {
 
 	private val planetAnimations = mutableListOf<PlanetAnimation>()
-	private var planetarySystem: PlanetarySystem? = null
+	private lateinit var planetarySystem: PlanetarySystem
 	private var planetsCount = 0
 
 	private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -87,8 +87,8 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
 		animationTimeHandler.start()
 
 		planetTimeHandler = TimeHandler(PLANET_DATA_DELAY_MILLIS, Runnable {
-			planetDataIndex = (planetDataIndex + 1) % planetarySystem!!.planets.size
-			populatePlanetTextViews(planetarySystem!!.planets[planetDataIndex], planetDataIndex + 1)
+			planetDataIndex = (planetDataIndex + 1) % planetarySystem.planets.size
+			populatePlanetTextViews(planetarySystem.planets[planetDataIndex], planetDataIndex + 1)
 		})
 	}
 
@@ -124,19 +124,19 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
 		)
 	}
 
-	fun setPlanetarySystem(pPlanetarySystem: PlanetarySystem) {
-		planetarySystem = pPlanetarySystem
-		val planets = planetarySystem!!.planets
+	fun setPlanetarySystem(planetarySystem: PlanetarySystem) {
+		this.planetarySystem = planetarySystem
+		val planets = planetarySystem.planets
 		planetsCount = planets.size
 		orbitRingSpacing = 0.35f / planetsCount.toFloat()
 
 		setPlanetAnimations(planets)
 
-		populateStarTextViews(pPlanetarySystem)
+		populateStarTextViews(planetarySystem)
 
 		planetTimeHandler.stop()
 
-		if (pPlanetarySystem.planets.isNotEmpty()) {
+		if (planetarySystem.planets.isNotEmpty()) {
 			showPlanetTextViews()
 			planetDataIndex = -1
 			planetTimeHandler.start()
@@ -148,31 +148,31 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
 		invalidate()
 	}
 
-	private fun setPlanetAnimations(pPlanets: Array<Planet>) {
+	private fun setPlanetAnimations(planets: Array<Planet>) {
 		planetAnimations.clear()
 
 		repeat(planetsCount) { index ->
-			planetAnimations.add(getPlanetAnimation(pPlanets[index]))
+			planetAnimations.add(getPlanetAnimation(planets[index]))
 		}
 	}
 
-	private fun getPlanetAnimation(pPlanet: Planet): PlanetAnimation {
+	private fun getPlanetAnimation(planet: Planet): PlanetAnimation {
 		val planetAnimation = PlanetAnimation()
 		planetAnimation.angle = Math.random().toFloat() * 360f
-		planetAnimation.velocity = 25f / pPlanet.orbitalPeriodYears
+		planetAnimation.velocity = 25f / planet.orbitalPeriodYears
 
 		// We need some fixed rule to determine the direction of rotation. This will do for a demo.
-		if (pPlanet.moons % 2 == 0) planetAnimation.velocity = -planetAnimation.velocity
+		if (planet.moons % 2 == 0) planetAnimation.velocity = -planetAnimation.velocity
 		return planetAnimation
 	}
 
-	private fun populateStarTextViews(pPlanetarySystem: PlanetarySystem) {
+	private fun populateStarTextViews(planetarySystem: PlanetarySystem) {
 		val resources = resources
 
-		starAgeTextView.text = resources.getString(R.string.star_age_value, pPlanetarySystem.starAgeBillionYears)
-		starDiameterTextView.text = resources.getString(R.string.star_diameter_value, pPlanetarySystem.starDiameterSunRadii)
-		starMassTextView.text = resources.getString(R.string.star_mass_value, pPlanetarySystem.starSolarMass)
-		starPlanetsCountTextView.text = pPlanetarySystem.planets.size.toString()
+		starAgeTextView.text = resources.getString(R.string.star_age_value, planetarySystem.starAgeBillionYears)
+		starDiameterTextView.text = resources.getString(R.string.star_diameter_value, planetarySystem.starDiameterSunRadii)
+		starMassTextView.text = resources.getString(R.string.star_mass_value, planetarySystem.starSolarMass)
+		starPlanetsCountTextView.text = planetarySystem.planets.size.toString()
 	}
 
 	private fun hidePlanetTextViews() {
@@ -210,13 +210,13 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
 		starAtmosphereTextView.text = Html.fromHtml(getMaterialsFormatted(planet.atmosphere), FROM_HTML_MODE_COMPACT)
 	}
 
-	private fun getMaterialsFormatted(pMaterials: List<Material>): String {
-		if (pMaterials.isEmpty()) {
+	private fun getMaterialsFormatted(materials: List<Material>): String {
+		if (materials.isEmpty()) {
 			return "N/A"
 		}
 
 		val stringBuilder = StringBuilder()
-		for (material in pMaterials) {
+		materials.forEach { material ->
 			stringBuilder
 				.append(getMaterialFormatted(material))
 				.append("<br/>")
@@ -265,7 +265,7 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
 	}
 
 	private fun drawStar(canvas: Canvas) {
-		drawCircle(canvas, visualCenter, planetarySystem!!.starDiameterSunRadii.toFloat() / 10f, -0x1)
+		drawCircle(canvas, visualCenter, planetarySystem.starDiameterSunRadii.toFloat() / 10f, -0x1)
 	}
 
 	private fun drawPlanets(canvas: Canvas) {
@@ -297,30 +297,30 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
 		canvas.drawArc(planetRingRect, 0f, 360f, false, paint)
 	}
 
-	private fun drawPlanetAtIndex(canvas: Canvas, pIndex: Int) {
-		updatePlanetCenter(pIndex)
+	private fun drawPlanetAtIndex(canvas: Canvas, index: Int) {
+		updatePlanetCenter(index)
 
-		val planet = planetarySystem!!.planets[pIndex]
+		val planet = planetarySystem.planets[index]
 
 		planetSize = planet.diameterEarthRatio * 1.5f
 
-		drawCircle(canvas, planetCenter, planetSize, if (pIndex == planetDataIndex) -0x1 else -0x5f4f01)
+		drawCircle(canvas, planetCenter, planetSize, if (index == planetDataIndex) -0x1 else -0x5f4f01)
 
 		if (planet.hasRings) {
 			drawPlanetRing(canvas)
 		}
 	}
 
-	private fun drawCircle(canvas: Canvas, mCenter: PointF, pSize: Float, pColor: Int) {
+	private fun drawCircle(canvas: Canvas, center: PointF, size: Float, color: Int) {
 		paint.style = Paint.Style.FILL
-		paint.color = pColor
+		paint.color = color
 
-		canvas.drawCircle(mCenter.x, mCenter.y, pSize, paint)
+		canvas.drawCircle(center.x, center.y, size, paint)
 	}
 
-	private fun updatePlanetCenter(pPosition: Int) {
-		val planetAnimation = planetAnimations[pPosition]
-		val relativeRadius = 0.1f + orbitRingSpacing * pPosition
+	private fun updatePlanetCenter(position: Int) {
+		val planetAnimation = planetAnimations[position]
+		val relativeRadius = 0.1f + orbitRingSpacing * position
 		val actualRadius = visualSize * relativeRadius
 		planetCenter.set(
 			Math.sin((planetAnimation.angle / 180f * 3.14f).toDouble()).toFloat() * actualRadius,
@@ -335,8 +335,8 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
 		}
 	}
 
-	private fun advancePlanetAnimation(pPosition: Int) {
-		val planetAnimation = planetAnimations[pPosition]
+	private fun advancePlanetAnimation(position: Int) {
+		val planetAnimation = planetAnimations[position]
 		planetAnimation.angle += planetAnimation.velocity
 		while (planetAnimation.angle >= 360) planetAnimation.angle -= 360f
 		while (planetAnimation.angle < 0) planetAnimation.angle += 360f

@@ -69,27 +69,27 @@ private constructor(
 		 * The Lorem Ipsum text is repeated if the requested length is longer than the length of Lorem Ipsum. In such cases, the default
 		 * delimiter `DEFAULT_PARAGRAPH_DELIMITER` is used.
 		 *
-		 * @param pLength The length of the returned string. (Default: [LOREM_IPSUM_LENGTH])
+		 * @param length The length of the returned string. (Default: [LOREM_IPSUM_LENGTH])
 		 */
-		fun <OUTPUT_TYPE> getInstance(pLength: Int = LOREM_IPSUM_LENGTH) = LoremIpsumFieldDataProvider<OUTPUT_TYPE>(pLength)
+		fun <OUTPUT_TYPE> getInstance(length: Int = LOREM_IPSUM_LENGTH) = LoremIpsumFieldDataProvider<OUTPUT_TYPE>(length)
 
 		/**
 		 * Creates an instance of [LoremIpsumFieldDataProvider] generating a `String` of Lorem Ipsum with length in the range of
-		 * `pMinLength` to `pMaxLength`.
+		 * `minLength` to `maxLength`.
 		 *
 		 * The Lorem Ipsum text is repeated if the generated length is longer than the length of Lorem Ipsum. In such cases, the default
 		 * delimiter `DEFAULT_PARAGRAPH_DELIMITER` is used.
 		 *
-		 * @param pRandom    A random value generator
-		 * @param pMinLength The minimum length of the returned string
-		 * @param pMaxLength The maximum length of the returned string
-		 * @param pParagraphDelimiter The delimiter to use for long Lorem Ipsums (Default: [DEFAULT_PARAGRAPH_DELIMITER])
+		 * @param random    A random value generator
+		 * @param minLength The minimum length of the returned string
+		 * @param maxLength The maximum length of the returned string
+		 * @param paragraphDelimiter The delimiter to use for long Lorem Ipsums (Default: [DEFAULT_PARAGRAPH_DELIMITER])
 		 */
 		fun <OUTPUT_TYPE> getInstanceWithRange(
-			pRandom: Random,
-			pMinLength: Int,
-			pMaxLength: Int,
-			pParagraphDelimiter: String = DEFAULT_PARAGRAPH_DELIMITER
-		) = LoremIpsumFieldDataProvider<OUTPUT_TYPE>(pMinLength, pMaxLength, pRandom, pParagraphDelimiter)
+			random: Random,
+			minLength: Int,
+			maxLength: Int,
+			paragraphDelimiter: String = DEFAULT_PARAGRAPH_DELIMITER
+		) = LoremIpsumFieldDataProvider<OUTPUT_TYPE>(minLength, maxLength, random, paragraphDelimiter)
 	}
 }
