@@ -7,7 +7,7 @@ plugins {
 
 dependencies {
 	compile(kotlin("stdlib-jdk8"))
-	compile("org.jetbrains.kotlin:kotlin-reflect:1.3.0")
+	compile("org.jetbrains.kotlin:kotlin-reflect:1.3.21")
 
 	implementation("com.implimentz:unsafe:0.0.6")
 
