@@ -21,7 +21,7 @@ private constructor(
 		size: Int
 	) : this(random, size, size)
 
-	private val bytes = ByteArray(maxSize)
+	private val bytes by lazy { ByteArray(maxSize) }
 
 	override fun invoke(instance: OUTPUT_TYPE?): List<Byte> {
 		random.nextBytes(bytes)

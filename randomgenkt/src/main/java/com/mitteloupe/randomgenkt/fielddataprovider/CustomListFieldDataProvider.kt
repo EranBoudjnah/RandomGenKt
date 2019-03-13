@@ -13,7 +13,7 @@ class CustomListFieldDataProvider<OUTPUT_TYPE, VALUE_TYPE>(
 	private val fieldDataProvider: (OUTPUT_TYPE?) -> VALUE_TYPE
 ) : FieldDataProvider<OUTPUT_TYPE, List<VALUE_TYPE>>() {
 	override fun invoke(instance: OUTPUT_TYPE?): List<VALUE_TYPE> {
-		val ret = ArrayList<VALUE_TYPE>(instances)
+		val ret by lazy { ArrayList<VALUE_TYPE>(instances) }
 
 		repeat(instances) {
 			ret.add(fieldDataProvider(instance))

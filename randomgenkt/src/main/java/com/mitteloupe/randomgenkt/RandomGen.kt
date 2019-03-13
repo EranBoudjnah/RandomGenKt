@@ -19,13 +19,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 	private val dataProviders: Map<String, (GENERATED_INSTANCE?) -> Any>,
 	private val onGenerateCallbacks: List<OnGenerateCallback<GENERATED_INSTANCE>>
 ) : (Any?) -> GENERATED_INSTANCE {
-	private val fields: MutableMap<String, Field>
-
-	init {
-		fields = HashMap()
-
-		getAllFields()
-	}
+	private val fields by lazy { getAllFields() }
 
 	fun generate(): GENERATED_INSTANCE = invoke(null)
 
@@ -106,7 +100,8 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 		}
 	}
 
-	private fun getAllFields() {
+	private fun getAllFields(): Map<String, Field> {
+		val fields: MutableMap<String, Field> = HashMap()
 		val instance = instanceProvider()
 		val allProperties = (instance as Any)::class.declaredMemberProperties
 		allProperties.forEach { property ->
@@ -118,6 +113,8 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 				fields[property.name] = field
 			}
 		}
+
+		return fields
 	}
 
 	class Builder<GENERATED_INSTANCE> {
@@ -149,7 +146,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 	}
 
 	class BuilderField<GENERATED_INSTANCE> : IncompleteBuilderField<GENERATED_INSTANCE> {
-		private var lastWeight: Double = 0.toDouble()
+		private var lastWeight = 0.0
 		private val lastFieldDataProvider get() = dataProviders[lastUsedFieldName]
 
 		internal constructor(generatedInstanceClass: Class<GENERATED_INSTANCE>,

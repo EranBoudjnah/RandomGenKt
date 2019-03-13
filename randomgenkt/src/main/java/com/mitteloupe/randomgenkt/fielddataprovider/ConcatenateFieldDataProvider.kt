@@ -18,7 +18,7 @@ constructor(
 	vararg fieldDataProviders: (OUTPUT_TYPE?) -> Any,
 	private val delimiter: String = DEFAULT_DELIMITER
 ) : (OUTPUT_TYPE?) -> String {
-	private val fieldDataProviders = fieldDataProviders.toList()
+	private val fieldDataProviders by lazy { fieldDataProviders.toList() }
 
 	override fun invoke(instance: OUTPUT_TYPE?): String {
 		val result = StringBuilder()

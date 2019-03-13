@@ -12,5 +12,7 @@ class GenericListFieldDataProvider<OUTPUT_TYPE, VALUE_TYPE>(
 ) : FieldDataProvider<OUTPUT_TYPE, VALUE_TYPE>() {
 	private val immutableList = list.toList()
 
-	override fun invoke(instance: OUTPUT_TYPE?) = immutableList[(random.nextDouble() * list.size).toInt()]
+	override fun invoke(instance: OUTPUT_TYPE?) = immutableList[getNextIndex()]
+
+	private fun getNextIndex() = (random.nextDouble() * list.size).toInt()
 }

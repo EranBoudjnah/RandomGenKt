@@ -1,6 +1,5 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
-import java.util.ArrayList
 import java.util.Random
 
 /**
@@ -18,7 +17,10 @@ constructor(
 	private val random: Random,
 	private val fieldDataProvider: (OUTPUT_TYPE?) -> VALUE_TYPE
 ) : (OUTPUT_TYPE?) -> VALUE_TYPE {
-	private val weightedFieldDataProviders: MutableList<WeightedFieldDataProvider>
+	private val weightedFieldDataProviders: MutableList<WeightedFieldDataProvider> by lazy {
+		val weightedFieldDataProvider = getWeightedFieldDataProvider(0.0, fieldDataProvider, 1.0)
+		arrayListOf(weightedFieldDataProvider)
+	}
 
 	private val lastFieldDataProviderWeight: Double
 		get() =
@@ -27,27 +29,23 @@ constructor(
 				else -> weightedFieldDataProviders.last().weight
 			}
 
-	init {
-		weightedFieldDataProviders = ArrayList(1)
-
-		addFieldDataProvider(fieldDataProvider, 1.0)
+	fun addFieldDataProvider(fieldDataProvider: (OUTPUT_TYPE?) -> VALUE_TYPE, weight: Double) {
+		val weightedFieldDataProvider = getWeightedFieldDataProvider(lastFieldDataProviderWeight, fieldDataProvider, weight)
+		weightedFieldDataProviders.add(weightedFieldDataProvider)
 	}
 
-	fun addFieldDataProvider(fieldDataProvider: (OUTPUT_TYPE?) -> VALUE_TYPE, weight: Double) {
-		val lastFieldDataProviderWeight = lastFieldDataProviderWeight
-
+	private fun getWeightedFieldDataProvider(lastWeight: Double, fieldDataProvider: (OUTPUT_TYPE?) -> VALUE_TYPE, weight: Double): WeightedFieldDataProvider {
 		val newFieldDataProviderWeight =
-			if (lastFieldDataProviderWeight != 0.0)
-				lastFieldDataProviderWeight * weight
-			else
-				weight
+			when (lastWeight) {
+				0.0 -> weight
+				else -> lastWeight * weight
+			}
 
-		val weightedFieldDataProvider = WeightedFieldDataProvider(
+		return WeightedFieldDataProvider(
 			fieldDataProvider,
 			newFieldDataProviderWeight,
-			lastFieldDataProviderWeight + newFieldDataProviderWeight
+			lastWeight + newFieldDataProviderWeight
 		)
-		weightedFieldDataProviders.add(weightedFieldDataProvider)
 	}
 
 	override fun invoke(instance: OUTPUT_TYPE?) = generateRandomValue(instance)

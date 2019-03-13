@@ -44,12 +44,16 @@ constructor(
 			stringBuilder.append(paddingString)
 		}
 
-		if (stringBuilder.length > paddingLength && paddingLength > 0) {
+		if (isPaddingProvided(paddingLength) && isStringLongerThanPadding(stringBuilder, paddingLength)) {
 			stringBuilder.delete(paddingLength, stringBuilder.length)
 		}
 
 		return stringBuilder
 	}
+
+	private fun isStringLongerThanPadding(stringBuilder: StringBuilder, paddingLength: Int) = stringBuilder.length > paddingLength
+
+	private fun isPaddingProvided(paddingLength: Int) = paddingLength > 0
 
 	private fun getGeneratedString(instance: OUTPUT_TYPE?) = fieldDataProvider(instance).toString()
 }
