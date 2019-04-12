@@ -23,93 +23,92 @@ import kotlinx.android.synthetic.main.activity_main.flat_view as flatView
 import kotlinx.android.synthetic.main.activity_main.people_view as peopleView
 import kotlinx.android.synthetic.main.activity_main.planetary_system_view as planetarySystemView
 
-
 class MainActivity : AppCompatActivity(), Observer<ViewState> {
-	@Inject
-	lateinit var viewModelFactory: MainViewModelFactory
+    @Inject
+    lateinit var viewModelFactory: MainViewModelFactory
 
-	private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: MainViewModel
 
-	private val peopleAdapter = PeopleAdapter()
+    private val peopleAdapter = PeopleAdapter()
 
-	override fun onCreate(savedInstanceState: Bundle?) {
-		AndroidInjection.inject(this)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
 
-		super.onCreate(savedInstanceState)
-		setContentView(R.layout.activity_main)
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-		setUpNavigation()
+        setUpNavigation()
 
-		setUpPeopleView()
+        setUpPeopleView()
 
-		viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
-		viewModel.viewState.observe(this, this)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel.viewState.observe(this, this)
 
-		updateViewWithViewState(viewModel.viewState.value)
-	}
+        updateViewWithViewState(viewModel.viewState.value)
+    }
 
-	private fun setUpPeopleView() {
-		peopleView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-		peopleView.adapter = peopleAdapter
-		peopleView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-	}
+    private fun setUpPeopleView() {
+        peopleView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        peopleView.adapter = peopleAdapter
+        peopleView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+    }
 
-	private fun setUpNavigation() {
-		bottomNavigation.setOnNavigationItemSelectedListener { item ->
-			handleNavigationItemSelected(item)
+    private fun setUpNavigation() {
+        bottomNavigation.setOnNavigationItemSelectedListener { item ->
+            handleNavigationItemSelected(item)
 
-			true
-		}
-	}
+            true
+        }
+    }
 
-	private fun handleNavigationItemSelected(item: MenuItem) =
-		when (item.itemId) {
-			R.id.action_person -> viewModel.onGeneratePersonClick()
-			R.id.action_planetary_system -> viewModel.onGeneratePlanetarySystemClick()
-			R.id.action_flat -> viewModel.onGenerateFlatClick()
-			else -> Unit
-		}
+    private fun handleNavigationItemSelected(item: MenuItem) =
+        when (item.itemId) {
+            R.id.action_person -> viewModel.onGeneratePersonClick()
+            R.id.action_planetary_system -> viewModel.onGeneratePlanetarySystemClick()
+            R.id.action_flat -> viewModel.onGenerateFlatClick()
+            else -> Unit
+        }
 
-	override fun onChanged(viewState: ViewState?) =
-		updateViewWithViewState(viewState)
+    override fun onChanged(viewState: ViewState?) =
+        updateViewWithViewState(viewState)
 
-	private fun updateViewWithViewState(viewState: ViewState?) {
-		when (viewState) {
-			is ViewState.ShowNone -> hideAllViews()
-			is ViewState.ShowPeople -> showPeopleView(viewState.people)
-			is ViewState.ShowPlanetarySystem -> showPlanetarySystem(viewState.planetarySystem)
-			is ViewState.ShowFlat -> showFlatView(viewState.flat)
-		}
-	}
+    private fun updateViewWithViewState(viewState: ViewState?) {
+        when (viewState) {
+            is ViewState.ShowNone -> hideAllViews()
+            is ViewState.ShowPeople -> showPeopleView(viewState.people)
+            is ViewState.ShowPlanetarySystem -> showPlanetarySystem(viewState.planetarySystem)
+            is ViewState.ShowFlat -> showFlatView(viewState.flat)
+        }
+    }
 
-	private fun showPeopleView(people: List<Person>) {
-		peopleAdapter.setPeople(people)
-		viewFlipper.displayedChild = Page.PERSON.pageNumber
-		bottomNavigation.selectedItemId = Page.PERSON.pageNumber
-		peopleView.scrollToPosition(0)
-	}
+    private fun showPeopleView(people: List<Person>) {
+        peopleAdapter.setPeople(people)
+        viewFlipper.displayedChild = Page.PERSON.pageNumber
+        bottomNavigation.selectedItemId = Page.PERSON.pageNumber
+        peopleView.scrollToPosition(0)
+    }
 
-	private fun showPlanetarySystem(planetarySystem: PlanetarySystem) {
-		planetarySystemView.setPlanetarySystem(planetarySystem)
-		viewFlipper.displayedChild = Page.PLANETARY_SYSTEM.pageNumber
-		bottomNavigation.selectedItemId = Page.PLANETARY_SYSTEM.pageNumber
-	}
+    private fun showPlanetarySystem(planetarySystem: PlanetarySystem) {
+        planetarySystemView.setPlanetarySystem(planetarySystem)
+        viewFlipper.displayedChild = Page.PLANETARY_SYSTEM.pageNumber
+        bottomNavigation.selectedItemId = Page.PLANETARY_SYSTEM.pageNumber
+    }
 
-	private fun showFlatView(flat: Flat) {
-		flatView.setFlat(flat)
-		viewFlipper.displayedChild = Page.FLAT.pageNumber
-		bottomNavigation.selectedItemId = Page.FLAT.pageNumber
-	}
+    private fun showFlatView(flat: Flat) {
+        flatView.setFlat(flat)
+        viewFlipper.displayedChild = Page.FLAT.pageNumber
+        bottomNavigation.selectedItemId = Page.FLAT.pageNumber
+    }
 
-	private fun hideAllViews() {
-		viewFlipper.displayedChild = Page.NONE.pageNumber
-		bottomNavigation.selectedItemId = R.id.action_none
-	}
+    private fun hideAllViews() {
+        viewFlipper.displayedChild = Page.NONE.pageNumber
+        bottomNavigation.selectedItemId = R.id.action_none
+    }
 
-	private enum class Page constructor(val pageNumber: Int) {
-		NONE(0),
-		PERSON(1),
-		PLANETARY_SYSTEM(2),
-		FLAT(3)
-	}
+    private enum class Page constructor(val pageNumber: Int) {
+        NONE(0),
+        PERSON(1),
+        PLANETARY_SYSTEM(2),
+        FLAT(3)
+    }
 }

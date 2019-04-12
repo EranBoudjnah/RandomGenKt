@@ -18,72 +18,72 @@ import javax.inject.Inject
  * Created by Eran Boudjnah on 29/10/2018.
  */
 class MainViewModel(
-	private val useCaseExecutor: UseCaseExecutor,
-	private val generatePersonUseCase: dagger.Lazy<GeneratePersonUseCase>,
-	private val generatePlanetarySystemUseCase: dagger.Lazy<GeneratePlanetarySystemUseCase>,
-	private val generateFlatUseCase: dagger.Lazy<GenerateFlatUseCase>
+    private val useCaseExecutor: UseCaseExecutor,
+    private val generatePersonUseCase: dagger.Lazy<GeneratePersonUseCase>,
+    private val generatePlanetarySystemUseCase: dagger.Lazy<GeneratePlanetarySystemUseCase>,
+    private val generateFlatUseCase: dagger.Lazy<GenerateFlatUseCase>
 ) : ViewModel() {
-	private val _viewState = MutableLiveData<ViewState>()
-	val viewState: LiveData<ViewState>
-		get() = _viewState
+    private val _viewState = MutableLiveData<ViewState>()
+    val viewState: LiveData<ViewState>
+        get() = _viewState
 
-	private val people = mutableListOf<Person>()
+    private val people = mutableListOf<Person>()
 
-	init {
-		_viewState.value = ViewState.ShowNone
-	}
+    init {
+        _viewState.value = ViewState.ShowNone
+    }
 
-	@VisibleForTesting
-	public override fun onCleared() {
-		super.onCleared()
+    @VisibleForTesting
+    public override fun onCleared() {
+        super.onCleared()
 
-		useCaseExecutor.abortAll()
-	}
+        useCaseExecutor.abortAll()
+    }
 
-	fun onGeneratePersonClick() =
-		generatePerson()
+    fun onGeneratePersonClick() =
+        generatePerson()
 
-	fun onGeneratePlanetarySystemClick() =
-		generatePlanetarySystem()
+    fun onGeneratePlanetarySystemClick() =
+        generatePlanetarySystem()
 
-	fun onGenerateFlatClick() =
-		generateFlat()
+    fun onGenerateFlatClick() =
+        generateFlat()
 
-	private fun generatePerson() =
-		useCaseExecutor.execute(generatePersonUseCase.get()) { person ->
-			people.add(0, person)
-			_viewState.value = ViewState.ShowPeople(people)
-		}
+    private fun generatePerson() =
+        useCaseExecutor.execute(generatePersonUseCase.get()) { person ->
+            people.add(0, person)
+            _viewState.value = ViewState.ShowPeople(people)
+        }
 
-	private fun generatePlanetarySystem() =
-		useCaseExecutor.execute(generatePlanetarySystemUseCase.get()) { planetarySystem ->
-			_viewState.value = ViewState.ShowPlanetarySystem(planetarySystem)
-		}
+    private fun generatePlanetarySystem() =
+        useCaseExecutor.execute(generatePlanetarySystemUseCase.get()) { planetarySystem ->
+            _viewState.value = ViewState.ShowPlanetarySystem(planetarySystem)
+        }
 
-	private fun generateFlat() =
-		useCaseExecutor.execute(generateFlatUseCase.get()) { flat ->
-			_viewState.value = ViewState.ShowFlat(flat)
-		}
+    private fun generateFlat() =
+        useCaseExecutor.execute(generateFlatUseCase.get()) { flat ->
+            _viewState.value = ViewState.ShowFlat(flat)
+        }
 }
 
 class MainViewModelFactory
 @Inject
 constructor(
-	private val useCaseExecutor: UseCaseExecutor,
-	private val generatePersonUseCase: dagger.Lazy<GeneratePersonUseCase>,
-	private val generatePlanetarySystemUseCase: dagger.Lazy<GeneratePlanetarySystemUseCase>,
-	private val generateFlatUseCase: dagger.Lazy<GenerateFlatUseCase>
+    private val useCaseExecutor: UseCaseExecutor,
+    private val generatePersonUseCase: dagger.Lazy<GeneratePersonUseCase>,
+    private val generatePlanetarySystemUseCase: dagger.Lazy<GeneratePlanetarySystemUseCase>,
+    private val generateFlatUseCase: dagger.Lazy<GenerateFlatUseCase>
 ) :
-	ViewModelProvider.Factory {
-	override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-		@Suppress("UNCHECKED_CAST")
-		return MainViewModel(useCaseExecutor, generatePersonUseCase, generatePlanetarySystemUseCase, generateFlatUseCase) as T
-	}
+    ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        @Suppress("UNCHECKED_CAST")
+        return MainViewModel(useCaseExecutor, generatePersonUseCase, generatePlanetarySystemUseCase, generateFlatUseCase) as T
+    }
 }
 
 sealed class ViewState {
-	data class ShowPeople(val people: List<Person>) : ViewState()
-	data class ShowPlanetarySystem(val planetarySystem: PlanetarySystem) : ViewState()
-	data class ShowFlat(val flat: Flat) : ViewState()
-	object ShowNone : ViewState()
+    data class ShowPeople(val people: List<Person>) : ViewState()
+    data class ShowPlanetarySystem(val planetarySystem: PlanetarySystem) : ViewState()
+    data class ShowFlat(val flat: Flat) : ViewState()
+    object ShowNone : ViewState()
 }

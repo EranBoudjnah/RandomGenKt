@@ -12,17 +12,17 @@ import javax.inject.Inject
 @Reusable
 class UseCaseExecutor
 @Inject constructor(
-	private val job: Job,
-	coroutineContextProvider: CoroutineContextProvider
+    private val job: Job,
+    coroutineContextProvider: CoroutineContextProvider
 ) {
-	private val uiScope by lazy {
-		CoroutineScope(coroutineContextProvider.main + job)
-	}
+    private val uiScope by lazy {
+        CoroutineScope(coroutineContextProvider.main + job)
+    }
 
-	fun <TYPE> execute(useCase: BaseUseCase<TYPE>, callback: (TYPE) -> Unit) =
-		uiScope.launch {
-			useCase.execute(callback)
-		}
+    fun <TYPE> execute(useCase: BaseUseCase<TYPE>, callback: (TYPE) -> Unit) =
+        uiScope.launch {
+            useCase.execute(callback)
+        }
 
-	fun abortAll() = job.cancel()
+    fun abortAll() = job.cancel()
 }

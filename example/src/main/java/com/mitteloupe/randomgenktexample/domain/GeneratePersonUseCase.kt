@@ -11,10 +11,10 @@ import javax.inject.Inject
 @Reusable
 class GeneratePersonUseCase
 @Inject constructor(
-	coroutineContextProvider: CoroutineContextProvider,
-	personGeneratorFactory: PersonGeneratorFactory
+    coroutineContextProvider: CoroutineContextProvider,
+    personGeneratorFactory: PersonGeneratorFactory
 ) : BaseUseCase<Person>(coroutineContextProvider) {
-	private val personRandomGen by lazy { personGeneratorFactory.newPersonGenerator }
+    private val personRandomGen by lazy { personGeneratorFactory.newPersonGenerator }
 
-	override fun executeAsync() = personRandomGen.generate()
+    override fun executeAsync() = personRandomGen.generate()
 }

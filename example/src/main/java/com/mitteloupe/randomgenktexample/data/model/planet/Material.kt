@@ -7,5 +7,5 @@ import androidx.core.util.Pair
  */
 class Material @SafeVarargs
 constructor(vararg compound: Pair<String, Int>) {
-	val compound: List<Pair<String, Int>> by lazy { compound.toMutableList() }
+    val compound: List<Pair<String, Int>> by lazy { compound.toMutableList() }
 }

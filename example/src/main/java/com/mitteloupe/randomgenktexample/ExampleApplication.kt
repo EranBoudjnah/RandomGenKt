@@ -12,21 +12,21 @@ import javax.inject.Inject
  * Created by Eran Boudjnah on 31/10/2018.
  */
 class ExampleApplication : Application(), HasActivityInjector {
-	@Inject
-	internal lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+    @Inject
+    internal lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 
-	private val appComponent: AppComponent by lazy {
-		DaggerAppComponent
-			.builder()
-			.application(this)
-			.build()
-	}
+    private val appComponent: AppComponent by lazy {
+        DaggerAppComponent
+            .builder()
+            .application(this)
+            .build()
+    }
 
-	override fun onCreate() {
-		super.onCreate()
+    override fun onCreate() {
+        super.onCreate()
 
-		appComponent.inject(this)
-	}
+        appComponent.inject(this)
+    }
 
-	override fun activityInjector() = activityDispatchingAndroidInjector
+    override fun activityInjector() = activityDispatchingAndroidInjector
 }

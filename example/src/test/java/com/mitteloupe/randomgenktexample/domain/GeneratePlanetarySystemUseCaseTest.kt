@@ -18,35 +18,35 @@ import org.mockito.junit.MockitoJUnitRunner
  */
 @RunWith(MockitoJUnitRunner::class)
 class GeneratePlanetarySystemUseCaseTest {
-	private lateinit var cut: GeneratePlanetarySystemUseCase
+    private lateinit var cut: GeneratePlanetarySystemUseCase
 
-	lateinit var coroutineContextProvider: CoroutineContextProvider
-	@Mock
-	lateinit var planetarySystemGeneratorFactory: PlanetarySystemGeneratorFactory
-	@Mock
-	lateinit var planetarySystemGenerator: RandomGen<PlanetarySystem>
+    lateinit var coroutineContextProvider: CoroutineContextProvider
+    @Mock
+    lateinit var planetarySystemGeneratorFactory: PlanetarySystemGeneratorFactory
+    @Mock
+    lateinit var planetarySystemGenerator: RandomGen<PlanetarySystem>
 
-	@Before
-	fun setUp() {
-		coroutineContextProvider = testCoroutineContextProvider()
-		given(planetarySystemGeneratorFactory.newPlanetarySystemGenerator).willReturn(planetarySystemGenerator)
+    @Before
+    fun setUp() {
+        coroutineContextProvider = testCoroutineContextProvider()
+        given(planetarySystemGeneratorFactory.newPlanetarySystemGenerator).willReturn(planetarySystemGenerator)
 
-		cut = GeneratePlanetarySystemUseCase(coroutineContextProvider, planetarySystemGeneratorFactory)
-	}
+        cut = GeneratePlanetarySystemUseCase(coroutineContextProvider, planetarySystemGeneratorFactory)
+    }
 
-	@Test
-	fun `Given generator with planetary system when execute then returns same planetary system`() {
-		// Given
-		val expectedResult = mock<PlanetarySystem>()
-		var actualResult: PlanetarySystem? = null
-		given(planetarySystemGenerator.generate()).willReturn(expectedResult)
+    @Test
+    fun `Given generator with planetary system when execute then returns same planetary system`() {
+        // Given
+        val expectedResult = mock<PlanetarySystem>()
+        var actualResult: PlanetarySystem? = null
+        given(planetarySystemGenerator.generate()).willReturn(expectedResult)
 
-		// When
-		runBlocking {
-			cut.execute { planetarySystem -> actualResult = planetarySystem }
-		}
+        // When
+        runBlocking {
+            cut.execute { planetarySystem -> actualResult = planetarySystem }
+        }
 
-		// Then
-		assertEquals(expectedResult, actualResult)
-	}
+        // Then
+        assertEquals(expectedResult, actualResult)
+    }
 }

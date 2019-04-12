@@ -10,19 +10,19 @@ import dagger.android.AndroidInjectionModule
  * Created by Eran Boudjnah on 31/10/2018.
  */
 @Component(modules = [
-	AndroidInjectionModule::class,
-	AppModule::class,
-	ActivityBuilder::class
+    AndroidInjectionModule::class,
+    AppModule::class,
+    ActivityBuilder::class
 ])
 interface AppComponent {
 
-	@Component.Builder
-	interface Builder {
-		@BindsInstance
-		fun application(application: Application): Builder
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun application(application: Application): Builder
 
-		fun build(): AppComponent
-	}
+        fun build(): AppComponent
+    }
 
-	fun inject(app: ExampleApplication)
+    fun inject(app: ExampleApplication)
 }

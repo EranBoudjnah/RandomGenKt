@@ -7,18 +7,17 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-
 /**
  * Created by Eran Boudjnah on 31/10/2018.
  */
 @Module(subcomponents = [
-	MainActivityComponent::class
+    MainActivityComponent::class
 ])
 class AppModule {
 
-	@Provides
-	@Singleton
-	internal fun provideContext(application: Application): Context {
-		return application
-	}
+    @Provides
+    @Singleton
+    internal fun provideContext(application: Application): Context {
+        return application
+    }
 }

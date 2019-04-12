@@ -11,10 +11,10 @@ import javax.inject.Inject
 @Reusable
 class GenerateFlatUseCase
 @Inject constructor(
-	coroutineContextProvider: CoroutineContextProvider,
-	flatGeneratorFactory: FlatGeneratorFactory
+    coroutineContextProvider: CoroutineContextProvider,
+    flatGeneratorFactory: FlatGeneratorFactory
 ) : BaseUseCase<Flat>(coroutineContextProvider) {
-	private val flatRandomGen by lazy { flatGeneratorFactory.newFlatGenerator }
+    private val flatRandomGen by lazy { flatGeneratorFactory.newFlatGenerator }
 
-	override fun executeAsync() = flatRandomGen.generate()
+    override fun executeAsync() = flatRandomGen.generate()
 }

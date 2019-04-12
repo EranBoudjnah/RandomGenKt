@@ -18,35 +18,35 @@ import org.mockito.junit.MockitoJUnitRunner
  */
 @RunWith(MockitoJUnitRunner::class)
 class GenerateFlatUseCaseTest {
-	private lateinit var cut: GenerateFlatUseCase
+    private lateinit var cut: GenerateFlatUseCase
 
-	lateinit var coroutineContextProvider: CoroutineContextProvider
-	@Mock
-	lateinit var flatGeneratorFactory: FlatGeneratorFactory
-	@Mock
-	lateinit var flatGenerator: RandomGen<Flat>
+    lateinit var coroutineContextProvider: CoroutineContextProvider
+    @Mock
+    lateinit var flatGeneratorFactory: FlatGeneratorFactory
+    @Mock
+    lateinit var flatGenerator: RandomGen<Flat>
 
-	@Before
-	fun setUp() {
-		coroutineContextProvider = testCoroutineContextProvider()
-		given(flatGeneratorFactory.newFlatGenerator).willReturn(flatGenerator)
+    @Before
+    fun setUp() {
+        coroutineContextProvider = testCoroutineContextProvider()
+        given(flatGeneratorFactory.newFlatGenerator).willReturn(flatGenerator)
 
-		cut = GenerateFlatUseCase(coroutineContextProvider, flatGeneratorFactory)
-	}
+        cut = GenerateFlatUseCase(coroutineContextProvider, flatGeneratorFactory)
+    }
 
-	@Test
-	fun `Given generator with flat when execute then returns same flat`() {
-		// Given
-		val expectedResult = mock<Flat>()
-		var actualResult: Flat? = null
-		given(flatGenerator.generate()).willReturn(expectedResult)
+    @Test
+    fun `Given generator with flat when execute then returns same flat`() {
+        // Given
+        val expectedResult = mock<Flat>()
+        var actualResult: Flat? = null
+        given(flatGenerator.generate()).willReturn(expectedResult)
 
-		// When
-		runBlocking {
-			cut.execute { flat -> actualResult = flat }
-		}
+        // When
+        runBlocking {
+            cut.execute { flat -> actualResult = flat }
+        }
 
-		// Then
-		assertEquals(expectedResult, actualResult)
-	}
+        // Then
+        assertEquals(expectedResult, actualResult)
+    }
 }

@@ -26,101 +26,101 @@ import org.mockito.junit.MockitoJUnitRunner
  */
 @RunWith(MockitoJUnitRunner::class)
 class MainViewModelTest {
-	@get:Rule
-	val taskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule
+    val taskExecutorRule = InstantTaskExecutorRule()
 
-	@Mock
-	lateinit var useCaseExecutor: UseCaseExecutor
-	@Mock
-	lateinit var generatePersonUseCaseLazy: dagger.Lazy<GeneratePersonUseCase>
-	@Mock
-	lateinit var generatePersonUseCase: GeneratePersonUseCase
-	@Mock
-	lateinit var generatePlanetarySystemUseCaseLazy: dagger.Lazy<GeneratePlanetarySystemUseCase>
-	@Mock
-	lateinit var generatePlanetarySystemUseCase: GeneratePlanetarySystemUseCase
-	@Mock
-	lateinit var generateFlatUseCaseLazy: dagger.Lazy<GenerateFlatUseCase>
-	@Mock
-	lateinit var generateFlatUseCase: GenerateFlatUseCase
+    @Mock
+    lateinit var useCaseExecutor: UseCaseExecutor
+    @Mock
+    lateinit var generatePersonUseCaseLazy: dagger.Lazy<GeneratePersonUseCase>
+    @Mock
+    lateinit var generatePersonUseCase: GeneratePersonUseCase
+    @Mock
+    lateinit var generatePlanetarySystemUseCaseLazy: dagger.Lazy<GeneratePlanetarySystemUseCase>
+    @Mock
+    lateinit var generatePlanetarySystemUseCase: GeneratePlanetarySystemUseCase
+    @Mock
+    lateinit var generateFlatUseCaseLazy: dagger.Lazy<GenerateFlatUseCase>
+    @Mock
+    lateinit var generateFlatUseCase: GenerateFlatUseCase
 
-	private lateinit var cut: MainViewModel
+    private lateinit var cut: MainViewModel
 
-	@Before
-	fun setUp() {
-		given(generatePersonUseCaseLazy.get()).willReturn(generatePersonUseCase)
-		given(generatePlanetarySystemUseCaseLazy.get()).willReturn(generatePlanetarySystemUseCase)
-		given(generateFlatUseCaseLazy.get()).willReturn(generateFlatUseCase)
+    @Before
+    fun setUp() {
+        given(generatePersonUseCaseLazy.get()).willReturn(generatePersonUseCase)
+        given(generatePlanetarySystemUseCaseLazy.get()).willReturn(generatePlanetarySystemUseCase)
+        given(generateFlatUseCaseLazy.get()).willReturn(generateFlatUseCase)
 
-		cut = MainViewModel(useCaseExecutor, generatePersonUseCaseLazy, generatePlanetarySystemUseCaseLazy, generateFlatUseCaseLazy)
-	}
+        cut = MainViewModel(useCaseExecutor, generatePersonUseCaseLazy, generatePlanetarySystemUseCaseLazy, generateFlatUseCaseLazy)
+    }
 
-	@Test
-	fun `When onGeneratePersonClick then sets state to generated person`() {
-		// Given
-		val person = mock<Person>()
-		val callbackCaptor = argumentCaptor<(Person) -> Unit>()
+    @Test
+    fun `When onGeneratePersonClick then sets state to generated person`() {
+        // Given
+        val person = mock<Person>()
+        val callbackCaptor = argumentCaptor<(Person) -> Unit>()
 
-		// When
-		cut.onGeneratePersonClick()
+        // When
+        cut.onGeneratePersonClick()
 
-		// Then
-		verify(useCaseExecutor).execute(eq(generatePersonUseCase), callbackCaptor.capture())
-		val callback = callbackCaptor.firstValue
+        // Then
+        verify(useCaseExecutor).execute(eq(generatePersonUseCase), callbackCaptor.capture())
+        val callback = callbackCaptor.firstValue
 
-		// When
-		callback.invoke(person)
+        // When
+        callback.invoke(person)
 
-		// Then
-		assertEquals(ViewState.ShowPeople(listOf(person)), cut.viewState.value)
-	}
+        // Then
+        assertEquals(ViewState.ShowPeople(listOf(person)), cut.viewState.value)
+    }
 
-	@Test
-	fun `When onGeneratePlanetarySystemClick then sets state to generated planetary system`() {
-		// Given
-		val planetarySystem = mock<PlanetarySystem>()
-		val callbackCaptor = argumentCaptor<(PlanetarySystem) -> Unit>()
+    @Test
+    fun `When onGeneratePlanetarySystemClick then sets state to generated planetary system`() {
+        // Given
+        val planetarySystem = mock<PlanetarySystem>()
+        val callbackCaptor = argumentCaptor<(PlanetarySystem) -> Unit>()
 
-		// When
-		cut.onGeneratePlanetarySystemClick()
+        // When
+        cut.onGeneratePlanetarySystemClick()
 
-		// Then
-		verify(useCaseExecutor).execute(eq(generatePlanetarySystemUseCase), callbackCaptor.capture())
-		val callback = callbackCaptor.firstValue
+        // Then
+        verify(useCaseExecutor).execute(eq(generatePlanetarySystemUseCase), callbackCaptor.capture())
+        val callback = callbackCaptor.firstValue
 
-		// When
-		callback.invoke(planetarySystem)
+        // When
+        callback.invoke(planetarySystem)
 
-		// Then
-		assertEquals(ViewState.ShowPlanetarySystem(planetarySystem), cut.viewState.value)
-	}
+        // Then
+        assertEquals(ViewState.ShowPlanetarySystem(planetarySystem), cut.viewState.value)
+    }
 
-	@Test
-	fun `When onGenerateFlatClick then sets state to generated flat`() {
-		// Given
-		val flat = mock<Flat>()
-		val callbackCaptor = argumentCaptor<(Flat) -> Unit>()
+    @Test
+    fun `When onGenerateFlatClick then sets state to generated flat`() {
+        // Given
+        val flat = mock<Flat>()
+        val callbackCaptor = argumentCaptor<(Flat) -> Unit>()
 
-		// When
-		cut.onGenerateFlatClick()
+        // When
+        cut.onGenerateFlatClick()
 
-		// Then
-		verify(useCaseExecutor).execute(eq(generateFlatUseCase), callbackCaptor.capture())
-		val callback = callbackCaptor.firstValue
+        // Then
+        verify(useCaseExecutor).execute(eq(generateFlatUseCase), callbackCaptor.capture())
+        val callback = callbackCaptor.firstValue
 
-		// When
-		callback.invoke(flat)
+        // When
+        callback.invoke(flat)
 
-		// Then
-		assertEquals(ViewState.ShowFlat(flat), cut.viewState.value)
-	}
+        // Then
+        assertEquals(ViewState.ShowFlat(flat), cut.viewState.value)
+    }
 
-	@Test
-	fun `When clearing ViewModel use cases aborted`() {
-		// When
-		cut.onCleared()
+    @Test
+    fun `When clearing ViewModel use cases aborted`() {
+        // When
+        cut.onCleared()
 
-		// Then
-		verify(useCaseExecutor).abortAll()
-	}
+        // Then
+        verify(useCaseExecutor).abortAll()
+    }
 }

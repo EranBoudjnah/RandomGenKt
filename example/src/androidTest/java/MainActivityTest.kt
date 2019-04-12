@@ -23,65 +23,65 @@ import org.junit.runner.RunWith
  */
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest {
-	@get:Rule
-	val activityRule = ActivityTestRule(MainActivity::class.java)
+    @get:Rule
+    val activityRule = ActivityTestRule(MainActivity::class.java)
 
-	@Test
-	fun whenLaunchThenInstructionsAreVisible() {
-		// When I launch the activity
+    @Test
+    fun whenLaunchThenInstructionsAreVisible() {
+        // When I launch the activity
 
-		// Then
-		iSeeTheInstructionsView()
-	}
+        // Then
+        iSeeTheInstructionsView()
+    }
 
-	@Test
-	fun whenLaunchThenInvisibleNavigationItemSelected() {
-		// When I launch the activity
+    @Test
+    fun whenLaunchThenInvisibleNavigationItemSelected() {
+        // When I launch the activity
 
-		// Then
-		iSeeNoNavigationItemSelected()
-	}
+        // Then
+        iSeeNoNavigationItemSelected()
+    }
 
-	@Test
-	fun whenNavigateToPersonThenPersonViewDisplayed() {
-		// When
-		iSelectANavigationItem(R.id.action_person)
+    @Test
+    fun whenNavigateToPersonThenPersonViewDisplayed() {
+        // When
+        iSelectANavigationItem(R.id.action_person)
 
-		// Then
-		iSeeAViewWithinThePager(R.id.person_view)
-	}
+        // Then
+        iSeeAViewWithinThePager(R.id.person_view)
+    }
 
-	@Test
-	fun whenNavigateToPlanetarySystemThenPlanetarySystemViewDisplayed() {
-		// When
-		iSelectANavigationItem(R.id.action_planetary_system)
+    @Test
+    fun whenNavigateToPlanetarySystemThenPlanetarySystemViewDisplayed() {
+        // When
+        iSelectANavigationItem(R.id.action_planetary_system)
 
-		// Then
-		iSeeAViewWithinThePager(R.id.planetary_system_view)
-	}
+        // Then
+        iSeeAViewWithinThePager(R.id.planetary_system_view)
+    }
 
-	@Test
-	fun whenNavigateToFlatThenFlatViewDisplayed() {
-		// When
-		iSelectANavigationItem(R.id.action_flat)
+    @Test
+    fun whenNavigateToFlatThenFlatViewDisplayed() {
+        // When
+        iSelectANavigationItem(R.id.action_flat)
 
-		// Then
-		iSeeAViewWithinThePager(R.id.flat_view)
-	}
+        // Then
+        iSeeAViewWithinThePager(R.id.flat_view)
+    }
 
-	private fun iSeeTheInstructionsView() {
-		onView(withText("Choose a data type below to generate a random instance.")).check(matches(isDisplayed()))
-	}
+    private fun iSeeTheInstructionsView() {
+        onView(withText("Choose a data type below to generate a random instance.")).check(matches(isDisplayed()))
+    }
 
-	private fun iSeeNoNavigationItemSelected() {
-		onView(withId(R.id.bottom_navigation)).check(matches(hasCheckedItem(R.id.action_none)))
-	}
+    private fun iSeeNoNavigationItemSelected() {
+        onView(withId(R.id.bottom_navigation)).check(matches(hasCheckedItem(R.id.action_none)))
+    }
 
-	private fun iSelectANavigationItem(menuItemId: Int) {
-		onView(withId(R.id.bottom_navigation)).perform(bottomNavigateTo(menuItemId))
-	}
+    private fun iSelectANavigationItem(menuItemId: Int) {
+        onView(withId(R.id.bottom_navigation)).perform(bottomNavigateTo(menuItemId))
+    }
 
-	private fun iSeeAViewWithinThePager(viewId: Int) {
-		onView(withId(R.id.content_container)).perform(waitForView(allOf<View>(withId(viewId), isMostlyVisible()), 1000))
-	}
+    private fun iSeeAViewWithinThePager(viewId: Int) {
+        onView(withId(R.id.content_container)).perform(waitForView(allOf<View>(withId(viewId), isMostlyVisible()), 1000))
+    }
 }

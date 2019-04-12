@@ -8,14 +8,14 @@ import java.util.Random
 
 @Module
 class MainActivityModule {
-	@Provides
-	@Reusable
-	internal fun provideRandom(): Random {
-		return Random()
-	}
+    @Provides
+    @Reusable
+    internal fun provideRandom(): Random {
+        return Random()
+    }
 
-	@Provides
-	internal fun provideJob(): Job {
-		return Job()
-	}
+    @Provides
+    internal fun provideJob(): Job {
+        return Job()
+    }
 }

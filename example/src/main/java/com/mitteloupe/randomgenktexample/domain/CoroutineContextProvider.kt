@@ -12,6 +12,6 @@ import kotlin.coroutines.CoroutineContext
 class CoroutineContextProvider
 @Inject
 constructor() {
-	val main: CoroutineContext by lazy { Dispatchers.Main }
-	val io: CoroutineContext by lazy { Dispatchers.IO }
+    val main: CoroutineContext by lazy { Dispatchers.Main }
+    val io: CoroutineContext by lazy { Dispatchers.IO }
 }

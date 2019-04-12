@@ -18,35 +18,35 @@ import org.mockito.junit.MockitoJUnitRunner
  */
 @RunWith(MockitoJUnitRunner::class)
 class GeneratePersonUseCaseTest {
-	private lateinit var cut: GeneratePersonUseCase
+    private lateinit var cut: GeneratePersonUseCase
 
-	lateinit var coroutineContextProvider: CoroutineContextProvider
-	@Mock
-	lateinit var personGeneratorFactory: PersonGeneratorFactory
-	@Mock
-	lateinit var personGenerator: RandomGen<Person>
+    lateinit var coroutineContextProvider: CoroutineContextProvider
+    @Mock
+    lateinit var personGeneratorFactory: PersonGeneratorFactory
+    @Mock
+    lateinit var personGenerator: RandomGen<Person>
 
-	@Before
-	fun setUp() {
-		coroutineContextProvider = testCoroutineContextProvider()
-		given(personGeneratorFactory.newPersonGenerator).willReturn(personGenerator)
+    @Before
+    fun setUp() {
+        coroutineContextProvider = testCoroutineContextProvider()
+        given(personGeneratorFactory.newPersonGenerator).willReturn(personGenerator)
 
-		cut = GeneratePersonUseCase(coroutineContextProvider, personGeneratorFactory)
-	}
+        cut = GeneratePersonUseCase(coroutineContextProvider, personGeneratorFactory)
+    }
 
-	@Test
-	fun `Given generator with person when execute then returns same person`() {
-		// Given
-		val expectedResult = mock<Person>()
-		var actualResult: Person? = null
-		given(personGenerator.generate()).willReturn(expectedResult)
+    @Test
+    fun `Given generator with person when execute then returns same person`() {
+        // Given
+        val expectedResult = mock<Person>()
+        var actualResult: Person? = null
+        given(personGenerator.generate()).willReturn(expectedResult)
 
-		// When
-		runBlocking {
-			cut.execute { person -> actualResult = person }
-		}
+        // When
+        runBlocking {
+            cut.execute { person -> actualResult = person }
+        }
 
-		// Then
-		assertEquals(expectedResult, actualResult)
-	}
+        // Then
+        assertEquals(expectedResult, actualResult)
+    }
 }

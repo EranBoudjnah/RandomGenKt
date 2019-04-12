@@ -11,10 +11,10 @@ import javax.inject.Inject
 @Reusable
 class GeneratePlanetarySystemUseCase
 @Inject constructor(
-	coroutineContextProvider: CoroutineContextProvider,
-	planetarySystemGeneratorFactory: PlanetarySystemGeneratorFactory
+    coroutineContextProvider: CoroutineContextProvider,
+    planetarySystemGeneratorFactory: PlanetarySystemGeneratorFactory
 ) : BaseUseCase<PlanetarySystem>(coroutineContextProvider) {
-	private val planetarySystemRandomGen by lazy { planetarySystemGeneratorFactory.newPlanetarySystemGenerator }
+    private val planetarySystemRandomGen by lazy { planetarySystemGeneratorFactory.newPlanetarySystemGenerator }
 
-	override fun executeAsync() = planetarySystemRandomGen.generate()
+    override fun executeAsync() = planetarySystemRandomGen.generate()
 }
