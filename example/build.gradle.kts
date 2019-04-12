@@ -77,6 +77,7 @@ ktlintVerify.apply {
     classpath = ktlint
     args("**/*.gradle.kts", "**/*.kt")
 }
+tasks["check"].dependsOn(ktlintVerify)
 
 val ktlintFormat: JavaExec by tasks.creating(JavaExec::class)
 ktlintFormat.apply {

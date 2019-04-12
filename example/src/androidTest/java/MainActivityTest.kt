@@ -1,4 +1,3 @@
-
 import EspressoMatchers.hasCheckedItem
 import EspressoMatchers.isMostlyVisible
 import EspressoViewActions.bottomNavigateTo
@@ -48,7 +47,7 @@ class MainActivityTest {
         iSelectANavigationItem(R.id.action_person)
 
         // Then
-        iSeeAViewWithinThePager(R.id.person_view)
+        iSeeAViewWithinThePager(R.id.people_view)
     }
 
     @Test

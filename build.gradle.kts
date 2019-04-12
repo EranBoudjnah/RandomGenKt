@@ -37,3 +37,9 @@ val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
 	jvmTarget = "1.6"
 }
+
+val ktlintVerify: JavaExec by tasks.creating(JavaExec::class)
+
+val ktlintFormat: JavaExec by tasks.creating(JavaExec::class)
+
+
