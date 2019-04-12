@@ -15,37 +15,37 @@ import java.util.Random
  */
 @RunWith(MockitoJUnitRunner::class)
 class BooleanFieldDataProviderTest {
-	private lateinit var cut: BooleanFieldDataProvider<Any>
+    private lateinit var cut: BooleanFieldDataProvider<Any>
 
-	@Mock
-	private lateinit var random: Random
+    @Mock
+    private lateinit var random: Random
 
-	@Before
-	fun setUp() {
-		cut = BooleanFieldDataProvider(random)
-	}
+    @Before
+    fun setUp() {
+        cut = BooleanFieldDataProvider(random)
+    }
 
-	@Test
-	fun givenFalseRandomValueWhenGenerateThenReturnsFalse() {
-		// Given
-		given(random.nextBoolean()).willReturn(false)
+    @Test
+    fun givenFalseRandomValueWhenGenerateThenReturnsFalse() {
+        // Given
+        given(random.nextBoolean()).willReturn(false)
 
-		// When
-		val result = cut.invoke()
+        // When
+        val result = cut.invoke()
 
-		// Then
-		assertFalse(result)
-	}
+        // Then
+        assertFalse(result)
+    }
 
-	@Test
-	fun givenTrueRandomValueWhenGenerateThenReturnsTrue() {
-		// Given
-		given(random.nextBoolean()).willReturn(true)
+    @Test
+    fun givenTrueRandomValueWhenGenerateThenReturnsTrue() {
+        // Given
+        given(random.nextBoolean()).willReturn(true)
 
-		// When
-		val result = cut.invoke()
+        // When
+        val result = cut.invoke()
 
-		// Then
-		assertTrue(result)
-	}
+        // Then
+        assertTrue(result)
+    }
 }

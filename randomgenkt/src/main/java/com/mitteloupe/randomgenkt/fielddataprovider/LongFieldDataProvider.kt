@@ -12,24 +12,24 @@ class LongFieldDataProvider<OUTPUT_TYPE>
 /**
  * Returns a new instance of [LongFieldDataProvider] generating a [Long] between [minimum] and [maximum].
  *
- * @param random  A random value generator
+ * @param random A random value generator
  * @param minimum The lowest possible value
  * @param maximum The highest possible value
  */
 constructor(
-	private val random: Random,
-	private val minimum: Long = Long.MIN_VALUE,
-	private val maximum: Long = Long.MAX_VALUE
+    private val random: Random,
+    private val minimum: Long = Long.MIN_VALUE,
+    private val maximum: Long = Long.MAX_VALUE
 ) : FieldDataProvider<OUTPUT_TYPE, Long>() {
-	override fun invoke(instance: OUTPUT_TYPE?): Long {
-		val minBigDecimal = minimum.toBigDecimal()
-		val maxBigDecimal = maximum.toBigDecimal()
-		val value = maxBigDecimal
-			.subtract(minBigDecimal)
-			.add(1.toBigDecimal())
-			.multiply(random.nextDouble().toBigDecimal())
-			.add(minBigDecimal)
+    override fun invoke(instance: OUTPUT_TYPE?): Long {
+        val minBigDecimal = minimum.toBigDecimal()
+        val maxBigDecimal = maximum.toBigDecimal()
+        val value = maxBigDecimal
+            .subtract(minBigDecimal)
+            .add(1.toBigDecimal())
+            .multiply(random.nextDouble().toBigDecimal())
+            .add(minBigDecimal)
 
-		return value.toLong()
-	}
+        return value.toLong()
+    }
 }

@@ -12,24 +12,24 @@ class IntFieldDataProvider<OUTPUT_TYPE>
 /**
  * Returns a new instance of [IntFieldDataProvider] generating an [Int] between [minimum] and [maximum].
  *
- * @param random  A random value generator
+ * @param random A random value generator
  * @param minimum The lowest possible value (default: [Int.MIN_VALUE])
  * @param maximum The highest possible value (default: [Int.MAX_VALUE])
  */
 constructor(
-	private val random: Random,
-	private val minimum: Int = Int.MIN_VALUE,
-	private val maximum: Int = Int.MAX_VALUE
+    private val random: Random,
+    private val minimum: Int = Int.MIN_VALUE,
+    private val maximum: Int = Int.MAX_VALUE
 ) : FieldDataProvider<OUTPUT_TYPE, Int>() {
-	override fun invoke(instance: OUTPUT_TYPE?): Int {
-		val minBigDecimal = minimum.toBigDecimal()
-		val maxBigDecimal = maximum.toBigDecimal()
-		val value = maxBigDecimal
-			.subtract(minBigDecimal)
-			.add(1.toBigDecimal())
-			.multiply(random.nextDouble().toBigDecimal())
-			.add(minBigDecimal)
+    override fun invoke(instance: OUTPUT_TYPE?): Int {
+        val minBigDecimal = minimum.toBigDecimal()
+        val maxBigDecimal = maximum.toBigDecimal()
+        val value = maxBigDecimal
+            .subtract(minBigDecimal)
+            .add(1.toBigDecimal())
+            .multiply(random.nextDouble().toBigDecimal())
+            .add(minBigDecimal)
 
-		return value.toInt()
-	}
+        return value.toInt()
+    }
 }

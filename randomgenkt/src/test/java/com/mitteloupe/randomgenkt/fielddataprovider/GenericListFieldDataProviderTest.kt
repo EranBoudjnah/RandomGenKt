@@ -15,54 +15,54 @@ import java.util.Random
  */
 @RunWith(MockitoJUnitRunner::class)
 class GenericListFieldDataProviderTest {
-	private lateinit var cut: GenericListFieldDataProvider<Any, String>
+    private lateinit var cut: GenericListFieldDataProvider<Any, String>
 
-	@Mock
-	private lateinit var random: Random
+    @Mock
+    private lateinit var random: Random
 
-	private lateinit var values: MutableList<String>
+    private lateinit var values: MutableList<String>
 
-	@Before
-	fun setUp() {
-		values = Arrays.asList("The First", "The Last", "Eternity")
+    @Before
+    fun setUp() {
+        values = Arrays.asList("The First", "The Last", "Eternity")
 
-		cut = GenericListFieldDataProvider(random, values)
-	}
+        cut = GenericListFieldDataProvider(random, values)
+    }
 
-	@Test
-	fun givenMinRandomValueWhenGenerateThenReturnsFirstValue() {
-		// Given
-		given(random.nextDouble()).willReturn(0.0)
+    @Test
+    fun givenMinRandomValueWhenGenerateThenReturnsFirstValue() {
+        // Given
+        given(random.nextDouble()).willReturn(0.0)
 
-		// When
-		val result = cut.invoke()
+        // When
+        val result = cut.invoke()
 
-		// Then
-		assertEquals("The First", result)
-	}
+        // Then
+        assertEquals("The First", result)
+    }
 
-	@Test
-	fun givenMaxRandomValueWhenGenerateThenReturnsLastValue() {
-		// Given
-		given(random.nextDouble()).willReturn(0.99999999999)
+    @Test
+    fun givenMaxRandomValueWhenGenerateThenReturnsLastValue() {
+        // Given
+        given(random.nextDouble()).willReturn(0.99999999999)
 
-		// When
-		val result = cut.invoke()
+        // When
+        val result = cut.invoke()
 
-		// Then
-		assertEquals("Eternity", result)
-	}
+        // Then
+        assertEquals("Eternity", result)
+    }
 
-	@Test
-	fun givenListIsModifiedWhenGenerateThenReturnsUnmodifiedValue() {
-		// Given
-		given(random.nextDouble()).willReturn(0.0)
-		values[0] = "The Firstest"
+    @Test
+    fun givenListIsModifiedWhenGenerateThenReturnsUnmodifiedValue() {
+        // Given
+        given(random.nextDouble()).willReturn(0.0)
+        values[0] = "The Firstest"
 
-		// When
-		val result = cut.invoke()
+        // When
+        val result = cut.invoke()
 
-		// Then
-		assertEquals("The First", result)
-	}
+        // Then
+        assertEquals("The First", result)
+    }
 }

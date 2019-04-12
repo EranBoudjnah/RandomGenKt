@@ -10,7 +10,7 @@ import java.util.Random
  * Created by Eran Boudjnah on 24/04/2018.
  */
 class BooleanFieldDataProvider<OUTPUT_TYPE>(
-	private val random: Random
+    private val random: Random
 ) : FieldDataProvider<OUTPUT_TYPE, Boolean>() {
-	override fun invoke(instance: OUTPUT_TYPE?) = random.nextBoolean()
+    override fun invoke(instance: OUTPUT_TYPE?) = random.nextBoolean()
 }

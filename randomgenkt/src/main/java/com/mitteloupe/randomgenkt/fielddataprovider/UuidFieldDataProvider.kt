@@ -15,7 +15,7 @@ class UuidFieldDataProvider<OUTPUT_TYPE>
  * @param uuidGenerator A generator of UUIDs
  */
 constructor(
-	private val uuidGenerator: UuidGenerator
+    private val uuidGenerator: UuidGenerator
 ) : FieldDataProvider<OUTPUT_TYPE, String>() {
-	override fun invoke(instance: OUTPUT_TYPE?) = uuidGenerator.randomUUID()
+    override fun invoke(instance: OUTPUT_TYPE?) = uuidGenerator.randomUUID()
 }

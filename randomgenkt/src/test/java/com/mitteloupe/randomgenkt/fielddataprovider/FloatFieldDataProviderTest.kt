@@ -13,52 +13,52 @@ import java.util.Random
  */
 @RunWith(MockitoJUnitRunner::class)
 class FloatFieldDataProviderTest {
-	private lateinit var cut: FloatFieldDataProvider<Any>
+    private lateinit var cut: FloatFieldDataProvider<Any>
 
-	@Mock
-	private lateinit var random: Random
+    @Mock
+    private lateinit var random: Random
 
-	@Test
-	fun givenRandomFloatValueWhenGeneratewillReturnsSameValue() {
-		// Given
-		cut = FloatFieldDataProvider(random)
-		given(random.nextFloat()).willReturn(0f)
+    @Test
+    fun givenRandomFloatValueWhenGeneratewillReturnsSameValue() {
+        // Given
+        cut = FloatFieldDataProvider(random)
+        given(random.nextFloat()).willReturn(0f)
 
-		// When
-		var result = cut.invoke()
+        // When
+        var result = cut.invoke()
 
-		// Then
-		assertEquals(0.0f, result, 0.00001f)
+        // Then
+        assertEquals(0.0f, result, 0.00001f)
 
-		// Given
-		given(random.nextFloat()).willReturn(1f)
+        // Given
+        given(random.nextFloat()).willReturn(1f)
 
-		// When
-		result = cut.invoke()
+        // When
+        result = cut.invoke()
 
-		// Then
-		assertEquals(1.0f, result, 0.00001f)
-	}
+        // Then
+        assertEquals(1.0f, result, 0.00001f)
+    }
 
-	@Test
-	fun givenRandomFloatValueAndRangeWhenGeneratewillReturnsCorrectValue() {
-		// Given
-		cut = FloatFieldDataProvider(random, Float.MIN_VALUE, Float.MAX_VALUE)
-		given(random.nextFloat()).willReturn(0f)
+    @Test
+    fun givenRandomFloatValueAndRangeWhenGeneratewillReturnsCorrectValue() {
+        // Given
+        cut = FloatFieldDataProvider(random, Float.MIN_VALUE, Float.MAX_VALUE)
+        given(random.nextFloat()).willReturn(0f)
 
-		// When
-		var result = cut.invoke()
+        // When
+        var result = cut.invoke()
 
-		// Then
-		assertEquals(Float.MIN_VALUE, result, 0.00001f)
+        // Then
+        assertEquals(Float.MIN_VALUE, result, 0.00001f)
 
-		// Given
-		given(random.nextFloat()).willReturn(1f)
+        // Given
+        given(random.nextFloat()).willReturn(1f)
 
-		// When
-		result = cut.invoke()
+        // When
+        result = cut.invoke()
 
-		// Then
-		assertEquals(Float.MAX_VALUE, result, 0.00001f)
-	}
+        // Then
+        assertEquals(Float.MAX_VALUE, result, 0.00001f)
+    }
 }

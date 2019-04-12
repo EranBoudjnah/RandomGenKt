@@ -17,36 +17,36 @@ import java.util.Random
 @RunWith(MockitoJUnitRunner::class)
 class CustomListRangeFieldDataProviderTest {
 
-	private lateinit var cut: CustomListRangeFieldDataProvider<*, String>
+    private lateinit var cut: CustomListRangeFieldDataProvider<*, String>
 
-	@Mock
-	private lateinit var random: Random
-	@Mock
-	private lateinit var fieldDataProvider: FieldDataProvider<Any, String>
+    @Mock
+    private lateinit var random: Random
+    @Mock
+    private lateinit var fieldDataProvider: FieldDataProvider<Any, String>
 
-	@Before
-	fun setUp() {
-		cut = CustomListRangeFieldDataProvider(random, MIN_INSTANCES, MAX_INSTANCES, fieldDataProvider)
-	}
+    @Before
+    fun setUp() {
+        cut = CustomListRangeFieldDataProvider(random, MIN_INSTANCES, MAX_INSTANCES, fieldDataProvider)
+    }
 
-	@Test
-	fun givenFixedSizeListOfRandomBytesWhenGenerateThenReturnsSameBytes() {
-		// Given
-		val expectedResult1 = "I'm the king of the world!"
-		val expectedResult2 = "I'm on a boat!"
-		val expectedResult3 = "I'm cold!"
-		given(fieldDataProvider.invoke(null)).willReturn(expectedResult1, expectedResult2, expectedResult3)
-		given(random.nextInt(5)).willReturn(2)
+    @Test
+    fun givenFixedSizeListOfRandomBytesWhenGenerateThenReturnsSameBytes() {
+        // Given
+        val expectedResult1 = "I'm the king of the world!"
+        val expectedResult2 = "I'm on a boat!"
+        val expectedResult3 = "I'm cold!"
+        given(fieldDataProvider.invoke(null)).willReturn(expectedResult1, expectedResult2, expectedResult3)
+        given(random.nextInt(5)).willReturn(2)
 
-		// When
-		val result = cut.invoke()
+        // When
+        val result = cut.invoke()
 
-		// Then
-		assertEquals(Arrays.asList(expectedResult1, expectedResult2, expectedResult3), result)
-	}
+        // Then
+        assertEquals(Arrays.asList(expectedResult1, expectedResult2, expectedResult3), result)
+    }
 
-	private companion object {
-		private const val MIN_INSTANCES = 1
-		private const val MAX_INSTANCES = 5
-	}
+    private companion object {
+        private const val MIN_INSTANCES = 1
+        private const val MAX_INSTANCES = 5
+    }
 }

@@ -14,32 +14,32 @@ import org.mockito.junit.MockitoJUnitRunner
  */
 @RunWith(MockitoJUnitRunner::class)
 class CustomListFieldDataProviderTest {
-	private lateinit var cut: CustomListFieldDataProvider<*, String>
+    private lateinit var cut: CustomListFieldDataProvider<*, String>
 
-	@Mock
-	private lateinit var fieldDataProvider: FieldDataProvider<Any, String>
+    @Mock
+    private lateinit var fieldDataProvider: FieldDataProvider<Any, String>
 
-	@Before
-	fun setUp() {
-		cut = CustomListFieldDataProvider(INSTANCES, fieldDataProvider)
-	}
+    @Before
+    fun setUp() {
+        cut = CustomListFieldDataProvider(INSTANCES, fieldDataProvider)
+    }
 
-	@Test
-	fun givenFixedSizeListOfRandomBytesWhenGenerateThenReturnsSameBytes() {
-		// Given
-		val expectedResult1 = "I'm the king of the world!"
-		val expectedResult2 = "I'm on a boat!"
-		val expectedResult3 = "I'm cold!"
-		given(fieldDataProvider.invoke(null)).willReturn(expectedResult1, expectedResult2, expectedResult3)
+    @Test
+    fun givenFixedSizeListOfRandomBytesWhenGenerateThenReturnsSameBytes() {
+        // Given
+        val expectedResult1 = "I'm the king of the world!"
+        val expectedResult2 = "I'm on a boat!"
+        val expectedResult3 = "I'm cold!"
+        given(fieldDataProvider.invoke(null)).willReturn(expectedResult1, expectedResult2, expectedResult3)
 
-		// When
-		val result = cut.invoke()
+        // When
+        val result = cut.invoke()
 
-		// Then
-		assertEquals(listOf(expectedResult1, expectedResult2, expectedResult3), result)
-	}
+        // Then
+        assertEquals(listOf(expectedResult1, expectedResult2, expectedResult3), result)
+    }
 
-	private companion object {
-		private const val INSTANCES = 3
-	}
+    private companion object {
+        private const val INSTANCES = 3
+    }
 }

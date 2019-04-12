@@ -18,51 +18,51 @@ import java.util.Random
  */
 @RunWith(Parameterized::class)
 class RandomEnumFieldDataProviderTest(
-	private val randomValue: Int,
-	private val expectedColor: MagicColors?
+    private val randomValue: Int,
+    private val expectedColor: MagicColors?
 ) {
-	companion object {
-		@JvmStatic
-		@Parameterized.Parameters
-		fun data(): Collection<Array<*>> {
-			return Arrays.asList(
-				arrayOf(0, MagicColors.WHITE),
-				arrayOf(2, MagicColors.BLACK),
-				arrayOf(4, MagicColors.GREEN)
-			)
-		}
-	}
+    companion object {
+        @JvmStatic
+        @Parameterized.Parameters
+        fun data(): Collection<Array<*>> {
+            return Arrays.asList(
+                arrayOf(0, MagicColors.WHITE),
+                arrayOf(2, MagicColors.BLACK),
+                arrayOf(4, MagicColors.GREEN)
+            )
+        }
+    }
 
-	private lateinit var cut: RandomEnumFieldDataProvider<Any, MagicColors>
+    private lateinit var cut: RandomEnumFieldDataProvider<Any, MagicColors>
 
-	@get:Rule
-	val mockitoRule: MockitoRule = MockitoJUnit.rule()
+    @get:Rule
+    val mockitoRule: MockitoRule = MockitoJUnit.rule()
 
-	@Mock
-	private lateinit var random: Random
+    @Mock
+    private lateinit var random: Random
 
-	@Before
-	fun setUp() {
-		cut = RandomEnumFieldDataProvider(random, MagicColors::class.java)
-	}
+    @Before
+    fun setUp() {
+        cut = RandomEnumFieldDataProvider(random, MagicColors::class.java)
+    }
 
-	@Test
-	fun givenRandomIntValueWhenGenerateThenReturnsIntegerValue() {
-		// Given
-		given(random.nextInt(5)).willReturn(randomValue)
+    @Test
+    fun givenRandomIntValueWhenGenerateThenReturnsIntegerValue() {
+        // Given
+        given(random.nextInt(5)).willReturn(randomValue)
 
-		// When
-		val result = cut.invoke()
+        // When
+        val result = cut.invoke()
 
-		// Then
-		assertEquals(expectedColor, result)
-	}
+        // Then
+        assertEquals(expectedColor, result)
+    }
 
-	enum class MagicColors {
-		WHITE,
-		BLUE,
-		BLACK,
-		RED,
-		GREEN
-	}
+    enum class MagicColors {
+        WHITE,
+        BLUE,
+        BLACK,
+        RED,
+        GREEN
+    }
 }

@@ -10,12 +10,12 @@ import java.util.Random
  * Created by Eran Boudjnah on 24/04/2018.
  */
 class ByteFieldDataProvider<OUTPUT_TYPE>(
-	private val random: Random
+    private val random: Random
 ) : FieldDataProvider<OUTPUT_TYPE, Byte>() {
-	private val byteArray by lazy { ByteArray(1) }
+    private val byteArray by lazy { ByteArray(1) }
 
-	override fun invoke(instance: OUTPUT_TYPE?): Byte {
-		random.nextBytes(byteArray)
-		return byteArray[0]
-	}
+    override fun invoke(instance: OUTPUT_TYPE?): Byte {
+        random.nextBytes(byteArray)
+        return byteArray[0]
+    }
 }

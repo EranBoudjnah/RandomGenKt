@@ -13,13 +13,13 @@ class RandomEnumFieldDataProvider<OUTPUT_TYPE, VALUE_TYPE : Enum<*>>
  * Creates an instance of [RandomEnumFieldDataProvider] generating a random `Enum` value.
  *
  * @param random A random value generator
- * @param value  An enum class of which values will be generated
+ * @param value An enum class of which values will be generated
  */
 constructor(
-	private val random: Random,
-	value: Class<VALUE_TYPE>
+    private val random: Random,
+    value: Class<VALUE_TYPE>
 ) : FieldDataProvider<OUTPUT_TYPE, VALUE_TYPE>() {
-	private val possibleValues = value.enumConstants
+    private val possibleValues = value.enumConstants
 
-	override fun invoke(instance: OUTPUT_TYPE?): VALUE_TYPE = possibleValues[random.nextInt(possibleValues.size)]
+    override fun invoke(instance: OUTPUT_TYPE?): VALUE_TYPE = possibleValues[random.nextInt(possibleValues.size)]
 }

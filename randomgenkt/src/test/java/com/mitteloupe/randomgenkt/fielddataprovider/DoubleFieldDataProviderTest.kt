@@ -13,52 +13,52 @@ import java.util.Random
  */
 @RunWith(MockitoJUnitRunner::class)
 class DoubleFieldDataProviderTest {
-	private lateinit var cut: DoubleFieldDataProvider<Any>
+    private lateinit var cut: DoubleFieldDataProvider<Any>
 
-	@Mock
-	private lateinit var random: Random
+    @Mock
+    private lateinit var random: Random
 
-	@Test
-	fun givenRandomDoubleValueWhenGenerateThenReturnsSameValue() {
-		// Given
-		cut = DoubleFieldDataProvider.getInstance(random)
-		given(random.nextDouble()).willReturn(0.0)
+    @Test
+    fun givenRandomDoubleValueWhenGenerateThenReturnsSameValue() {
+        // Given
+        cut = DoubleFieldDataProvider.getInstance(random)
+        given(random.nextDouble()).willReturn(0.0)
 
-		// When
-		var result = cut.invoke()
+        // When
+        var result = cut.invoke()
 
-		// Then
-		assertEquals(0.0, result, 0.00001)
+        // Then
+        assertEquals(0.0, result, 0.00001)
 
-		// Given
-		given(random.nextDouble()).willReturn(0.99999999999)
+        // Given
+        given(random.nextDouble()).willReturn(0.99999999999)
 
-		// When
-		result = cut.invoke()
+        // When
+        result = cut.invoke()
 
-		// Then
-		assertEquals(1.0, result, 0.00001)
-	}
+        // Then
+        assertEquals(1.0, result, 0.00001)
+    }
 
-	@Test
-	fun givenRandomDoubleValueAndRangeWhenGenerateThenReturnsCorrectValue() {
-		// Given
-		cut = DoubleFieldDataProvider.getInstanceWithRange(random, Double.MIN_VALUE, Double.MAX_VALUE)
-		given(random.nextDouble()).willReturn(0.0)
+    @Test
+    fun givenRandomDoubleValueAndRangeWhenGenerateThenReturnsCorrectValue() {
+        // Given
+        cut = DoubleFieldDataProvider.getInstanceWithRange(random, Double.MIN_VALUE, Double.MAX_VALUE)
+        given(random.nextDouble()).willReturn(0.0)
 
-		// When
-		var result = cut.invoke()
+        // When
+        var result = cut.invoke()
 
-		// Then
-		assertEquals(Double.MIN_VALUE, result, 0.00001)
+        // Then
+        assertEquals(Double.MIN_VALUE, result, 0.00001)
 
-		// Given
-		given(random.nextDouble()).willReturn(0.999999999999999999)
+        // Given
+        given(random.nextDouble()).willReturn(0.999999999999999999)
 
-		// When
-		result = cut.invoke()
+        // When
+        result = cut.invoke()
 
-		// Then
-		assertEquals(Double.MAX_VALUE, result, 0.00001)
-	}
+        // Then
+        assertEquals(Double.MAX_VALUE, result, 0.00001)
+    }
 }

@@ -13,52 +13,52 @@ import java.util.Random
  */
 @RunWith(MockitoJUnitRunner::class)
 class IntFieldDataProviderTest {
-	private lateinit var cut: IntFieldDataProvider<Any>
+    private lateinit var cut: IntFieldDataProvider<Any>
 
-	@Mock
-	private lateinit var random: Random
+    @Mock
+    private lateinit var random: Random
 
-	@Test
-	fun givenRandomDoubleValueWhenGenerateThenReturnsIntegerValue() {
-		// Given
-		cut = IntFieldDataProvider(random)
-		given(random.nextDouble()).willReturn(0.0)
+    @Test
+    fun givenRandomDoubleValueWhenGenerateThenReturnsIntegerValue() {
+        // Given
+        cut = IntFieldDataProvider(random)
+        given(random.nextDouble()).willReturn(0.0)
 
-		// When
-		var result = cut.invoke()
+        // When
+        var result = cut.invoke()
 
-		// Then
-		assertEquals(Int.MIN_VALUE, result)
+        // Then
+        assertEquals(Int.MIN_VALUE, result)
 
-		// Given
-		given(random.nextDouble()).willReturn(0.99999999999)
+        // Given
+        given(random.nextDouble()).willReturn(0.99999999999)
 
-		// When
-		result = cut.invoke()
+        // When
+        result = cut.invoke()
 
-		// Then
-		assertEquals(Int.MAX_VALUE, result)
-	}
+        // Then
+        assertEquals(Int.MAX_VALUE, result)
+    }
 
-	@Test
-	fun givenRandomFloatValueAndRangeWhenGenerateThenReturnsCorrectValue() {
-		// Given
-		cut = IntFieldDataProvider(random, 0, 100)
-		given(random.nextDouble()).willReturn(0.0)
+    @Test
+    fun givenRandomFloatValueAndRangeWhenGenerateThenReturnsCorrectValue() {
+        // Given
+        cut = IntFieldDataProvider(random, 0, 100)
+        given(random.nextDouble()).willReturn(0.0)
 
-		// When
-		var result = cut.invoke()
+        // When
+        var result = cut.invoke()
 
-		// Then
-		assertEquals(0, result)
+        // Then
+        assertEquals(0, result)
 
-		// Given
-		given(random.nextDouble()).willReturn(0.99999999999)
+        // Given
+        given(random.nextDouble()).willReturn(0.99999999999)
 
-		// When
-		result = cut.invoke()
+        // When
+        result = cut.invoke()
 
-		// Then
-		assertEquals(100, result)
-	}
+        // Then
+        assertEquals(100, result)
+    }
 }

@@ -14,7 +14,7 @@ class ExplicitFieldDataProvider<OUTPUT_TYPE, VALUE_TYPE>
  * @param value The value to generate
  */
 constructor(
-	private val value: VALUE_TYPE
+    private val value: VALUE_TYPE
 ) : FieldDataProvider<OUTPUT_TYPE, VALUE_TYPE>() {
-	override fun invoke(instance: OUTPUT_TYPE?) = value
+    override fun invoke(instance: OUTPUT_TYPE?) = value
 }

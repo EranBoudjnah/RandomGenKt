@@ -14,7 +14,7 @@ class SequentialIntegerFieldDataProvider<OUTPUT_TYPE>
  * @param counter The first value to generate. (Default: `1`)
  */
 constructor(
-	private var counter: Int = 1
+    private var counter: Int = 1
 ) : FieldDataProvider<OUTPUT_TYPE, Int>() {
-	override fun invoke(instance: OUTPUT_TYPE?) = counter++
+    override fun invoke(instance: OUTPUT_TYPE?) = counter++
 }

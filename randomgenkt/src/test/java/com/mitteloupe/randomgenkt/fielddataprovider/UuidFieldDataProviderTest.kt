@@ -14,26 +14,26 @@ import org.mockito.junit.MockitoJUnitRunner
  */
 @RunWith(MockitoJUnitRunner::class)
 class UuidFieldDataProviderTest {
-	private lateinit var cut: UuidFieldDataProvider<Any>
+    private lateinit var cut: UuidFieldDataProvider<Any>
 
-	@Mock
-	private lateinit var uuidGenerator: UuidGenerator
+    @Mock
+    private lateinit var uuidGenerator: UuidGenerator
 
-	@Before
-	fun setUp() {
-		cut = UuidFieldDataProvider(uuidGenerator)
-	}
+    @Before
+    fun setUp() {
+        cut = UuidFieldDataProvider(uuidGenerator)
+    }
 
-	@Test
-	fun givenAUuidWhenGenerateThenReturnsGeneratedValue() {
-		// Given
-		val expectedValue = "c9569006-9d99-11e8-98d0-529269fb1459"
-		given(uuidGenerator.randomUUID()).willReturn(expectedValue)
+    @Test
+    fun givenAUuidWhenGenerateThenReturnsGeneratedValue() {
+        // Given
+        val expectedValue = "c9569006-9d99-11e8-98d0-529269fb1459"
+        given(uuidGenerator.randomUUID()).willReturn(expectedValue)
 
-		// When
-		val result = cut.invoke()
+        // When
+        val result = cut.invoke()
 
-		// Then
-		assertEquals(expectedValue, result)
-	}
+        // Then
+        assertEquals(expectedValue, result)
+    }
 }

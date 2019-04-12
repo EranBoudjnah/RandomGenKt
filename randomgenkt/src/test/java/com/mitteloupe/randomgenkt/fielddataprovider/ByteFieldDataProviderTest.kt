@@ -15,28 +15,28 @@ import java.util.Random
  */
 @RunWith(MockitoJUnitRunner::class)
 class ByteFieldDataProviderTest {
-	private lateinit var cut: ByteFieldDataProvider<Any>
+    private lateinit var cut: ByteFieldDataProvider<Any>
 
-	@Mock
-	private lateinit var random: Random
+    @Mock
+    private lateinit var random: Random
 
-	@Before
-	fun setUp() {
-		cut = ByteFieldDataProvider(random)
-	}
+    @Before
+    fun setUp() {
+        cut = ByteFieldDataProvider(random)
+    }
 
-	@Test
-	fun givenRandomByteValueWhenGenerateThenReturnsSameByte() {
-		// Given
-		doAnswer { invocation ->
-			invocation.getArgument<ByteArray>(0)[0] = 113
-			null
-		}.`when`(random).nextBytes(any())
+    @Test
+    fun givenRandomByteValueWhenGenerateThenReturnsSameByte() {
+        // Given
+        doAnswer { invocation ->
+            invocation.getArgument<ByteArray>(0)[0] = 113
+            null
+        }.`when`(random).nextBytes(any())
 
-		// When
-		val result = cut.invoke()
+        // When
+        val result = cut.invoke()
 
-		// Then
-		assertEquals(113.toByte(), result)
-	}
+        // Then
+        assertEquals(113.toByte(), result)
+    }
 }

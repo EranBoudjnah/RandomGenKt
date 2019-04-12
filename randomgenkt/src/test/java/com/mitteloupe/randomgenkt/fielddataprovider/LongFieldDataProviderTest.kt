@@ -15,52 +15,52 @@ import kotlin.math.absoluteValue
  */
 @RunWith(MockitoJUnitRunner::class)
 class LongFieldDataProviderTest {
-	private lateinit var cut: LongFieldDataProvider<Any>
+    private lateinit var cut: LongFieldDataProvider<Any>
 
-	@Mock
-	private lateinit var random: Random
+    @Mock
+    private lateinit var random: Random
 
-	@Test
-	fun givenRandomDoubleValueWhenGenerateThenReturnsLongValue() {
-		// Given
-		cut = LongFieldDataProvider(random)
-		given(random.nextDouble()).willReturn(0.0)
+    @Test
+    fun givenRandomDoubleValueWhenGenerateThenReturnsLongValue() {
+        // Given
+        cut = LongFieldDataProvider(random)
+        given(random.nextDouble()).willReturn(0.0)
 
-		// When
-		var result = cut.invoke()
+        // When
+        var result = cut.invoke()
 
-		// Then
-		assertEquals(Long.MIN_VALUE, result)
+        // Then
+        assertEquals(Long.MIN_VALUE, result)
 
-		// Given
-		given(random.nextDouble()).willReturn(0.99999999999999999999999)
+        // Given
+        given(random.nextDouble()).willReturn(0.99999999999999999999999)
 
-		// When
-		result = cut.invoke()
+        // When
+        result = cut.invoke()
 
-		// Then
-		assertTrue((Long.MAX_VALUE - result).absoluteValue < 10L)
-	}
+        // Then
+        assertTrue((Long.MAX_VALUE - result).absoluteValue < 10L)
+    }
 
-	@Test
-	fun givenRandomFloatValueAndRangeWhenGenerateThenReturnsCorrectValue() {
-		// Given
-		cut = LongFieldDataProvider(random, 0L, 100L)
-		given(random.nextDouble()).willReturn(0.0)
+    @Test
+    fun givenRandomFloatValueAndRangeWhenGenerateThenReturnsCorrectValue() {
+        // Given
+        cut = LongFieldDataProvider(random, 0L, 100L)
+        given(random.nextDouble()).willReturn(0.0)
 
-		// When
-		var result = cut.invoke()
+        // When
+        var result = cut.invoke()
 
-		// Then
-		assertEquals(0, result)
+        // Then
+        assertEquals(0, result)
 
-		// Given
-		given(random.nextDouble()).willReturn(0.9999999999999999)
+        // Given
+        given(random.nextDouble()).willReturn(0.9999999999999999)
 
-		// When
-		result = cut.invoke()
+        // When
+        result = cut.invoke()
 
-		// Then
-		assertEquals(100, result)
-	}
+        // Then
+        assertEquals(100, result)
+    }
 }
