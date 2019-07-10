@@ -11,13 +11,13 @@ dependencies {
     ktlint("com.github.shyiko:ktlint:0.31.0")
 
     compile(kotlin("stdlib-jdk8"))
-    compile("org.jetbrains.kotlin:kotlin-reflect:1.3.21")
+    compile("org.jetbrains.kotlin:kotlin-reflect:1.3.41")
 
     implementation("com.implimentz:unsafe:0.0.6")
 
     testImplementation("junit:junit:4.12")
     testImplementation("org.hamcrest:hamcrest-core:1.3")
-    testImplementation("org.mockito:mockito-core:2.23.0")
+    testImplementation("org.mockito:mockito-core:2.28.2")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
 }
 
