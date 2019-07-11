@@ -15,6 +15,7 @@ import com.mitteloupe.randomgenkt.fielddataprovider.LoremIpsumFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.RandomEnumFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.RgbFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.SequentialIntegerFieldDataProvider
+import com.mitteloupe.randomgenkt.fielddataprovider.ShortFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.UuidFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.WeightedFieldDataProvidersFieldDataProvider
 import com.nhaarman.mockitokotlin2.mock
@@ -384,6 +385,46 @@ class RandomGenTest(
 
         // Then
         assertEquals(expectedValue, testPerson.soLong)
+    }
+
+    @Test
+    fun `Given builder returning Short when generate then instance has correct value`() {
+        // Given
+        val shortFieldDataProvider = mock<ShortFieldDataProvider<TestPerson>>()
+        given(fieldDataProviderFactory.getShortFieldDataProvider()).willReturn(shortFieldDataProvider)
+        val expectedValue = 400.toShort()
+        given(shortFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
+
+        cut = incompleteBuilderField
+            .withField("soShort")
+            .returningShort()
+            .build()
+
+        // When
+        val testPerson = cut.generate()
+
+        // Then
+        assertEquals(expectedValue.toShort(), testPerson.soShort)
+    }
+
+    @Test
+    fun `Given builder returning Short range when generate then instance has correct value`() {
+        // Given
+        val shortFieldDataProvider = mock<ShortFieldDataProvider<TestPerson>>()
+        given(fieldDataProviderFactory.getShortFieldDataProvider(1000.toShort(), 2000.toShort())).willReturn(shortFieldDataProvider)
+        val expectedValue = 1337.toShort()
+        given(shortFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
+
+        cut = incompleteBuilderField
+            .withField("soShort")
+            .returning(1000.toShort(), 2000.toShort())
+            .build()
+
+        // When
+        val testPerson = cut.generate()
+
+        // Then
+        assertEquals(expectedValue, testPerson.soShort)
     }
 
     @Test
@@ -918,6 +959,7 @@ class RandomGenTest(
         internal val height: Float = 0.toFloat()
         internal val candiesCount: Int = 0 // Like taking candies from a baby!
         internal val soLong: Long = 0
+        internal val soShort: Short = 0
         internal val uuid: String? = null
         internal val shirtColor: String? = null
         internal val biography: String? = null

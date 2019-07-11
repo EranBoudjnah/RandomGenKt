@@ -17,6 +17,7 @@ import com.mitteloupe.randomgenkt.fielddataprovider.PaddedFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.RandomEnumFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.RgbFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.SequentialIntegerFieldDataProvider
+import com.mitteloupe.randomgenkt.fielddataprovider.ShortFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.UuidFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.WeightedFieldDataProvidersFieldDataProvider
 import java.util.Random
@@ -70,6 +71,9 @@ internal open class SimpleFieldDataProviderFactory<OUTPUT_TYPE>(
 
     override fun getLongFieldDataProvider(minimum: Long, maximum: Long) =
         LongFieldDataProvider<OUTPUT_TYPE>(random, minimum, maximum)
+
+    override fun getShortFieldDataProvider(minimum: Short, maximum: Short) =
+        ShortFieldDataProvider<OUTPUT_TYPE>(random, minimum, maximum)
 
     override fun getSequentialIntegerFieldDataProvider(startValue: Int) =
         SequentialIntegerFieldDataProvider<OUTPUT_TYPE>(startValue)

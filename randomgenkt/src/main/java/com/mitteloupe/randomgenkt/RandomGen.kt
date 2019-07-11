@@ -328,6 +328,8 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 
         fun returningLong() = getBuilderFieldFromIncomplete(builderField.returning(factory.getLongFieldDataProvider()))
 
+        fun returningShort() = getBuilderFieldFromIncomplete(builderField.returning(factory.getShortFieldDataProvider()))
+
         fun returning(minimum: Double, maximum: Double) =
             getBuilderFieldFromIncomplete(builderField.returning(factory.getDoubleFieldDataProvider(minimum, maximum)))
 
@@ -339,6 +341,9 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 
         fun returning(minimum: Long, maximum: Long) =
             getBuilderFieldFromIncomplete(builderField.returning(factory.getLongFieldDataProvider(minimum, maximum)))
+
+        fun returning(minimum: Short, maximum: Short) =
+            getBuilderFieldFromIncomplete(builderField.returning(factory.getShortFieldDataProvider(minimum, maximum)))
 
         fun returningSequentialInteger() =
             getBuilderFieldFromIncomplete(builderField.returning(factory.sequentialIntegerFieldDataProvider))

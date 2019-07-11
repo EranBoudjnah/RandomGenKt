@@ -1,5 +1,6 @@
 package com.mitteloupe.randomgenkt
 
+import com.mitteloupe.randomgenkt.fielddataprovider.ShortFieldDataProvider
 import java.util.Date
 
 /**
@@ -33,6 +34,8 @@ interface FieldDataProviderFactory<OUTPUT_TYPE> {
     fun getIntFieldDataProvider(minimum: Int = Int.MIN_VALUE, maximum: Int = Int.MAX_VALUE): (instance: OUTPUT_TYPE?) -> Int
 
     fun getLongFieldDataProvider(minimum: Long = Long.MIN_VALUE, maximum: Long = Long.MAX_VALUE): (instance: OUTPUT_TYPE?) -> Long
+
+    fun getShortFieldDataProvider(minimum: Short = Short.MIN_VALUE, maximum: Short = Short.MAX_VALUE): ShortFieldDataProvider<OUTPUT_TYPE>
 
     fun getSequentialIntegerFieldDataProvider(startValue: Int): (instance: OUTPUT_TYPE?) -> Int
 
