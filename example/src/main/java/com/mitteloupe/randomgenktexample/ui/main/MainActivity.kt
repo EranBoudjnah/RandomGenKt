@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity(), Observer<ViewState> {
             R.id.action_person -> viewModel.onGeneratePersonClick()
             R.id.action_planetary_system -> viewModel.onGeneratePlanetarySystemClick()
             R.id.action_flat -> viewModel.onGenerateFlatClick()
-            else -> Unit
+            else -> null
         }
 
     override fun onChanged(viewState: ViewState?) =
