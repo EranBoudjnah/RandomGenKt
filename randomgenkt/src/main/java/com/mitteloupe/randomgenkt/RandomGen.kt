@@ -34,7 +34,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
     }
 
     private fun setAllFields(instance: GENERATED_INSTANCE) {
-        dataProviders.forEach { fieldName, fieldDataProvider ->
+        dataProviders.forEach { (fieldName, fieldDataProvider) ->
             if (!fields.containsKey(fieldName)) {
                 throw IllegalArgumentException("Cannot set field $fieldName - field not found")
             }
