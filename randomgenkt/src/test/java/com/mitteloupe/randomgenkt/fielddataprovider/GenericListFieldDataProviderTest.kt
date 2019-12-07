@@ -24,7 +24,7 @@ class GenericListFieldDataProviderTest {
 
     @Before
     fun setUp() {
-        values = Arrays.asList("The First", "The Last", "Eternity")
+        values = mutableListOf("The First", "The Last", "Eternity")
 
         cut = GenericListFieldDataProvider(random, values)
     }

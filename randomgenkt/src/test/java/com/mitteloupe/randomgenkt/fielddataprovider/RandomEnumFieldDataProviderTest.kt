@@ -25,7 +25,7 @@ class RandomEnumFieldDataProviderTest(
         @JvmStatic
         @Parameterized.Parameters
         fun data(): Collection<Array<*>> {
-            return Arrays.asList(
+            return listOf(
                 arrayOf(0, MagicColors.WHITE),
                 arrayOf(2, MagicColors.BLACK),
                 arrayOf(4, MagicColors.GREEN)

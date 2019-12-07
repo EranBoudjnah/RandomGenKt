@@ -9,7 +9,7 @@ import java.util.Arrays
 class ColorsDataSource private constructor() {
 
 	val colors: List<String>
-		get() = Arrays.asList("Black", "Blue", "Brown", "Cyan", "Green", "Grey", "Magenta", "Orange", "Pink", "Red", "Violet", "White", "Yellow")
+		get() = listOf("Black", "Blue", "Brown", "Cyan", "Green", "Grey", "Magenta", "Orange", "Pink", "Red", "Violet", "White", "Yellow")
 
 	companion object {
 		val instance = ColorsDataSource()

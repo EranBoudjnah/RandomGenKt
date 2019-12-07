@@ -42,7 +42,7 @@ class CustomListRangeFieldDataProviderTest {
         val result = cut.invoke()
 
         // Then
-        assertEquals(Arrays.asList(expectedResult1, expectedResult2, expectedResult3), result)
+        assertEquals(listOf(expectedResult1, expectedResult2, expectedResult3), result)
     }
 
     private companion object {

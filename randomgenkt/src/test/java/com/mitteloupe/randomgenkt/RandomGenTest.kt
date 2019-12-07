@@ -54,7 +54,7 @@ class RandomGenTest(
             val incompleteBuilderFieldOfClassAndFactory = RandomGen.Builder<TestPerson>()
                 .ofClassWithFactory<TestPerson>(factory)
 
-            return Arrays.asList(
+            return listOf(
                 arrayOf(incompleteBuilderFieldWithProviderAndFactory, factory),
                 arrayOf(incompleteBuilderFieldOfClassAndFactory, factory)
             )
@@ -114,7 +114,7 @@ class RandomGenTest(
         val name1 = "Rocksteady"
         val name2 = "Bebop"
 
-        val namesList = Arrays.asList(name1, name2)
+        val namesList = listOf(name1, name2)
         val genericListFieldDataProvider = mock<GenericListFieldDataProvider<TestPerson, String>>()
         given(fieldDataProviderFactory.getGenericListFieldDataProvider(namesList)).willReturn(genericListFieldDataProvider)
         given(genericListFieldDataProvider.invoke(any<TestPerson>())).willReturn(name2)
@@ -404,7 +404,7 @@ class RandomGenTest(
         val testPerson = cut.generate()
 
         // Then
-        assertEquals(expectedValue.toShort(), testPerson.soShort)
+        assertEquals(expectedValue, testPerson.soShort)
     }
 
     @Test
@@ -684,10 +684,10 @@ class RandomGenTest(
     @Test
     fun `Given builder returning RandomGen instances when generate then instance has correct value`() {
         // Given
-        val randomGen = mock<RandomGen<TestPerson>>() as (TestPerson?) -> String
+        val randomGen = mock<(TestPerson?) -> String>()
         val customListFieldDataProvider = mock<CustomListFieldDataProvider<TestPerson, String>>()
         given(fieldDataProviderFactory.getCustomListFieldDataProvider(3, randomGen)).willReturn(customListFieldDataProvider)
-        val expectedValues = Arrays.asList("The Shadow", "Captain Hammer", "Mr. Nobody")
+        val expectedValues = listOf("The Shadow", "Captain Hammer", "Mr. Nobody")
         given(customListFieldDataProvider.invoke(any())).willReturn(expectedValues)
 
         cut = incompleteBuilderField
@@ -708,7 +708,7 @@ class RandomGenTest(
         val fieldDataProvider = mock<(TestPerson?) -> String>()
         val customListRangeFieldDataProvider = mock<(TestPerson?) -> List<String>>()
         given(fieldDataProviderFactory.getCustomListRangeFieldDataProvider(2, 4, fieldDataProvider)).willReturn(customListRangeFieldDataProvider)
-        val expectedValues = Arrays.asList("The Shadow", "Captain Hammer", "Mr. Nobody")
+        val expectedValues = listOf("The Shadow", "Captain Hammer", "Mr. Nobody")
         given(customListRangeFieldDataProvider.invoke(any())).willReturn(expectedValues)
 
         cut = incompleteBuilderField
@@ -726,10 +726,10 @@ class RandomGenTest(
     @Test
     fun `Given builder returning range and RandomGen when generate then instance has correct value`() {
         // Given
-        val randomGen = mock<RandomGen<TestPerson>>() as (TestPerson?) -> String
+        val randomGen = mock<(TestPerson?) -> String>()
         val customListRangeFieldDataProvider = mock<CustomListRangeFieldDataProvider<TestPerson, String>>()
         given(fieldDataProviderFactory.getCustomListRangeFieldDataProvider(2, 4, randomGen)).willReturn(customListRangeFieldDataProvider)
-        val expectedValues = Arrays.asList("The Shadow", "Captain Hammer", "Mr. Nobody")
+        val expectedValues = listOf("The Shadow", "Captain Hammer", "Mr. Nobody")
         given(customListRangeFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValues)
 
         cut = incompleteBuilderField

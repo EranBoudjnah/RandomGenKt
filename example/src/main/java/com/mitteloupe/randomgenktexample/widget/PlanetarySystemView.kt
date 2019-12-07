@@ -17,6 +17,9 @@ import com.mitteloupe.randomgenktexample.R
 import com.mitteloupe.randomgenktexample.data.model.planet.Material
 import com.mitteloupe.randomgenktexample.data.model.planet.Planet
 import com.mitteloupe.randomgenktexample.data.model.planet.PlanetarySystem
+import kotlin.math.cos
+import kotlin.math.max
+import kotlin.math.sin
 
 private const val ANIMATION_DELAY_MILLIS: Long = 40
 private const val PLANET_DATA_DELAY_MILLIS: Long = 3000
@@ -117,7 +120,7 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
 
         val widthX = visualRect.right - visualRect.left
         val heightX = visualRect.bottom - visualRect.top
-        visualSize = Math.max(widthX, heightX)
+        visualSize = max(widthX, heightX)
         visualCenter.set(
             (visualRect.left + visualRect.right) / 2f,
             (visualRect.top + visualRect.bottom) / 2f
@@ -322,8 +325,8 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
         val relativeRadius = 0.1f + orbitRingSpacing * position
         val actualRadius = visualSize * relativeRadius
         planetCenter.set(
-            Math.sin((planetAnimation.angle / 180f * 3.14f).toDouble()).toFloat() * actualRadius,
-            (-Math.cos((planetAnimation.angle / 180f * 3.14f).toDouble())).toFloat() * actualRadius * ASPECT_RATIO
+            sin((planetAnimation.angle / 180f * 3.14f).toDouble()).toFloat() * actualRadius,
+            (-cos((planetAnimation.angle / 180f * 3.14f).toDouble())).toFloat() * actualRadius * ASPECT_RATIO
         )
         planetCenter.offset(visualCenter.x, visualCenter.y)
     }

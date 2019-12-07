@@ -9,10 +9,10 @@ import java.util.Arrays
 class GeographyDataSource private constructor() {
 
 	val continents: List<String>
-		get() = Arrays.asList("Africa", "Antarctica", "Asia", "Australia", "Europe", "North America", "South America")
+		get() = listOf("Africa", "Antarctica", "Asia", "Australia", "Europe", "North America", "South America")
 
 	val countries: List<String>
-		get() = Arrays.asList("Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antigua & Barbuda", "Argentina", "Armenia",
+		get() = listOf("Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antigua & Barbuda", "Argentina", "Armenia",
 			"Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda",
 			"Bhutan", "Bolivia", "Bosnia & Herzegovina", "Botswana", "Brazil", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Myanmar/Burma", "Burundi",
 			"Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros",
