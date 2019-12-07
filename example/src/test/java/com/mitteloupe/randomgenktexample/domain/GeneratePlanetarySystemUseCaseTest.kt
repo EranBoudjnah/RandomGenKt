@@ -20,7 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner
 class GeneratePlanetarySystemUseCaseTest {
     private lateinit var cut: GeneratePlanetarySystemUseCase
 
-    lateinit var coroutineContextProvider: CoroutineContextProvider
+    private lateinit var coroutineContextProvider: CoroutineContextProvider
     @Mock
     lateinit var planetarySystemGeneratorFactory: PlanetarySystemGeneratorFactory
     @Mock

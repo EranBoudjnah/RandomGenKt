@@ -20,7 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner
 class GeneratePersonUseCaseTest {
     private lateinit var cut: GeneratePersonUseCase
 
-    lateinit var coroutineContextProvider: CoroutineContextProvider
+    private lateinit var coroutineContextProvider: CoroutineContextProvider
     @Mock
     lateinit var personGeneratorFactory: PersonGeneratorFactory
     @Mock

@@ -20,7 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner
 class GenerateFlatUseCaseTest {
     private lateinit var cut: GenerateFlatUseCase
 
-    lateinit var coroutineContextProvider: CoroutineContextProvider
+    private lateinit var coroutineContextProvider: CoroutineContextProvider
     @Mock
     lateinit var flatGeneratorFactory: FlatGeneratorFactory
     @Mock

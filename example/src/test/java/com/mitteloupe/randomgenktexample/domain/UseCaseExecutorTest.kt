@@ -12,10 +12,10 @@ import org.junit.Test
  * Created by Eran Boudjnah on 01/11/2018.
  */
 class UseCaseExecutorTest {
-    lateinit var useCaseExecutor: UseCaseExecutor
+    private lateinit var useCaseExecutor: UseCaseExecutor
 
-    lateinit var job: Job
-    lateinit var coroutineContextProvider: CoroutineContextProvider
+    private lateinit var job: Job
+    private lateinit var coroutineContextProvider: CoroutineContextProvider
 
     @Before
     fun setUp() {
