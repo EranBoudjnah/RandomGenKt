@@ -19,7 +19,7 @@ class PeopleAdapter : RecyclerView.Adapter<PersonViewHolder>() {
     override fun getItemCount() = people.size
 
     override fun onBindViewHolder(holder: PersonViewHolder, position: Int) {
-        holder.setPerson(people.get(position))
+        holder.setPerson(people[position])
     }
 
     fun setPeople(people: List<Person>) {
