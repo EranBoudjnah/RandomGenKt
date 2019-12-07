@@ -65,7 +65,9 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
 
     private fun isLazy(field: Field) = Lazy::class.java.isAssignableFrom(field.type)
 
-    private fun isCollection(value: Any?) = Collection::class.java.isAssignableFrom(value?.javaClass)
+    private fun isCollection(value: Any?) = value?.let {
+        Collection::class.java.isAssignableFrom(value.javaClass)
+    } ?: false
 
     private fun getValueAsArray(field: Field, value: Any?): Any {
         if (!isCollection(value)) {
@@ -117,14 +119,12 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
     }
 
     class Builder<GENERATED_INSTANCE> {
-        inline fun <reified CLASS_TYPE : GENERATED_INSTANCE> ofClass(): IncompleteBuilderField<GENERATED_INSTANCE> {
+        inline fun <reified CLASS_TYPE : GENERATED_INSTANCE> ofClass(): IncompleteBuilderField<GENERATED_INSTANCE> =
             @Suppress("UNCHECKED_CAST")
-            return ofClass(CLASS_TYPE::class.java as Class<GENERATED_INSTANCE>)
-        }
+            ofClass(CLASS_TYPE::class.java as Class<GENERATED_INSTANCE>)
 
-        fun ofClass(generatedInstanceClass: Class<GENERATED_INSTANCE>): IncompleteBuilderField<GENERATED_INSTANCE> {
-            return IncompleteBuilderField(generatedInstanceClass, DefaultFieldDataProviderFactory())
-        }
+        fun ofClass(generatedInstanceClass: Class<GENERATED_INSTANCE>): IncompleteBuilderField<GENERATED_INSTANCE> =
+            IncompleteBuilderField(generatedInstanceClass, DefaultFieldDataProviderFactory())
 
         internal inline fun <reified CLASS_TYPE : GENERATED_INSTANCE> ofClassWithFactory(factory: FieldDataProviderFactory<GENERATED_INSTANCE>) =
             @Suppress("UNCHECKED_CAST")
@@ -136,8 +136,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
         internal fun withFactoryAndProvider(
             factory: FieldDataProviderFactory<GENERATED_INSTANCE>,
             instanceProvider: () -> GENERATED_INSTANCE
-        ) =
-            IncompleteBuilderField(instanceProvider, factory)
+        ) = IncompleteBuilderField(instanceProvider, factory)
 
         private class DefaultFieldDataProviderFactory<GENERATED_INSTANCE> : SimpleFieldDataProviderFactory<GENERATED_INSTANCE>(Random(), DefaultUuidGenerator())
 
@@ -194,7 +193,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
         }
 
         fun build(): RandomGen<GENERATED_INSTANCE> {
-            if (initializeType == IncompleteBuilderField.InitializeType.WITH_CLASS) {
+            if (initializeType == InitializeType.WITH_CLASS) {
                 instanceProvider = DefaultValuesInstanceProvider(generatedInstanceClass)
             }
 
@@ -246,8 +245,8 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
         internal val builderReturnValueForInstance: BuilderReturnValue<GENERATED_INSTANCE>
             get() = BuilderReturnValue(
                 when (initializeType) {
-                    InitializeType.WITH_CLASS -> RandomGen.BuilderField(generatedInstanceClass, this)
-                    else -> RandomGen.BuilderField(instanceProvider, this)
+                    InitializeType.WITH_CLASS -> BuilderField(generatedInstanceClass, this)
+                    else -> BuilderField(instanceProvider, this)
                 },
                 factory
             )
