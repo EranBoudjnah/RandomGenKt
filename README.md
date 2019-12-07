@@ -3,7 +3,10 @@
 > Initialize instances of any class with generated data.
 >
 
+[![Version](https://img.shields.io/bintray/v/shadowcra/RandomGenKt/RandomGenKt?label=randomgenkt+|+bintray)](https://bintray.com/shadowcra/Solid/SolidApplication)
+[![Version](https://img.shields.io/bintray/v/shadowcra/RandomGenKt/DataSource?label=datasource+|+bintray)](https://bintray.com/shadowcra/Solid/SolidApplication)
 [![Build Status](https://travis-ci.com/EranBoudjnah/RandomGenKt.svg?branch=master)](https://travis-ci.com/EranBoudjnah/RandomGenKt)
+[![License](https://img.shields.io/github/license/EranBoudjnah/RandomGenKt)](https://github.com/EranBoudjnah/RandomGenKt/blob/master/LICENSE)
 
 ![Example](https://github.com/EranBoudjnah/RandomGenKt/raw/master/example/videocap.gif)
 
@@ -17,13 +20,15 @@ In your `build.gradle`, add the following:
 
 ```groovy
 dependencies {
-	implementation 'com.mitteloupe:randomgenkt:1.0.0'
+    implementation("com.mitteloupe:randomgenkt:1.0.1")
 }
 ```
 
 To include the default data generators, also include
 ```groovy
-implementation 'com.mitteloupe:randomgenkt.datasource:1.0.0'
+dependencies {
+    implementation("com.mitteloupe:randomgenkt.datasource:1.0.1")
+}
 ```
 
 Note: To add the BinTray repository in your maven repositories, also add the following:
