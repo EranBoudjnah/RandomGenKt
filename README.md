@@ -34,9 +34,9 @@ dependencies {
 Note: To add the BinTray repository in your maven repositories, also add the following:
 ```groovy
 repositories {
-	maven {
-		url "https://dl.bintray.com/shadowcra/RandomGenKt"
-	}
+    maven {
+        url "https://dl.bintray.com/shadowcra/RandomGenKt"
+    }
 }
 ```
 
