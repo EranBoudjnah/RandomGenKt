@@ -18,8 +18,8 @@ uploadArchives {
 
 task zipRelease(type: Zip) {
 	from localReleaseDest
-	destinationDir buildDir
-	archiveName "release-${version}.zip"
+	destinationDirectory = buildDir
+	archiveFileName = "release-${version}.zip"
 }
 
 task generateRelease {
