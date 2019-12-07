@@ -1,5 +1,7 @@
 package com.mitteloupe.randomgenktexample.utils
 
+import java.util.Locale
+
 /**
  * Created by Eran Boudjnah on 29/08/2018.
  */
@@ -37,7 +39,7 @@ object StringFormatter {
     private fun addCapitalizedWord(word: String) {
         stringBuilder
             .append(word.first().toUpperCase())
-            .append(word.substring(1).toLowerCase())
+            .append(word.substring(1).toLowerCase(Locale.ENGLISH))
     }
 
     private fun addSpace() {
