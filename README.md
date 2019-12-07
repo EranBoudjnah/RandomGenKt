@@ -3,8 +3,8 @@
 > Initialize instances of any class with generated data.
 >
 
-[![Version](https://img.shields.io/bintray/v/shadowcra/RandomGenKt/RandomGenKt?label=randomgenkt+|+bintray)](https://bintray.com/shadowcra/Solid/SolidApplication)
-[![Version](https://img.shields.io/bintray/v/shadowcra/RandomGenKt/DataSource?label=datasource+|+bintray)](https://bintray.com/shadowcra/Solid/SolidApplication)
+[![Version - RandomGenKt](https://img.shields.io/bintray/v/shadowcra/RandomGenKt/RandomGenKt?label=randomgenkt+|+bintray)](https://bintray.com/shadowcra/RandomGenKt/RandomGenKt)
+[![Version - DataSource](https://img.shields.io/bintray/v/shadowcra/RandomGenKt/DataSource?label=datasource+|+bintray)](https://bintray.com/shadowcra/RandomGenKt/DataSource)
 [![Build Status](https://travis-ci.com/EranBoudjnah/RandomGenKt.svg?branch=master)](https://travis-ci.com/EranBoudjnah/RandomGenKt)
 [![License](https://img.shields.io/github/license/EranBoudjnah/RandomGenKt)](https://github.com/EranBoudjnah/RandomGenKt/blob/master/LICENSE)
 
