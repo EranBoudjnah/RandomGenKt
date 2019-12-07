@@ -29,7 +29,7 @@ lintOptions {
 ext {
     set("PUBLISH_GROUP_ID", "com.mitteloupe")
     set("PUBLISH_ARTIFACT_ID", "randomgenkt")
-    set("PUBLISH_VERSION", "1.0.0")
+    set("PUBLISH_VERSION", "1.0.1")
 }
 
 apply {
