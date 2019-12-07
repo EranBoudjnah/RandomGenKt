@@ -30,7 +30,6 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.reset
 import org.mockito.Mockito.verify
-import java.util.Arrays
 
 /**
  * Created by Eran Boudjnah on 07/08/2018.
@@ -204,7 +203,7 @@ class RandomGenTest(
         val testPerson = cut.generate()
 
         // Then
-        assertEquals(byteList, Arrays.asList(*testPerson.bites!!))
+        assertEquals(byteList, listOf(*testPerson.bites!!))
     }
 
     @Test
@@ -212,7 +211,7 @@ class RandomGenTest(
         // Given
         val byteListFieldDataProvider = mock<ByteListFieldDataProvider<TestPerson>>()
         given(fieldDataProviderFactory.getByteListFieldDataProvider(4, 5)).willReturn(byteListFieldDataProvider)
-        val byteList = Arrays.asList(1.toByte(), 2.toByte(), 3.toByte(), 4.toByte(), 5.toByte())
+        val byteList = listOf(1.toByte(), 2.toByte(), 3.toByte(), 4.toByte(), 5.toByte())
         given(byteListFieldDataProvider.invoke(any<TestPerson>())).willReturn(byteList)
 
         cut = incompleteBuilderField
@@ -224,7 +223,7 @@ class RandomGenTest(
         val testPerson = cut.generate()
 
         // Then
-        assertEquals(byteList, Arrays.asList(*testPerson.bites!!))
+        assertEquals(byteList, listOf(*testPerson.bites!!))
     }
 
     @Test
@@ -666,7 +665,7 @@ class RandomGenTest(
         val fieldDataProvider = mock<(TestPerson?) -> String>()
         val customListFieldDataProvider = mock<CustomListFieldDataProvider<TestPerson, String>>()
         given(fieldDataProviderFactory.getCustomListFieldDataProvider(3, fieldDataProvider)).willReturn(customListFieldDataProvider)
-        val expectedValues = Arrays.asList("The Shadow", "Captain Hammer", "Mr. Nobody")
+        val expectedValues = listOf("The Shadow", "Captain Hammer", "Mr. Nobody")
         given(customListFieldDataProvider.invoke(any())).willReturn(expectedValues)
 
         cut = incompleteBuilderField
