@@ -19,7 +19,7 @@ class FloatFieldDataProviderTest {
     private lateinit var random: Random
 
     @Test
-    fun givenRandomFloatValueWhenGeneratewillReturnsSameValue() {
+    fun `Given random float value when generate then returns same value`() {
         // Given
         cut = FloatFieldDataProvider(random)
         given(random.nextFloat()).willReturn(0f)
@@ -41,7 +41,7 @@ class FloatFieldDataProviderTest {
     }
 
     @Test
-    fun givenRandomFloatValueAndRangeWhenGeneratewillReturnsCorrectValue() {
+    fun `Given random float value and range when generate then returns correct value`() {
         // Given
         cut = FloatFieldDataProvider(random, Float.MIN_VALUE, Float.MAX_VALUE)
         given(random.nextFloat()).willReturn(0f)
