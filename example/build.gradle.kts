@@ -67,7 +67,7 @@ dependencies {
     androidTestImplementation("androidx.test:rules:1.2.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.1")
 
-    implementation("com.mitteloupe:randomgenkt:1.0.0")
+    implementation("com.mitteloupe:randomgenkt:1.0.1")
 }
 
 val ktlintVerify: JavaExec by tasks.creating(JavaExec::class)
