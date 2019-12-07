@@ -63,7 +63,7 @@ constructor(private val random: Random) {
             .build()
             .generate()
 
-    private fun getSpecificRoomProvider(room: Room) = { room }
+    private fun getSpecificRoomProvider(room: Room): () -> Room = { room }
 
     private fun splitRooms(room: Room, roomsRemaining: Int, lastDivisionType: DivisionType) {
         if (roomsRemaining == 0) return
