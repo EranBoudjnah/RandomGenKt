@@ -1,136 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:background="@color/blank"
-	>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blank">
 
-	<androidx.constraintlayout.widget.ConstraintLayout
-		android:id="@+id/content_wrapper"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:background="@color/primary"
-		android:padding="8dp"
-		>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        android:padding="8dp">
 
 
-		<ImageView
-			android:id="@+id/icon_female"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:background="#30FFFFFF"
-			android:contentDescription="@string/gender_female"
-			android:src="@mipmap/female"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent"/>
+        <ImageView
+            android:id="@+id/icon_female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#30FFFFFF"
+            android:contentDescription="@string/gender_female"
+            android:src="@mipmap/female"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-		<ImageView
-			android:id="@+id/icon_male"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:background="#30FFFFFF"
-			android:contentDescription="@string/gender_male"
-			android:src="@mipmap/male"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent"/>
+        <ImageView
+            android:id="@+id/icon_male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#30FFFFFF"
+            android:contentDescription="@string/gender_male"
+            android:src="@mipmap/male"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-		<androidx.constraintlayout.widget.Barrier
-			android:id="@+id/icon_barrier"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			app:barrierDirection="right"
-			app:constraint_referenced_ids="icon_female, icon_male"/>
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/icon_barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="right"
+            app:constraint_referenced_ids="icon_female,icon_male" />
 
-		<TextView
-			android:id="@+id/text_name_value"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="8dp"
-			android:textColor="@android:color/white"
-			android:textStyle="bold"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toEndOf="@+id/icon_barrier"
-			app:layout_constraintTop_toTopOf="parent"
-			tools:text="Name"
-			/>
+        <TextView
+            android:id="@+id/text_name_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/icon_barrier"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Name" />
 
-		<TextView
-			android:id="@+id/text_age"
-			android:layout_width="100dp"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="8dp"
-			android:layout_marginTop="8dp"
-			android:text="@string/age"
-			android:textColor="@android:color/white"
-			android:textStyle="bold"
-			app:layout_constraintStart_toEndOf="@+id/icon_barrier"
-			app:layout_constraintTop_toBottomOf="@+id/text_name_value"/>
+        <TextView
+            android:id="@+id/text_age"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/age"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/icon_barrier"
+            app:layout_constraintTop_toBottomOf="@+id/text_name_value" />
 
-		<TextView
-			android:id="@+id/text_age_value"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="8dp"
-			android:textColor="@android:color/white"
-			android:textSize="11sp"
-			app:layout_constraintBottom_toBottomOf="@+id/text_age"
-			app:layout_constraintStart_toEndOf="@+id/text_age"
-			tools:text="35"
-			/>
+        <TextView
+            android:id="@+id/text_age_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@android:color/white"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/text_age"
+            app:layout_constraintStart_toEndOf="@+id/text_age"
+            tools:text="35" />
 
-		<TextView
-			android:id="@+id/text_occupation"
-			android:layout_width="100dp"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="8dp"
-			android:layout_marginTop="8dp"
-			android:text="@string/occupation"
-			android:textColor="@android:color/white"
-			android:textStyle="bold"
-			app:layout_constraintStart_toEndOf="@+id/icon_barrier"
-			app:layout_constraintTop_toBottomOf="@+id/text_age"/>
+        <TextView
+            android:id="@+id/text_occupation"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/occupation"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/icon_barrier"
+            app:layout_constraintTop_toBottomOf="@+id/text_age" />
 
-		<TextView
-			android:id="@+id/text_occupation_value"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="8dp"
-			android:textColor="@android:color/white"
-			android:textSize="11sp"
-			app:layout_constraintBottom_toBottomOf="@+id/text_occupation"
-			app:layout_constraintStart_toEndOf="@+id/text_occupation"
-			tools:text="Plumber"
-			/>
+        <TextView
+            android:id="@+id/text_occupation_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@android:color/white"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/text_occupation"
+            app:layout_constraintStart_toEndOf="@+id/text_occupation"
+            tools:text="Plumber" />
 
-		<TextView
-			android:id="@+id/text_phone"
-			android:layout_width="100dp"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="8dp"
-			android:layout_marginTop="8dp"
-			android:text="@string/phone_number"
-			android:textColor="@android:color/white"
-			android:textStyle="bold"
-			app:layout_constraintStart_toEndOf="@+id/icon_barrier"
-			app:layout_constraintTop_toBottomOf="@+id/text_occupation"/>
+        <TextView
+            android:id="@+id/text_phone"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/phone_number"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/icon_barrier"
+            app:layout_constraintTop_toBottomOf="@+id/text_occupation" />
 
-		<TextView
-			android:id="@+id/text_phone_value"
-			android:layout_width="120dp"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="8dp"
-			android:gravity="end"
-			android:textColor="@android:color/white"
-			android:textSize="11sp"
-			app:layout_constraintBottom_toBottomOf="@+id/text_phone"
-			app:layout_constraintStart_toEndOf="@+id/text_phone"
-			tools:text="+44 734 153 17500"
-			/>
+        <TextView
+            android:id="@+id/text_phone_value"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:gravity="end"
+            android:textColor="@android:color/white"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/text_phone"
+            app:layout_constraintStart_toEndOf="@+id/text_phone"
+            tools:text="+44 734 153 17500" />
 
-	</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
