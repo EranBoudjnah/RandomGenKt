@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +15,6 @@ import com.mitteloupe.randomgenktexample.data.model.planet.PlanetarySystem
 import com.mitteloupe.randomgenktexample.presentation.MainViewModel
 import com.mitteloupe.randomgenktexample.presentation.MainViewModelFactory
 import com.mitteloupe.randomgenktexample.presentation.ViewState
-import dagger.android.AndroidInjection
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.android.synthetic.main.activity_main.bottom_navigation as bottomNavigation
@@ -41,7 +40,7 @@ class MainActivity : AppCompatActivity(), Observer<ViewState> {
 
         setUpPeopleView()
 
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
         viewModel.viewState.observe(this, this)
 
         updateViewWithViewState(viewModel.viewState.value)

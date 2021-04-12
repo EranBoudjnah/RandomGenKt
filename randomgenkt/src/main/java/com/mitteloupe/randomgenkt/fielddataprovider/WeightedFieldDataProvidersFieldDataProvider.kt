@@ -80,8 +80,8 @@ constructor(
     }
 
     private inner class WeightedFieldDataProvider(
-        internal val fieldDataProvider: (OUTPUT_TYPE?) -> VALUE_TYPE,
-        internal val weight: Double,
-        internal val summedWeight: Double
+        val fieldDataProvider: (OUTPUT_TYPE?) -> VALUE_TYPE,
+        val weight: Double,
+        val summedWeight: Double
     )
 }

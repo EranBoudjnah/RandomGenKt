@@ -438,7 +438,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
             incompleteBuilderField.initializeType == IncompleteBuilderField.InitializeType.WITH_CLASS
     }
 
-    private inner class TypedArray<ELEMENT_TYPE> internal constructor(elementClass: Class<ELEMENT_TYPE>, capacity: Int) {
+    private inner class TypedArray<ELEMENT_TYPE>(elementClass: Class<ELEMENT_TYPE>, capacity: Int) {
         private val typedArray: Array<ELEMENT_TYPE>
 
         init {
@@ -449,7 +449,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
             typedArray = newInstance as Array<ELEMENT_TYPE>
         }
 
-        internal fun get() = typedArray
+        fun get() = typedArray
     }
 
     /**
@@ -465,5 +465,5 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
         fun onGenerate(generatedInstance: INSTANCE_TYPE)
     }
 
-    private class AssignmentException internal constructor(exception: Exception) : RuntimeException(exception)
+    private class AssignmentException(exception: Exception) : RuntimeException(exception)
 }

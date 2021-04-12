@@ -81,6 +81,6 @@ class MainActivityTest {
     }
 
     private fun iSeeAViewWithinThePager(viewId: Int) {
-        onView(withId(R.id.content_container)).perform(waitForView(allOf<View>(withId(viewId), isMostlyVisible()), 1000))
+        onView(withId(R.id.content_container)).perform(waitForView(allOf(withId(viewId), isMostlyVisible()), 1000))
     }
 }

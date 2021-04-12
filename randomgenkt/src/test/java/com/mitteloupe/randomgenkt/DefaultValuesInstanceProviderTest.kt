@@ -60,19 +60,19 @@ class DefaultValuesInstanceProviderTest {
     private class TestClassWithNoConstructor : TestClass
 
     private class TestClassWithNoFields : TestClass {
-        internal val isSet: Boolean = true
+        val isSet: Boolean = true
     }
 
     private class TestClassWithFields(
-        internal val byteField: Byte,
-        internal val shortField: Short,
-        internal val intField: Int,
-        internal val longField: Long,
-        internal val floatField: Float,
-        internal val doubleField: Double,
-        internal val isBooleanField: Boolean,
-        internal val stringField: String,
-        internal val `object`: Any,
+        val byteField: Byte,
+        val shortField: Short,
+        val intField: Int,
+        val longField: Long,
+        val floatField: Float,
+        val doubleField: Double,
+        val isBooleanField: Boolean,
+        val stringField: String,
+        val `object`: Any,
         val objects: List<Any>
     ) : TestClass
 }

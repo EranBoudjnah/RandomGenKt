@@ -63,7 +63,7 @@ object EspressoMatchers {
         }
     }
 
-    fun isMostlyVisible(): Matcher<View> = allOf<View>(
+    fun isMostlyVisible(): Matcher<View> = allOf(
         ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
         isDisplayingAtLeast(90)
     )

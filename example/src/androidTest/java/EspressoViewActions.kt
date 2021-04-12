@@ -1,4 +1,3 @@
-
 import EspressoMatchers.isMostlyVisible
 import android.content.res.Resources
 import android.view.Menu
@@ -67,27 +66,21 @@ object EspressoViewActions {
                 return errorMessage.toString()
             }
 
-            override fun getDescription(): String {
-                return "click on menu item with ID"
-            }
+            override fun getDescription() = "click on menu item with ID"
 
-            override fun getConstraints(): Matcher<View> {
-                return allOf<View>(
-                    isAssignableFrom(BottomNavigationView::class.java),
-                    isMostlyVisible()
-                )
-            }
+            override fun getConstraints() = allOf(
+                isAssignableFrom(BottomNavigationView::class.java),
+                isMostlyVisible()
+            )
         }
     }
 
     fun waitForView(viewMatcher: Matcher<View>, milliseconds: Long): ViewAction {
         return object : ViewAction {
-            override fun getConstraints(): Matcher<View> {
-                return allOf<View>(
-                    withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
-                    isDisplayingAtLeast(90)
-                )
-            }
+            override fun getConstraints(): Matcher<View> = allOf(
+                withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
+                isDisplayingAtLeast(90)
+            )
 
             override fun getDescription(): String {
                 val description = StringDescription()

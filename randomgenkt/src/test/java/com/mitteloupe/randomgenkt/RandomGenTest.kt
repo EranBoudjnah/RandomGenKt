@@ -878,7 +878,7 @@ class RandomGenTest(
         val testPerson = cut.generate()
 
         // Then
-        verify<RandomGen.OnGenerateCallback<TestPerson>>(onGenerateCallback).onGenerate(testPerson)
+        verify(onGenerateCallback).onGenerate(testPerson)
     }
 
     @Test
