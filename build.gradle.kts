@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.strategy.Version
 
 plugins {
     kotlin("jvm") version "1.3.21"
     id("com.github.ben-manes.versions") version "0.38.0"
+    id("io.codearte.nexus-staging") version "0.30.0"
 }
 
 buildscript {
@@ -16,6 +16,9 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:4.1.3")
         classpath(kotlin("gradle-plugin", version = "1.3.61"))
+        classpath("com.github.ben-manes:gradle-versions-plugin:0.38.0")
+        classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.34-beta")
     }
 }
 

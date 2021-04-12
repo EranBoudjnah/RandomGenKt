@@ -31,7 +31,11 @@ private const val RING_TO_STAR_RATIO = 1.4f
 /**
  * Created by Eran Boudjnah on 19/08/2018.
  */
-class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr) {
+class PlanetarySystemView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
 
     private val planetAnimations = mutableListOf<PlanetAnimation>()
     private lateinit var planetarySystem: PlanetarySystem
@@ -86,13 +90,13 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     private fun initTimers() {
-        animationTimeHandler = TimeHandler(ANIMATION_DELAY_MILLIS, Runnable { invalidate() })
+        animationTimeHandler = TimeHandler(ANIMATION_DELAY_MILLIS) { invalidate() }
         animationTimeHandler.start()
 
-        planetTimeHandler = TimeHandler(PLANET_DATA_DELAY_MILLIS, Runnable {
+        planetTimeHandler = TimeHandler(PLANET_DATA_DELAY_MILLIS) {
             planetDataIndex = (planetDataIndex + 1) % planetarySystem.planets.size
             populatePlanetTextViews(planetarySystem.planets[planetDataIndex], planetDataIndex + 1)
-        })
+        }
     }
 
     private fun initStarTextViews() {
@@ -116,7 +120,12 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
 
-        visualRect.set(renderFrame.left.toFloat(), renderFrame.top.toFloat(), renderFrame.right.toFloat(), renderFrame.bottom.toFloat())
+        visualRect.set(
+            renderFrame.left.toFloat(),
+            renderFrame.top.toFloat(),
+            renderFrame.right.toFloat(),
+            renderFrame.bottom.toFloat()
+        )
 
         val widthX = visualRect.right - visualRect.left
         val heightX = visualRect.bottom - visualRect.top
@@ -171,9 +180,12 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
     private fun populateStarTextViews(planetarySystem: PlanetarySystem) {
         val resources = resources
 
-        starAgeTextView.text = resources.getString(R.string.star_age_value, planetarySystem.starAgeBillionYears)
-        starDiameterTextView.text = resources.getString(R.string.star_diameter_value, planetarySystem.starDiameterSunRadii)
-        starMassTextView.text = resources.getString(R.string.star_mass_value, planetarySystem.starSolarMass)
+        starAgeTextView.text =
+            resources.getString(R.string.star_age_value, planetarySystem.starAgeBillionYears)
+        starDiameterTextView.text =
+            resources.getString(R.string.star_diameter_value, planetarySystem.starDiameterSunRadii)
+        starMassTextView.text =
+            resources.getString(R.string.star_mass_value, planetarySystem.starSolarMass)
         starPlanetsCountTextView.text = planetarySystem.planets.size.toString()
     }
 
@@ -203,13 +215,21 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
         val resources = resources
 
         starPlanetNameTextView.text = resources.getString(R.string.planet_name, position)
-        starPlanetDiameterTextView.text = resources.getString(R.string.planet_diameter_value, planet.diameterEarthRatio)
-        starPlanetMassTextView.text = resources.getString(R.string.planet_mass_value, planet.solarMass)
-        starPlanetOrbitalPeriodTextView.text = resources.getString(R.string.planet_orbital_period_value, planet.orbitalPeriodYears)
-        starRotationPeriodTextView.text = resources.getString(R.string.planet_rotation_period_value, planet.rotationPeriodDays)
+        starPlanetDiameterTextView.text =
+            resources.getString(R.string.planet_diameter_value, planet.diameterEarthRatio)
+        starPlanetMassTextView.text =
+            resources.getString(R.string.planet_mass_value, planet.solarMass)
+        starPlanetOrbitalPeriodTextView.text =
+            resources.getString(R.string.planet_orbital_period_value, planet.orbitalPeriodYears)
+        starRotationPeriodTextView.text =
+            resources.getString(R.string.planet_rotation_period_value, planet.rotationPeriodDays)
         starMoonsTextView.text = planet.moons.toString()
-        starRingsTextView.text = if (planet.hasRings) resources.getString(R.string.planet_has_rings) else resources.getString(R.string.planet_no_rings)
-        starAtmosphereTextView.text = Html.fromHtml(getMaterialsFormatted(planet.atmosphere), FROM_HTML_MODE_COMPACT)
+        starRingsTextView.text =
+            if (planet.hasRings) resources.getString(R.string.planet_has_rings) else resources.getString(
+                R.string.planet_no_rings
+            )
+        starAtmosphereTextView.text =
+            Html.fromHtml(getMaterialsFormatted(planet.atmosphere), FROM_HTML_MODE_COMPACT)
     }
 
     private fun getMaterialsFormatted(materials: List<Material>): String {
@@ -245,8 +265,6 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
         super.onDraw(canvas)
 
         drawBackground(canvas)
-
-        if (planetarySystem == null) return
 
         drawOrbitRings(canvas)
 
@@ -306,7 +324,12 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
 
         planetSize = planet.diameterEarthRatio * 1.5f
 
-        drawCircle(canvas, planetCenter, planetSize, if (index == planetDataIndex) -0x1 else -0x5f4f01)
+        drawCircle(
+            canvas,
+            planetCenter,
+            planetSize,
+            if (index == planetDataIndex) -0x1 else -0x5f4f01
+        )
 
         if (planet.hasRings) {
             drawPlanetRing(canvas)
@@ -371,32 +394,32 @@ class PlanetarySystemView @JvmOverloads constructor(context: Context, attrs: Att
         animationTimeHandler.stop()
     }
 
-    private class TimeHandler
-    internal constructor(
+    private class TimeHandler(
         private val delayMilliseconds: Long,
         private val runnable: Runnable
     ) : Handler() {
         private var message: Message? = null
 
         override fun handleMessage(msg: Message) {
-            message = Message.obtain()
+            val message = Message.obtain()
+            this.message = message
             sendMessageDelayed(message, delayMilliseconds)
             runnable.run()
         }
 
-        internal fun start() {
+        fun start() {
             if (message != null) return
 
-            message = Message.obtain()
+            val message = Message.obtain()
+            this.message = message
             sendMessage(message)
         }
 
-        internal fun stop() {
-            if (message == null) return
-
-            val what = message?.what
-            what?.let { removeMessages(it) }
-            message = null
+        fun stop() {
+            message?.let { message ->
+                removeMessages(message.what)
+                this.message = null
+            }
         }
     }
 

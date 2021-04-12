@@ -3,15 +3,16 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
-    compileSdkVersion(28)
+    compileSdkVersion(30)
 
     defaultConfig {
         applicationId = "com.mitteloupe.randomgenexample"
         minSdkVersion(24)
-        targetSdkVersion(28)
+        targetSdkVersion(30)
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -44,6 +45,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3")
 
+    implementation("com.google.dagger:hilt-android:2.34-beta")
+    kapt("com.google.dagger:hilt-compiler:2.34-beta")
+
     implementation("com.google.dagger:dagger:2.34")
     annotationProcessor("com.google.dagger:dagger-compiler:2.34")
     kapt("com.google.dagger:dagger-compiler:2.34")
@@ -66,7 +70,9 @@ dependencies {
     androidTestImplementation("androidx.test:rules:1.3.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
 
-    implementation("com.mitteloupe:randomgenkt:1.0.1")
+    // Just until the library is uploaded to maven central...
+    //    implementation("com.mitteloupe:randomgenkt:1.0.1")
+    implementation(project(":randomgenkt"))
 }
 
 val ktlintVerify: JavaExec by tasks.creating(JavaExec::class)

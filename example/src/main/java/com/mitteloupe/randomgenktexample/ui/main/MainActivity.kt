@@ -16,6 +16,7 @@ import com.mitteloupe.randomgenktexample.presentation.MainViewModel
 import com.mitteloupe.randomgenktexample.presentation.MainViewModelFactory
 import com.mitteloupe.randomgenktexample.presentation.ViewState
 import dagger.android.AndroidInjection
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.android.synthetic.main.activity_main.bottom_navigation as bottomNavigation
 import kotlinx.android.synthetic.main.activity_main.content_container as viewFlipper
@@ -23,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_main.flat_view as flatView
 import kotlinx.android.synthetic.main.activity_main.people_view as peopleView
 import kotlinx.android.synthetic.main.activity_main.planetary_system_view as planetarySystemView
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), Observer<ViewState> {
     @Inject
     lateinit var viewModelFactory: MainViewModelFactory
@@ -32,8 +34,6 @@ class MainActivity : AppCompatActivity(), Observer<ViewState> {
     private val peopleAdapter = PeopleAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 

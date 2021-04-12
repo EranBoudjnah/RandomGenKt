@@ -1,15 +1,20 @@
 package com.mitteloupe.randomgenktexample.di
 
-import android.app.Application
-import android.content.Context
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
+import kotlinx.coroutines.Job
+import java.util.Random
 
 @Module
 @InstallIn(ActivityComponent::class)
-object AppModule {
+object MainActivityModule {
     @Provides
-    internal fun provideContext(application: Application): Context = application
+    @Reusable
+    internal fun provideRandom() = Random()
+
+    @Provides
+    internal fun provideJob(): Job = Job()
 }
