@@ -1,8 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.strategy.Version
 
 plugins {
     kotlin("jvm") version "1.3.21"
-    id("com.github.ben-manes.versions").version("0.14.0")
+    id("com.github.ben-manes.versions") version "0.38.0"
 }
 
 buildscript {
