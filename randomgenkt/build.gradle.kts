@@ -11,7 +11,7 @@ dependencies {
     ktlint("com.github.shyiko:ktlint:0.31.0")
 
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.3.61")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.21")
 
     implementation("com.implimentz:unsafe:0.0.6")
 
