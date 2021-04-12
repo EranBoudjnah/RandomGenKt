@@ -15,10 +15,11 @@ dependencies {
 
     implementation("com.implimentz:unsafe:0.0.6")
 
-    testImplementation("junit:junit:4.12")
+    testImplementation("junit:junit:4.13.2")
     testImplementation("org.hamcrest:hamcrest-core:2.2")
-    testImplementation("org.mockito:mockito-core:2.28.2")
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
+    testImplementation("org.mockito:mockito-core:3.9.0")
+    testImplementation("org.mockito:mockito-inline:3.9.0")
+    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 }
 
 lintOptions {
