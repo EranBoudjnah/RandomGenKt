@@ -45,7 +45,10 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
                     setField(instance, field, generatedValue)
                 }
             } catch (exception: AssignmentException) {
-                throw IllegalArgumentException("Cannot set field $fieldName due to invalid value", exception)
+                throw IllegalArgumentException(
+                    "Cannot set field $fieldName due to invalid value",
+                    exception
+                )
             }
         }
     }
@@ -138,7 +141,8 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
             instanceProvider: () -> GENERATED_INSTANCE
         ) = IncompleteBuilderField(instanceProvider, factory)
 
-        private class DefaultFieldDataProviderFactory<GENERATED_INSTANCE> : SimpleFieldDataProviderFactory<GENERATED_INSTANCE>(Random(), DefaultUuidGenerator())
+        private class DefaultFieldDataProviderFactory<GENERATED_INSTANCE> :
+            SimpleFieldDataProviderFactory<GENERATED_INSTANCE>(Random(), DefaultUuidGenerator())
 
         private class DefaultUuidGenerator : UuidGenerator {
             override fun randomUUID() = UUID.randomUUID().toString()
@@ -197,9 +201,11 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
                 instanceProvider = DefaultValuesInstanceProvider(generatedInstanceClass)
             }
 
-            val randomGen = RandomGen(instanceProvider,
+            val randomGen = RandomGen(
+                instanceProvider,
                 LinkedHashMap(dataProviders),
-                ArrayList(onGenerateCallbacks))
+                ArrayList(onGenerateCallbacks)
+            )
 
             dataProviders.clear()
             onGenerateCallbacks.clear()
@@ -224,7 +230,8 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
             weight: Double
         ) {
             @Suppress("UNCHECKED_CAST")
-            val qualifiedLastFieldDataProvider = lastFieldDataProvider as WeightedFieldDataProvidersFieldDataProvider<GENERATED_INSTANCE, FIELD_DATA_TYPE>
+            val qualifiedLastFieldDataProvider =
+                lastFieldDataProvider as WeightedFieldDataProvidersFieldDataProvider<GENERATED_INSTANCE, FIELD_DATA_TYPE>
 
             qualifiedLastFieldDataProvider.addFieldDataProvider(fieldDataProvider, weight)
         }
@@ -302,130 +309,171 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
         private val factory: FieldDataProviderFactory<RETURN_TYPE>
     ) {
 
-        fun <VALUE_TYPE> returningExplicitly(value: VALUE_TYPE) =
-            getBuilderFieldFromIncomplete(builderField.returning(factory.getExplicitFieldDataProvider(value)))
+        fun <VALUE_TYPE> returningExplicitly(value: VALUE_TYPE) = getBuilderFieldFromIncomplete(
+            builderField.returning(factory.getExplicitFieldDataProvider(value))
+        )
 
         fun <VALUE_TYPE> returning(list: List<VALUE_TYPE>): BuilderField<RETURN_TYPE> {
             val immutableList = ArrayList(list)
-            return getBuilderFieldFromIncomplete(builderField.returning(factory.getGenericListFieldDataProvider(immutableList)))
+            return getBuilderFieldFromIncomplete(
+                builderField.returning(factory.getGenericListFieldDataProvider(immutableList))
+            )
         }
 
-        fun returningBoolean() = getBuilderFieldFromIncomplete(builderField.returning(factory.booleanFieldDataProvider))
+        fun returningBoolean() =
+            getBuilderFieldFromIncomplete(builderField.returning(factory.booleanFieldDataProvider))
 
-        fun returningByte() = getBuilderFieldFromIncomplete(builderField.returning(factory.byteFieldDataProvider))
+        fun returningByte() =
+            getBuilderFieldFromIncomplete(builderField.returning(factory.byteFieldDataProvider))
 
-        fun returningBytes(size: Int) = getBuilderFieldFromIncomplete(builderField.returning(factory.getByteListFieldDataProvider(size)))
+        fun returningBytes(size: Int) = getBuilderFieldFromIncomplete(
+            builderField.returning(factory.getByteListFieldDataProvider(size))
+        )
 
-        fun returningBytes(minSize: Int, maxSize: Int) =
-            getBuilderFieldFromIncomplete(builderField.returning(factory.getByteListFieldDataProvider(minSize, maxSize)))
+        fun returningBytes(minSize: Int, maxSize: Int) = getBuilderFieldFromIncomplete(
+            builderField.returning(factory.getByteListFieldDataProvider(minSize, maxSize))
+        )
 
-        fun returningDouble() = getBuilderFieldFromIncomplete(builderField.returning(factory.getDoubleFieldDataProvider()))
+        fun returningDouble() =
+            getBuilderFieldFromIncomplete(builderField.returning(factory.getDoubleFieldDataProvider()))
 
-        fun returningFloat() = getBuilderFieldFromIncomplete(builderField.returning(factory.getFloatFieldDataProvider()))
+        fun returningFloat() =
+            getBuilderFieldFromIncomplete(builderField.returning(factory.getFloatFieldDataProvider()))
 
-        fun returningInt() = getBuilderFieldFromIncomplete(builderField.returning(factory.getIntFieldDataProvider()))
+        fun returningInt() =
+            getBuilderFieldFromIncomplete(builderField.returning(factory.getIntFieldDataProvider()))
 
-        fun returningLong() = getBuilderFieldFromIncomplete(builderField.returning(factory.getLongFieldDataProvider()))
+        fun returningLong() =
+            getBuilderFieldFromIncomplete(builderField.returning(factory.getLongFieldDataProvider()))
 
-        fun returningShort() = getBuilderFieldFromIncomplete(builderField.returning(factory.getShortFieldDataProvider()))
+        fun returningShort() =
+            getBuilderFieldFromIncomplete(builderField.returning(factory.getShortFieldDataProvider()))
 
-        fun returning(minimum: Double, maximum: Double) =
-            getBuilderFieldFromIncomplete(builderField.returning(factory.getDoubleFieldDataProvider(minimum, maximum)))
+        fun returning(minimum: Double, maximum: Double) = getBuilderFieldFromIncomplete(
+            builderField.returning(factory.getDoubleFieldDataProvider(minimum, maximum))
+        )
 
-        fun returning(minimum: Float, maximum: Float) =
-            getBuilderFieldFromIncomplete(builderField.returning(factory.getFloatFieldDataProvider(minimum, maximum)))
+        fun returning(minimum: Float, maximum: Float) = getBuilderFieldFromIncomplete(
+            builderField.returning(factory.getFloatFieldDataProvider(minimum, maximum))
+        )
 
-        fun returning(minimum: Int, maximum: Int) =
-            getBuilderFieldFromIncomplete(builderField.returning(factory.getIntFieldDataProvider(minimum, maximum)))
+        fun returning(minimum: Int, maximum: Int) = getBuilderFieldFromIncomplete(
+            builderField.returning(factory.getIntFieldDataProvider(minimum, maximum))
+        )
 
-        fun returning(minimum: Long, maximum: Long) =
-            getBuilderFieldFromIncomplete(builderField.returning(factory.getLongFieldDataProvider(minimum, maximum)))
+        fun returning(minimum: Long, maximum: Long) = getBuilderFieldFromIncomplete(
+            builderField.returning(factory.getLongFieldDataProvider(minimum, maximum))
+        )
 
-        fun returning(minimum: Short, maximum: Short) =
-            getBuilderFieldFromIncomplete(builderField.returning(factory.getShortFieldDataProvider(minimum, maximum)))
+        fun returning(minimum: Short, maximum: Short) = getBuilderFieldFromIncomplete(
+            builderField.returning(factory.getShortFieldDataProvider(minimum, maximum))
+        )
 
         fun returningSequentialInteger() =
             getBuilderFieldFromIncomplete(builderField.returning(factory.sequentialIntegerFieldDataProvider))
 
-        fun returningSequentialInteger(startValue: Int) =
-            getBuilderFieldFromIncomplete(builderField.returning(factory.getSequentialIntegerFieldDataProvider(startValue)))
+        fun returningSequentialInteger(startValue: Int) = getBuilderFieldFromIncomplete(
+            builderField.returning(factory.getSequentialIntegerFieldDataProvider(startValue))
+        )
 
         fun returningUuid() =
             getBuilderFieldFromIncomplete(builderField.returning(factory.uuidFieldDataProvider))
 
-        fun returningRgb(alpha: Boolean) =
-            getBuilderFieldFromIncomplete(builderField.returning(factory.getRgbFieldDataProvider(alpha)))
+        fun returningRgb(alpha: Boolean) = getBuilderFieldFromIncomplete(
+            builderField.returning(factory.getRgbFieldDataProvider(alpha))
+        )
 
         /**
-		 * See [.returningLoremIpsum].
-		 *
-		 * @return builder generating one copy of the Lorem Ipsum text
-		 */
+         * See [.returningLoremIpsum].
+         *
+         * @return builder generating one copy of the Lorem Ipsum text
+         */
         fun returningLoremIpsum() =
             getBuilderFieldFromIncomplete(builderField.returning(factory.loremIpsumFieldDataProvider))
 
         /**
-		 * See [.returningLoremIpsum].
-		 *
-		 * @param length The number of characters to return
-		 * @return A builder generating a substring of an infinite (well, kind of) Lorem Ipsum text
-		 */
-        fun returningLoremIpsum(length: Int) =
-            getBuilderFieldFromIncomplete(builderField.returning(factory.getLoremIpsumFieldDataProvider(length)))
+         * See [.returningLoremIpsum].
+         *
+         * @param length The number of characters to return
+         * @return A builder generating a substring of an infinite (well, kind of) Lorem Ipsum text
+         */
+        fun returningLoremIpsum(length: Int) = getBuilderFieldFromIncomplete(
+            builderField.returning(factory.getLoremIpsumFieldDataProvider(length))
+        )
 
         /**
-		 * See [.returningLoremIpsum].
-		 *
-		 * @param minLength The minimal number of characters to return
-		 * @param maxLength The maximal number of characters to return
-		 * @return A builder generating a substring of an infinite (well, kind of) Lorem Ipsum text
-		 */
-        fun returningLoremIpsum(minLength: Int, maxLength: Int) =
-            getBuilderFieldFromIncomplete(builderField.returning(factory.getLoremIpsumFieldDataProvider(minLength, maxLength)))
+         * See [.returningLoremIpsum].
+         *
+         * @param minLength The minimal number of characters to return
+         * @param maxLength The maximal number of characters to return
+         * @return A builder generating a substring of an infinite (well, kind of) Lorem Ipsum text
+         */
+        fun returningLoremIpsum(minLength: Int, maxLength: Int) = getBuilderFieldFromIncomplete(
+            builderField.returning(factory.getLoremIpsumFieldDataProvider(minLength, maxLength))
+        )
 
         /**
-		 * Adds a String containing Lorem Ipsum. Length determines how many characters of Lorem Ipsum to return. The content will repeat itself if
-		 * the requested length exceeds the length of Lorem Ipsum.
-		 *
-		 * @param minLength The minimal number of characters to return
-		 * @param maxLength The maximal number of characters to return
-		 * @param paragraphDelimiter The string to use between Lorem Ipsum paragraphs
-		 * @return A builder generating a substring of an infinite (well, kind of) Lorem Ipsum text
-		 */
+         * Adds a String containing Lorem Ipsum. Length determines how many characters of Lorem Ipsum to return. The content will repeat itself if
+         * the requested length exceeds the length of Lorem Ipsum.
+         *
+         * @param minLength The minimal number of characters to return
+         * @param maxLength The maximal number of characters to return
+         * @param paragraphDelimiter The string to use between Lorem Ipsum paragraphs
+         * @return A builder generating a substring of an infinite (well, kind of) Lorem Ipsum text
+         */
         fun returningLoremIpsum(minLength: Int, maxLength: Int, paragraphDelimiter: String) =
-            getBuilderFieldFromIncomplete(builderField.returning(factory.getLoremIpsumFieldDataProvider(minLength, maxLength, paragraphDelimiter)))
+            getBuilderFieldFromIncomplete(
+                builderField.returning(
+                    factory.getLoremIpsumFieldDataProvider(minLength, maxLength, paragraphDelimiter)
+                )
+            )
 
         /**
-		 * Adds a generator of random enum values for the given field.
-		 *
-		 * @param &lt;ENUM_TYPE&gt; Implicit. The enum type to use
-		 * @return A builder with a data provider
-		 */
+         * Adds a generator of random enum values for the given field.
+         *
+         * @param &lt;ENUM_TYPE&gt; Implicit. The enum type to use
+         * @return A builder with a data provider
+         */
         inline fun <reified ENUM_TYPE : Enum<*>> returning() =
             returning(ENUM_TYPE::class.java)
 
         fun <ENUM_TYPE : Enum<*>> returning(enumClass: Class<ENUM_TYPE>) =
-            getBuilderFieldFromIncomplete(builderField.returning(factory.getRandomEnumFieldDataProvider(enumClass)))
+            getBuilderFieldFromIncomplete(
+                builderField.returning(factory.getRandomEnumFieldDataProvider(enumClass))
+            )
 
         /**
-		 * Adds a lambda generated value for the given field.
-		 *
-		 * @param fieldDataProvider An instance of the lambda to use
-		 * @param &lt;VALUE_TYPE&gt;      The type returned from the lambda
-		 * @return An instance of the specified `VALUE_TYPE`
-		 */
+         * Adds a lambda generated value for the given field.
+         *
+         * @param fieldDataProvider An instance of the lambda to use
+         * @param &lt;VALUE_TYPE&gt;      The type returned from the lambda
+         * @return An instance of the specified `VALUE_TYPE`
+         */
         fun <VALUE_TYPE> returning(fieldDataProvider: (RETURN_TYPE?) -> VALUE_TYPE) =
             getBuilderFieldFromIncomplete(builderField.returning(fieldDataProvider))
 
-        fun <VALUE_TYPE> returning(instances: Int, fieldDataProvider: (RETURN_TYPE?) -> VALUE_TYPE) =
-            getBuilderFieldFromIncomplete(builderField.returning(factory.getCustomListFieldDataProvider(instances, fieldDataProvider)))
+        fun <VALUE_TYPE> returning(
+            instances: Int,
+            fieldDataProvider: (RETURN_TYPE?) -> VALUE_TYPE
+        ) = getBuilderFieldFromIncomplete(
+            builderField.returning(
+                factory.getCustomListFieldDataProvider(instances, fieldDataProvider)
+            )
+        )
 
         fun <VALUE_TYPE> returning(
             minInstances: Int,
             maxInstances: Int,
             fieldDataProvider: (RETURN_TYPE?) -> VALUE_TYPE
-        ) =
-            getBuilderFieldFromIncomplete(builderField.returning(factory.getCustomListRangeFieldDataProvider(minInstances, maxInstances, fieldDataProvider)))
+        ) = getBuilderFieldFromIncomplete(
+            builderField.returning(
+                factory.getCustomListRangeFieldDataProvider(
+                    minInstances,
+                    maxInstances,
+                    fieldDataProvider
+                )
+            )
+        )
 
         private fun getBuilderFieldFromIncomplete(incompleteBuilderField: IncompleteBuilderField<RETURN_TYPE>) =
             if (incompleteBuilderField.initializeType == IncompleteBuilderField.InitializeType.WITH_CLASS) {
@@ -452,16 +500,7 @@ class RandomGen<GENERATED_INSTANCE> private constructor(
         fun get() = typedArray
     }
 
-    /**
-	 * Classes implementing this interface provide a new instance of the desired type that will get populated by [RandomGen].
-	 *
-	 * @param &lt;INSTANCE_TYPE&gt; The type of instance to be returned
-	 */
-    interface InstanceProvider<INSTANCE_TYPE> {
-        fun provideInstance(): INSTANCE_TYPE
-    }
-
-    interface OnGenerateCallback<INSTANCE_TYPE> {
+    fun interface OnGenerateCallback<INSTANCE_TYPE> {
         fun onGenerate(generatedInstance: INSTANCE_TYPE)
     }
 
