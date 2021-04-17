@@ -29,13 +29,12 @@ constructor(private val random: Random) {
     private fun newContainerRoomRandomGen() =
         RandomGen.Builder<Room>()
             .ofClass<Room>()
-            .onGenerate(object : RandomGen.OnGenerateCallback<Room> {
-                override fun onGenerate(generatedInstance: Room) {
-                    val divisionType = if (random.nextBoolean()) DivisionType.HORIZONTAL else DivisionType.VERTICAL
-                    val roomsRemaining = random.nextInt(7) + 1
-                    splitRooms(generatedInstance, roomsRemaining - 1, divisionType)
-                }
-            })
+            .onGenerate { generatedInstance ->
+                val divisionType =
+                    if (random.nextBoolean()) DivisionType.HORIZONTAL else DivisionType.VERTICAL
+                val roomsRemaining = random.nextInt(7) + 1
+                splitRooms(generatedInstance, roomsRemaining - 1, divisionType)
+            }
             .withField("roomType")
             .returning(RoomType::class.java)
             .build()

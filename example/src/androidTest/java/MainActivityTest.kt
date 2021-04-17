@@ -2,7 +2,6 @@ import EspressoMatchers.hasCheckedItem
 import EspressoMatchers.isMostlyVisible
 import EspressoViewActions.bottomNavigateTo
 import EspressoViewActions.waitForView
-import android.view.View
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -69,7 +68,8 @@ class MainActivityTest {
     }
 
     private fun iSeeTheInstructionsView() {
-        onView(withText("Choose a data type below to generate a random instance.")).check(matches(isDisplayed()))
+        onView(withText("Choose a data type below to generate a random instance."))
+            .check(matches(isDisplayed()))
     }
 
     private fun iSeeNoNavigationItemSelected() {
@@ -81,6 +81,8 @@ class MainActivityTest {
     }
 
     private fun iSeeAViewWithinThePager(viewId: Int) {
-        onView(withId(R.id.content_container)).perform(waitForView(allOf(withId(viewId), isMostlyVisible()), 1000))
+        onView(withId(R.id.content_container)).perform(
+            waitForView(allOf(withId(viewId), isMostlyVisible()), 1000)
+        )
     }
 }
