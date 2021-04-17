@@ -3,8 +3,8 @@
 > Initialize instances of any class with generated data.
 >
 
-[![Version - RandomGenKt](https://img.shields.io/bintray/v/shadowcra/RandomGenKt/RandomGenKt?label=randomgenkt+|+bintray)](https://bintray.com/shadowcra/RandomGenKt/RandomGenKt)
-[![Version - DataSource](https://img.shields.io/bintray/v/shadowcra/RandomGenKt/DataSource?label=datasource+|+bintray)](https://bintray.com/shadowcra/RandomGenKt/DataSource)
+[![Version - RandomGenKt](https://img.shields.io/maven-central/v/com.mitteloupe.randomgenkt/randomgenkt?label=RandomGenKt+|+MavenCentral)](https://mvnrepository.com/artifact/com.mitteloupe.randomgenkt/randomgenkt)
+[![Version - DataSource](https://img.shields.io/maven-central/v/om.mitteloupe.randomgenkt/randomgenkt.datasource?label=datasource+|+MavenCentral)](https://mvnrepository.com/artifact/com.mitteloupe.randomgenkt/randomgenkt.datasource)
 [![Build Status](https://travis-ci.com/EranBoudjnah/RandomGenKt.svg?branch=master)](https://travis-ci.com/EranBoudjnah/RandomGenKt)
 [![License](https://img.shields.io/github/license/EranBoudjnah/RandomGenKt)](https://github.com/EranBoudjnah/RandomGenKt/blob/master/LICENSE)
 
@@ -20,26 +20,16 @@ In your `build.gradle`, add the following:
 
 ```groovy
 dependencies {
-    implementation("com.mitteloupe:randomgenkt:1.0.1")
+    implementation("com.mitteloupe.randomgenkt:randomgenkt:1.0.1")
 }
 ```
 
 To include the default data generators, also include
 ```groovy
 dependencies {
-    implementation("com.mitteloupe:randomgenkt.datasource:1.0.1")
+    implementation("com.mitteloupe.randomgenkt:randomgenkt.datasource:1.0.1")
 }
 ```
-
-Note: To add the BinTray repository in your maven repositories, also add the following:
-```groovy
-repositories {
-    maven {
-        url "https://dl.bintray.com/shadowcra/RandomGenKt"
-    }
-}
-```
-
 
 ## Usage
 
