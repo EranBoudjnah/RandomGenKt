@@ -28,7 +28,6 @@ repositories {
     google()
     jcenter()
     mavenCentral()
-    maven("https://dl.bintray.com/shadowcra/RandomGenKt")
 }
 
 val ktlint: Configuration by configurations.creating
@@ -69,9 +68,7 @@ dependencies {
     androidTestImplementation("androidx.test:rules:1.3.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
 
-    // Just until the library is uploaded to maven central...
-    //    implementation("com.mitteloupe:randomgenkt:1.0.1")
-    implementation(project(":randomgenkt"))
+    implementation("com.mitteloupe.randomgenkt:randomgenkt:1.0.1")
 }
 
 val ktlintVerify: JavaExec by tasks.creating(JavaExec::class)
