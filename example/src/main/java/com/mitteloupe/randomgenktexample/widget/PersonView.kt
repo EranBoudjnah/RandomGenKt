@@ -4,22 +4,28 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.TextView
 import com.mitteloupe.randomgenktexample.R
 import com.mitteloupe.randomgenktexample.data.model.person.Gender
 import com.mitteloupe.randomgenktexample.data.model.person.Person
 import com.mitteloupe.randomgenktexample.utils.StringFormatter.formatEnumValue
-import kotlinx.android.synthetic.main.view_person.view.content_wrapper as contentWrapper
-import kotlinx.android.synthetic.main.view_person.view.icon_female as iconFemale
-import kotlinx.android.synthetic.main.view_person.view.icon_male as iconMale
-import kotlinx.android.synthetic.main.view_person.view.text_age_value as textAgeValue
-import kotlinx.android.synthetic.main.view_person.view.text_name_value as textNameValue
-import kotlinx.android.synthetic.main.view_person.view.text_occupation_value as textOccupationValue
-import kotlinx.android.synthetic.main.view_person.view.text_phone_value as textPhoneValue
 
 /**
  * Created by Eran Boudjnah on 18/08/2018.
  */
-class PersonView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr) {
+class PersonView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
+    private val contentWrapper: View = findViewById(R.id.content_wrapper)
+    private val iconFemale: View = findViewById(R.id.icon_female)
+    private val iconMale: View = findViewById(R.id.icon_male)
+    private val textAgeValue: TextView = findViewById(R.id.text_age_value)
+    private val textNameValue: TextView = findViewById(R.id.text_name_value)
+    private val textOccupationValue: TextView = findViewById(R.id.text_occupation_value)
+    private val textPhoneValue: TextView = findViewById(R.id.text_phone_value)
+
     private val maleColor: Int by lazy { resources.getColor(R.color.male, null) }
     private val femaleColor: Int by lazy { resources.getColor(R.color.female, null) }
 

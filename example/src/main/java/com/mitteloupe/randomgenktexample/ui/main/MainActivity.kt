@@ -2,12 +2,14 @@ package com.mitteloupe.randomgenktexample.ui.main
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mitteloupe.randomgenktexample.R
 import com.mitteloupe.randomgenktexample.data.model.flat.Flat
 import com.mitteloupe.randomgenktexample.data.model.person.Person
@@ -15,16 +17,19 @@ import com.mitteloupe.randomgenktexample.data.model.planet.PlanetarySystem
 import com.mitteloupe.randomgenktexample.presentation.MainViewModel
 import com.mitteloupe.randomgenktexample.presentation.MainViewModelFactory
 import com.mitteloupe.randomgenktexample.presentation.ViewState
+import com.mitteloupe.randomgenktexample.widget.FlatView
+import com.mitteloupe.randomgenktexample.widget.PlanetarySystemView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import kotlinx.android.synthetic.main.activity_main.bottom_navigation as bottomNavigation
-import kotlinx.android.synthetic.main.activity_main.content_container as viewFlipper
-import kotlinx.android.synthetic.main.activity_main.flat_view as flatView
-import kotlinx.android.synthetic.main.activity_main.people_view as peopleView
-import kotlinx.android.synthetic.main.activity_main.planetary_system_view as planetarySystemView
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), Observer<ViewState> {
+    private val viewFlipper: ViewFlipper by lazy { findViewById(R.id.content_container) }
+    private val peopleView: RecyclerView by lazy { findViewById(R.id.people_view) }
+    private val flatView: FlatView by lazy { findViewById(R.id.flat_view) }
+    private val planetarySystemView: PlanetarySystemView by lazy { findViewById(R.id.planetary_system_view) }
+    private val bottomNavigation: BottomNavigationView by lazy { findViewById(R.id.bottom_navigation) }
+
     @Inject
     lateinit var viewModelFactory: MainViewModelFactory
 
