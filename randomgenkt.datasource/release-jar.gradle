@@ -1,7 +1,17 @@
 apply plugin: 'maven'
 
+task sourcesJar(type: Jar) {
+    from sourceSets.main.kotlin.srcDirs
+    archiveClassifier = "sources"
+}
+
 java {
+    withJavadocJar()
     withSourcesJar()
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
 }
 
 def gitUrl = 'https://github.com/EranBoudjnah/RandomGenKt.git'

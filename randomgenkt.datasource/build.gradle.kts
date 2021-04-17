@@ -9,7 +9,7 @@ dependencies {
 }
 
 ext {
-	set("PUBLISH_GROUP_ID", "com.mitteloupe")
+	set("PUBLISH_GROUP_ID", "com.mitteloupe.randomgenkt")
 	set("PUBLISH_ARTIFACT_ID", "randomgenkt.datasource")
 	set("PUBLISH_VERSION", "1.0.1")
 }
