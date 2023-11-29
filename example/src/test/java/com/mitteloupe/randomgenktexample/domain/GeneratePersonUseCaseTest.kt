@@ -21,8 +21,10 @@ class GeneratePersonUseCaseTest {
     private lateinit var cut: GeneratePersonUseCase
 
     private lateinit var coroutineContextProvider: CoroutineContextProvider
+
     @Mock
     lateinit var personGeneratorFactory: PersonGeneratorFactory
+
     @Mock
     lateinit var personGenerator: RandomGen<Person>
 

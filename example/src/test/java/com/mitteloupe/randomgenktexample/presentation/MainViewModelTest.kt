@@ -31,16 +31,22 @@ class MainViewModelTest {
 
     @Mock
     lateinit var useCaseExecutor: UseCaseExecutor
+
     @Mock
     lateinit var generatePersonUseCaseLazy: dagger.Lazy<GeneratePersonUseCase>
+
     @Mock
     lateinit var generatePersonUseCase: GeneratePersonUseCase
+
     @Mock
     lateinit var generatePlanetarySystemUseCaseLazy: dagger.Lazy<GeneratePlanetarySystemUseCase>
+
     @Mock
     lateinit var generatePlanetarySystemUseCase: GeneratePlanetarySystemUseCase
+
     @Mock
     lateinit var generateFlatUseCaseLazy: dagger.Lazy<GenerateFlatUseCase>
+
     @Mock
     lateinit var generateFlatUseCase: GenerateFlatUseCase
 
@@ -52,7 +58,12 @@ class MainViewModelTest {
         given(generatePlanetarySystemUseCaseLazy.get()).willReturn(generatePlanetarySystemUseCase)
         given(generateFlatUseCaseLazy.get()).willReturn(generateFlatUseCase)
 
-        cut = MainViewModel(useCaseExecutor, generatePersonUseCaseLazy, generatePlanetarySystemUseCaseLazy, generateFlatUseCaseLazy)
+        cut = MainViewModel(
+            useCaseExecutor,
+            generatePersonUseCaseLazy,
+            generatePlanetarySystemUseCaseLazy,
+            generateFlatUseCaseLazy
+        )
     }
 
     @Test
@@ -85,7 +96,10 @@ class MainViewModelTest {
         cut.onGeneratePlanetarySystemClick()
 
         // Then
-        verify(useCaseExecutor).execute(eq(generatePlanetarySystemUseCase), callbackCaptor.capture())
+        verify(useCaseExecutor).execute(
+            eq(generatePlanetarySystemUseCase),
+            callbackCaptor.capture()
+        )
         val callback = callbackCaptor.firstValue
 
         // When

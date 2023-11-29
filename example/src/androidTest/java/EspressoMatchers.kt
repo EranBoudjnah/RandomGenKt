@@ -1,26 +1,25 @@
-
 import android.view.View
 import androidx.test.espresso.matcher.BoundedMatcher
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.Visibility
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast
+import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 
-/**
- * Created by Eran Boudjnah on 02/11/2018.
- */
 object EspressoMatchers {
     /**
-	 * Checks that a [BottomNavigationView] contains an item with provided id and that it is
-	 * checked.
-	 *
-	 * @param id of the item to find in the [BottomNavigationView]
-	 * @return a matcher that returns true if the item was found and checked, false otherwise
-	 */
-    fun hasCheckedItem(id: Int): Matcher<View> {
-        return object : BoundedMatcher<View, BottomNavigationView>(BottomNavigationView::class.java) {
+     * Checks that a [BottomNavigationView] contains an item with provided id and that it is
+     * checked.
+     *
+     * @param id of the item to find in the [BottomNavigationView]
+     * @return a matcher that returns true if the item was found and checked, false otherwise
+     */
+    fun hasCheckedItem(id: Int): Matcher<View> =
+        object : BoundedMatcher<View, BottomNavigationView>(
+            BottomNavigationView::class.java
+        ) {
             private var checkedIds: MutableSet<Int> = HashSet()
             private var itemFound = false
             private var triedMatching = false
@@ -61,10 +60,9 @@ object EspressoMatchers {
                 }
             }
         }
-    }
 
     fun isMostlyVisible(): Matcher<View> = allOf(
-        ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE),
+        withEffectiveVisibility(Visibility.VISIBLE),
         isDisplayingAtLeast(90)
     )
 }

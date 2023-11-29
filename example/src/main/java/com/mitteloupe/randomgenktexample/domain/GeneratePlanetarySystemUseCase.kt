@@ -14,7 +14,9 @@ class GeneratePlanetarySystemUseCase
     coroutineContextProvider: CoroutineContextProvider,
     planetarySystemGeneratorFactory: PlanetarySystemGeneratorFactory
 ) : BaseUseCase<PlanetarySystem>(coroutineContextProvider) {
-    private val planetarySystemRandomGen by lazy { planetarySystemGeneratorFactory.newPlanetarySystemGenerator }
+    private val planetarySystemRandomGen by lazy {
+        planetarySystemGeneratorFactory.planetarySystemGenerator
+    }
 
-    override fun executeAsync() = planetarySystemRandomGen.generate()
+    override fun executeAsync() = planetarySystemRandomGen()
 }

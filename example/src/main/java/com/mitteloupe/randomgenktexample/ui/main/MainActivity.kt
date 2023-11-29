@@ -27,8 +27,12 @@ class MainActivity : AppCompatActivity(), Observer<ViewState> {
     private val viewFlipper: ViewFlipper by lazy { findViewById(R.id.content_container) }
     private val peopleView: RecyclerView by lazy { findViewById(R.id.people_view) }
     private val flatView: FlatView by lazy { findViewById(R.id.flat_view) }
-    private val planetarySystemView: PlanetarySystemView by lazy { findViewById(R.id.planetary_system_view) }
-    private val bottomNavigation: BottomNavigationView by lazy { findViewById(R.id.bottom_navigation) }
+    private val planetarySystemView: PlanetarySystemView by lazy {
+        findViewById(R.id.planetary_system_view)
+    }
+    private val bottomNavigation: BottomNavigationView by lazy {
+        findViewById(R.id.bottom_navigation)
+    }
 
     @Inject
     lateinit var viewModelFactory: MainViewModelFactory
@@ -47,8 +51,6 @@ class MainActivity : AppCompatActivity(), Observer<ViewState> {
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
         viewModel.viewState.observe(this, this)
-
-        updateViewWithViewState(viewModel.viewState.value)
     }
 
     private fun setUpPeopleView() {
@@ -73,10 +75,10 @@ class MainActivity : AppCompatActivity(), Observer<ViewState> {
             else -> null
         }
 
-    override fun onChanged(viewState: ViewState?) =
+    override fun onChanged(viewState: ViewState) =
         updateViewWithViewState(viewState)
 
-    private fun updateViewWithViewState(viewState: ViewState?) {
+    private fun updateViewWithViewState(viewState: ViewState) {
         when (viewState) {
             is ViewState.ShowNone -> hideAllViews()
             is ViewState.ShowPeople -> showPeopleView(viewState.people)

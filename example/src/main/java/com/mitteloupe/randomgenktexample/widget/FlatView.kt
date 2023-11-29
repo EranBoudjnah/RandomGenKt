@@ -90,7 +90,12 @@ constructor(
 
     private fun writeRoomType(canvas: Canvas, room: Room, boundingWalls: RectF) {
         paint.style = Paint.Style.FILL
-        canvas.drawText(formatEnumValue(room.roomType), boundingWalls.centerX(), boundingWalls.centerY(), paint)
+        canvas.drawText(
+            formatEnumValue(room.roomType),
+            boundingWalls.centerX(),
+            boundingWalls.centerY(),
+            paint
+        )
     }
 
     private fun drawWall(canvas: Canvas, wall: RectF) {

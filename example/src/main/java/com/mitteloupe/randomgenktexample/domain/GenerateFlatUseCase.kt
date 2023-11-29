@@ -16,5 +16,5 @@ class GenerateFlatUseCase
 ) : BaseUseCase<Flat>(coroutineContextProvider) {
     private val flatRandomGen by lazy { flatGeneratorFactory.newFlatGenerator }
 
-    override fun executeAsync() = flatRandomGen.generate()
+    override fun executeAsync() = flatRandomGen()
 }

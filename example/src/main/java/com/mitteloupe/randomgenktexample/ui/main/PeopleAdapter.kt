@@ -12,7 +12,10 @@ class PeopleAdapter : RecyclerView.Adapter<PersonViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PersonViewHolder {
         val personView = PersonView(parent.context)
-        personView.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        personView.layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
         return PersonViewHolder(personView)
     }
 
@@ -42,7 +45,10 @@ class PeopleDiffCallback(
 
     override fun getNewListSize() = newPeople.size
 
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) = areItemsTheSame(oldItemPosition, newItemPosition)
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) = areItemsTheSame(
+        oldItemPosition,
+        newItemPosition
+    )
 }
 
 class PersonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

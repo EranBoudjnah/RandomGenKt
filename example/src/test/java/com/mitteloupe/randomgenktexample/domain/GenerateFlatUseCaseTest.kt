@@ -21,8 +21,10 @@ class GenerateFlatUseCaseTest {
     private lateinit var cut: GenerateFlatUseCase
 
     private lateinit var coroutineContextProvider: CoroutineContextProvider
+
     @Mock
     lateinit var flatGeneratorFactory: FlatGeneratorFactory
+
     @Mock
     lateinit var flatGenerator: RandomGen<Flat>
 

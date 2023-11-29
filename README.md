@@ -10,6 +10,8 @@
 
 ![Example](https://github.com/EranBoudjnah/RandomGenKt/raw/master/example/videocap.gif)
 
+Note: the codebase has been refreshed. This will be known as version 2. The documentation below has not yet been updated to reflect the changes, as it is still a work in progress.
+
 This is a Kotlin port of the Java library designed to generate random instances of any class.
 
 This is great for demoing your app with interesting content, manually testing it with varying data, and even populating it with smart, random generated data in production.

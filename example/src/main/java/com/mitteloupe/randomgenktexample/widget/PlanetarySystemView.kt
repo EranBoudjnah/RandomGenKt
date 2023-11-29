@@ -28,6 +28,8 @@ private const val ASPECT_RATIO = 0.7f
 private const val RING_ASPECT_RATIO = 0.5f
 private const val RING_TO_STAR_RATIO = 1.4f
 
+private const val RADIANS_TO_DEGREES = Math.PI.toFloat() / 180f
+
 /**
  * Created by Eran Boudjnah on 19/08/2018.
  */
@@ -159,7 +161,7 @@ class PlanetarySystemView @JvmOverloads constructor(
         invalidate()
     }
 
-    private fun setPlanetAnimations(planets: Array<Planet>) {
+    private fun setPlanetAnimations(planets: List<Planet>) {
         planetAnimations.clear()
 
         repeat(planetsCount) { index ->
@@ -225,9 +227,13 @@ class PlanetarySystemView @JvmOverloads constructor(
             resources.getString(R.string.planet_rotation_period_value, planet.rotationPeriodDays)
         starMoonsTextView.text = planet.moons.toString()
         starRingsTextView.text =
-            if (planet.hasRings) resources.getString(R.string.planet_has_rings) else resources.getString(
-                R.string.planet_no_rings
-            )
+            if (planet.hasRings) {
+                resources.getString(R.string.planet_has_rings)
+            } else {
+                resources.getString(
+                    R.string.planet_no_rings
+                )
+            }
         starAtmosphereTextView.text =
             Html.fromHtml(getMaterialsFormatted(planet.atmosphere), FROM_HTML_MODE_COMPACT)
     }
@@ -248,7 +254,7 @@ class PlanetarySystemView @JvmOverloads constructor(
 
     private fun getMaterialFormatted(material: Material): String {
         val stringBuilder = StringBuilder()
-        for (elementCompound in material.compound) {
+        for (elementCompound in material.compounds) {
             stringBuilder
                 .append(elementCompound.first)
             if (elementCompound.second != 1) {
@@ -311,8 +317,10 @@ class PlanetarySystemView @JvmOverloads constructor(
         val orbitRingWidth = visualSize * relativeRadius
         val orbitRingHeight = orbitRingWidth * ASPECT_RATIO
         planetRingRect.set(
-            visualCenter.x - orbitRingWidth, visualCenter.y - orbitRingHeight,
-            visualCenter.x + orbitRingWidth, visualCenter.y + orbitRingHeight
+            visualCenter.x - orbitRingWidth,
+            visualCenter.y - orbitRingHeight,
+            visualCenter.x + orbitRingWidth,
+            visualCenter.y + orbitRingHeight
         )
         canvas.drawArc(planetRingRect, 0f, 360f, false, paint)
     }
@@ -348,8 +356,9 @@ class PlanetarySystemView @JvmOverloads constructor(
         val relativeRadius = 0.1f + orbitRingSpacing * position
         val actualRadius = visualSize * relativeRadius
         planetCenter.set(
-            sin((planetAnimation.angle / 180f * 3.14f).toDouble()).toFloat() * actualRadius,
-            (-cos((planetAnimation.angle / 180f * 3.14f).toDouble())).toFloat() * actualRadius * ASPECT_RATIO
+            sin((planetAnimation.angle * RADIANS_TO_DEGREES).toDouble()).toFloat() * actualRadius,
+            (-cos((planetAnimation.angle * RADIANS_TO_DEGREES).toDouble())).toFloat() *
+                actualRadius * ASPECT_RATIO
         )
         planetCenter.offset(visualCenter.x, visualCenter.y)
     }
@@ -372,8 +381,10 @@ class PlanetarySystemView @JvmOverloads constructor(
         val ringHeight = ringWidth * RING_ASPECT_RATIO
 
         planetRingRect.set(
-            planetCenter.x - ringWidth, planetCenter.y - ringHeight,
-            planetCenter.x + ringWidth, planetCenter.y + ringHeight
+            planetCenter.x - ringWidth,
+            planetCenter.y - ringHeight,
+            planetCenter.x + ringWidth,
+            planetCenter.y + ringHeight
         )
 
         paint.strokeWidth = planetSize * 0.25f

@@ -14,9 +14,6 @@ import com.mitteloupe.randomgenktexample.domain.GeneratePlanetarySystemUseCase
 import com.mitteloupe.randomgenktexample.domain.UseCaseExecutor
 import javax.inject.Inject
 
-/**
- * Created by Eran Boudjnah on 29/10/2018.
- */
 class MainViewModel(
     private val useCaseExecutor: UseCaseExecutor,
     private val generatePersonUseCase: dagger.Lazy<GeneratePersonUseCase>,
@@ -66,18 +63,20 @@ class MainViewModel(
         }
 }
 
-class MainViewModelFactory
-@Inject
-constructor(
+class MainViewModelFactory @Inject constructor(
     private val useCaseExecutor: UseCaseExecutor,
     private val generatePersonUseCase: dagger.Lazy<GeneratePersonUseCase>,
     private val generatePlanetarySystemUseCase: dagger.Lazy<GeneratePlanetarySystemUseCase>,
     private val generateFlatUseCase: dagger.Lazy<GenerateFlatUseCase>
-) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
-        return MainViewModel(useCaseExecutor, generatePersonUseCase, generatePlanetarySystemUseCase, generateFlatUseCase) as T
+        return MainViewModel(
+            useCaseExecutor,
+            generatePersonUseCase,
+            generatePlanetarySystemUseCase,
+            generateFlatUseCase
+        ) as T
     }
 }
 

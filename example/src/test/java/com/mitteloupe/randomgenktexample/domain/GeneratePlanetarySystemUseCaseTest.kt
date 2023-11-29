@@ -21,17 +21,24 @@ class GeneratePlanetarySystemUseCaseTest {
     private lateinit var cut: GeneratePlanetarySystemUseCase
 
     private lateinit var coroutineContextProvider: CoroutineContextProvider
+
     @Mock
     lateinit var planetarySystemGeneratorFactory: PlanetarySystemGeneratorFactory
+
     @Mock
     lateinit var planetarySystemGenerator: RandomGen<PlanetarySystem>
 
     @Before
     fun setUp() {
         coroutineContextProvider = testCoroutineContextProvider()
-        given(planetarySystemGeneratorFactory.newPlanetarySystemGenerator).willReturn(planetarySystemGenerator)
+        given(planetarySystemGeneratorFactory.planetarySystemGenerator).willReturn(
+            planetarySystemGenerator
+        )
 
-        cut = GeneratePlanetarySystemUseCase(coroutineContextProvider, planetarySystemGeneratorFactory)
+        cut = GeneratePlanetarySystemUseCase(
+            coroutineContextProvider,
+            planetarySystemGeneratorFactory
+        )
     }
 
     @Test

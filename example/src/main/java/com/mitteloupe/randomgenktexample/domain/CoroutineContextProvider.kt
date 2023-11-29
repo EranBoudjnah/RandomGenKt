@@ -1,9 +1,9 @@
 package com.mitteloupe.randomgenktexample.domain
 
 import dagger.Reusable
-import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.Dispatchers
 
 /**
  * Created by Eran Boudjnah on 01/11/2018.

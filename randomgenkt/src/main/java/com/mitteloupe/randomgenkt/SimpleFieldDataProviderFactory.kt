@@ -3,7 +3,6 @@ package com.mitteloupe.randomgenkt
 import com.mitteloupe.randomgenkt.fielddataprovider.BooleanFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.ByteFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.ByteListFieldDataProvider
-import com.mitteloupe.randomgenkt.fielddataprovider.CustomListFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.CustomListRangeFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.DateFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.DoubleFieldDataProvider
@@ -21,15 +20,12 @@ import com.mitteloupe.randomgenkt.fielddataprovider.ShortFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.UuidFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.WeightedFieldDataProvidersFieldDataProvider
 import java.util.Random
+import kotlin.reflect.KClass
 
-/**
- * Created by Eran Boudjnah on 07/08/2018.
- */
 internal open class SimpleFieldDataProviderFactory<OUTPUT_TYPE>(
     private val random: Random,
-    private val uuidGenerator: UuidGenerator
+    private val uuidGenerator: UuidGenerator = DefaultUuidGenerator
 ) : FieldDataProviderFactory<OUTPUT_TYPE> {
-
     override val booleanFieldDataProvider: BooleanFieldDataProvider<OUTPUT_TYPE>
         get() = BooleanFieldDataProvider(random)
 
@@ -46,22 +42,24 @@ internal open class SimpleFieldDataProviderFactory<OUTPUT_TYPE>(
         get() = DateFieldDataProvider(random)
 
     override val loremIpsumFieldDataProvider: LoremIpsumFieldDataProvider<OUTPUT_TYPE>
-        get() = LoremIpsumFieldDataProvider.getInstance()
+        get() = LoremIpsumFieldDataProvider()
 
-    override fun <VALUE_TYPE> getExplicitFieldDataProvider(value: VALUE_TYPE) =
+    override fun <VALUE_TYPE : Any> getExplicitFieldDataProvider(value: VALUE_TYPE) =
         ExplicitFieldDataProvider<OUTPUT_TYPE, VALUE_TYPE>(value)
 
-    override fun <VALUE_TYPE> getGenericListFieldDataProvider(immutableList: List<VALUE_TYPE>) =
-        GenericListFieldDataProvider<OUTPUT_TYPE, VALUE_TYPE>(random, immutableList)
+    override fun <VALUE_TYPE : Any> getGenericListFieldDataProvider(
+        fieldValueTypes: List<VALUE_TYPE>
+    ) =
+        GenericListFieldDataProvider<OUTPUT_TYPE, VALUE_TYPE>(random, fieldValueTypes)
 
-    override fun getByteListFieldDataProvider(size: Int) =
-        ByteListFieldDataProvider.getInstanceWithSize<OUTPUT_TYPE>(random, size)
+    override fun getByteArrayFieldDataProvider(size: Int) =
+        ByteListFieldDataProvider<OUTPUT_TYPE>(random, size)
 
-    override fun getByteListFieldDataProvider(minSize: Int, maxSize: Int) =
-        ByteListFieldDataProvider.getInstanceWithSizeRange<OUTPUT_TYPE>(random, minSize, maxSize)
+    override fun getByteArrayFieldDataProvider(minimumSize: Int, maximumSize: Int) =
+        ByteListFieldDataProvider<OUTPUT_TYPE>(random, minimumSize, maximumSize)
 
     override fun getDoubleFieldDataProvider(minimum: Double, maximum: Double) =
-        DoubleFieldDataProvider.getInstanceWithRange<OUTPUT_TYPE>(random, minimum, maximum)
+        DoubleFieldDataProvider<OUTPUT_TYPE>(random, minimum, maximum)
 
     override fun getFloatFieldDataProvider(minimum: Float, maximum: Float) =
         FloatFieldDataProvider<OUTPUT_TYPE>(random, minimum, maximum)
@@ -84,33 +82,49 @@ internal open class SimpleFieldDataProviderFactory<OUTPUT_TYPE>(
     override fun getDateFieldDataProvider(earliestTimestamp: Long, latestTimestamp: Long) =
         DateFieldDataProvider<OUTPUT_TYPE>(random, earliestTimestamp, latestTimestamp)
 
-    override fun getLoremIpsumFieldDataProvider(length: Int?) =
-        when (length) {
-            null -> LoremIpsumFieldDataProvider.getInstance()
-            else -> LoremIpsumFieldDataProvider.getInstance<OUTPUT_TYPE>(length)
-        }
+    override fun getLoremIpsumFieldDataProvider(
+        minimumLength: Int,
+        maximumLength: Int,
+        paragraphDelimiter: String?
+    ) = if (paragraphDelimiter == null) {
+        LoremIpsumFieldDataProvider(
+            random,
+            minimumLength = minimumLength,
+            maximumLength = maximumLength
+        )
+    } else {
+        LoremIpsumFieldDataProvider<OUTPUT_TYPE>(
+            random,
+            minimumLength = minimumLength,
+            maximumLength = maximumLength,
+            paragraphDelimiter = paragraphDelimiter
+        )
+    }
 
-    override fun getLoremIpsumFieldDataProvider(minLength: Int, maxLength: Int, paragraphDelimiter: String?) =
-        when (paragraphDelimiter) {
-            null -> LoremIpsumFieldDataProvider.getInstanceWithRange(random, minLength, maxLength)
-            else -> LoremIpsumFieldDataProvider.getInstanceWithRange<OUTPUT_TYPE>(random, minLength, maxLength, paragraphDelimiter)
-        }
-
-    override fun getWeightedFieldDataProvidersFieldDataProvider(fieldDataProvider: (instance: OUTPUT_TYPE?) -> Any) =
-        WeightedFieldDataProvidersFieldDataProvider(random, fieldDataProvider)
+    override fun getWeightedFieldDataProvidersFieldDataProvider(
+        fieldDataProvider: FieldDataProvider<OUTPUT_TYPE, Any>
+    ) = WeightedFieldDataProvidersFieldDataProvider(random, fieldDataProvider)
 
     override fun <ENUM_TYPE : Enum<*>> getRandomEnumFieldDataProvider(value: Class<ENUM_TYPE>) =
         RandomEnumFieldDataProvider<OUTPUT_TYPE, ENUM_TYPE>(random, value)
 
-    override fun getPaddedFieldDataProvider(minimumLength: Int, paddingString: String, fieldDataProvider: (instance: OUTPUT_TYPE?) -> Any) =
-        PaddedFieldDataProvider(minimumLength, paddingString, fieldDataProvider)
+    override fun <ENUM_TYPE : Enum<*>> getRandomEnumFieldDataProvider(value: KClass<ENUM_TYPE>) =
+        RandomEnumFieldDataProvider<OUTPUT_TYPE, ENUM_TYPE>(random, value)
 
-    override fun <VALUE_TYPE> getCustomListFieldDataProvider(instances: Int, fieldDataProvider: (instance: OUTPUT_TYPE?) -> VALUE_TYPE) =
-        CustomListFieldDataProvider(instances, fieldDataProvider)
+    override fun getPaddedFieldDataProvider(
+        fieldDataProvider: FieldDataProvider<OUTPUT_TYPE, Any>,
+        minimumLength: Int,
+        paddingString: String
+    ) = PaddedFieldDataProvider(minimumLength, paddingString, fieldDataProvider)
 
-    override fun <VALUE_TYPE> getCustomListRangeFieldDataProvider(
-        minInstances: Int,
-        maxInstances: Int,
-        fieldDataProvider: (instance: OUTPUT_TYPE?) -> VALUE_TYPE
-    ) = CustomListRangeFieldDataProvider(random, minInstances, maxInstances, fieldDataProvider)
+    override fun <VALUE_TYPE : Any> getCustomListFieldDataProvider(
+        fieldDataProvider: FieldDataProvider<OUTPUT_TYPE, VALUE_TYPE>,
+        minimumInstances: Int,
+        maximumInstances: Int
+    ) = CustomListRangeFieldDataProvider(
+        random,
+        minimumInstances,
+        maximumInstances,
+        fieldDataProvider
+    )
 }

@@ -16,5 +16,5 @@ class GeneratePersonUseCase
 ) : BaseUseCase<Person>(coroutineContextProvider) {
     private val personRandomGen by lazy { personGeneratorFactory.newPersonGenerator }
 
-    override fun executeAsync() = personRandomGen.generate()
+    override fun executeAsync() = personRandomGen()
 }

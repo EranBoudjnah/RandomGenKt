@@ -1,67 +1,54 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
-import com.nhaarman.mockitokotlin2.given
+import java.util.Random
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import java.util.Random
 
-/**
- * Created by Eran Boudjnah on 10/08/2018.
- */
+private const val FIRST_VALUE = "The First"
+private const val LAST_VALUE = "Eternity"
+
 @RunWith(MockitoJUnitRunner::class)
 class GenericListFieldDataProviderTest {
-    private lateinit var cut: GenericListFieldDataProvider<Any, String>
+    private lateinit var classUnderTest: GenericListFieldDataProvider<Any, String>
 
     @Mock
     private lateinit var random: Random
 
-    private lateinit var values: MutableList<String>
+    private lateinit var values: List<String>
 
     @Before
     fun setUp() {
-        values = mutableListOf("The First", "The Last", "Eternity")
+        values = listOf(FIRST_VALUE, "The Last", LAST_VALUE)
 
-        cut = GenericListFieldDataProvider(random, values)
+        classUnderTest = GenericListFieldDataProvider(random, values)
     }
 
     @Test
-    fun givenMinRandomValueWhenGenerateThenReturnsFirstValue() {
+    fun `Given minimal random value when generate then returns first value`() {
         // Given
-        given(random.nextDouble()).willReturn(0.0)
+        given(random.nextInt(values.size)).willReturn(0)
 
         // When
-        val result = cut.invoke()
+        val result = classUnderTest()
 
         // Then
-        assertEquals("The First", result)
+        assertEquals(FIRST_VALUE, result)
     }
 
     @Test
-    fun givenMaxRandomValueWhenGenerateThenReturnsLastValue() {
+    fun `Given maximal random value when generate then returns last value`() {
         // Given
-        given(random.nextDouble()).willReturn(0.99999999999)
+        given(random.nextInt(values.size)).willReturn(values.size - 1)
 
         // When
-        val result = cut.invoke()
+        val result = classUnderTest()
 
         // Then
-        assertEquals("Eternity", result)
-    }
-
-    @Test
-    fun givenListIsModifiedWhenGenerateThenReturnsUnmodifiedValue() {
-        // Given
-        given(random.nextDouble()).willReturn(0.0)
-        values[0] = "The Firstest"
-
-        // When
-        val result = cut.invoke()
-
-        // Then
-        assertEquals("The First", result)
+        assertEquals(LAST_VALUE, result)
     }
 }

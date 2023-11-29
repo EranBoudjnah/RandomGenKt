@@ -1,4 +1,4 @@
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.kotlin.srcDirs
@@ -22,7 +22,7 @@ if (propertiesFile.exists()) {
     properties.load(propertiesFile.newDataInputStream())
 }
 def pomVersion = project.PUBLISH_VERSION
-def localReleaseDest = "${buildDir}/release/${pomVersion}"
+def localReleaseDestination = "${layout.buildDirectory}/release/${pomVersion}"
 def ossrhUsername = properties['ossrhUsername']
 def ossrhPassword = properties['ossrhPassword']
 
@@ -34,62 +34,66 @@ nexusStaging {
     packageGroup = project.PUBLISH_GROUP_ID
 }
 
-uploadArchives {
-    repositories.mavenDeployer {
-        pom {
-            project {
-                name project.PUBLISH_ARTIFACT_ID
-                description 'Data sources for RandomGenKt.'
-                packaging 'jar'
-                url gitUrl
+publishing {
+    repositories {
+        maven {
+            name = "Local"
+            url = "file://${localReleaseDestination}"
+        }
+        maven {
+            name = "SonatypeStaging"
+            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = ossrhUsername
+                password = ossrhPassword
+            }
+        }
+    }
+
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifactId project.PUBLISH_ARTIFACT_ID
+            pom {
+                name = project.PUBLISH_ARTIFACT_ID
+                description = 'Data sources for RandomGenKt.'
+                url = gitUrl
                 licenses {
                     license {
-                        name 'MIT'
-                        url 'https://github.com/EranBoudjnah/RandomGenKt/blob/master/LICENSE'
+                        name = 'MIT'
+                        url = 'https://github.com/EranBoudjnah/RandomGenKt/blob/master/LICENSE'
                     }
                 }
                 scm {
-                    connection gitUrl
-                    developerConnection gitUrl
-                    url gitUrl
+                    connection = gitUrl
+                    developerConnection = gitUrl
+                    url = gitUrl
                 }
                 developers {
                     developer {
-                        id "EranBoudjnah"
-                        name "Eran Boudjnah"
-                        email "eranbou+randomgenkt@gmail.com"
+                        id = "EranBoudjnah"
+                        name = "Eran Boudjnah"
+                        email = "eranbou+randomgenkt@gmail.com"
                     }
                 }
             }
-            groupId = project.PUBLISH_GROUP_ID
-            artifactId = project.PUBLISH_ARTIFACT_ID
-            version = pomVersion
         }
-
-        repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-            authentication(userName: ossrhUsername, password: ossrhPassword)
-        }
-        snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-            authentication(userName: ossrhUsername, password: ossrhPassword)
-        }
-
-        repository(url: "file://${localReleaseDest}")
     }
 }
 
 task zipRelease(type: Zip) {
-    from localReleaseDest
+    from localReleaseDestination
     setDestinationDirectory buildDir
     setArchiveFileName "release-${pomVersion}.zip"
 }
 
 task generateRelease {
     doLast {
-        println "Release ${pomVersion} can be found at ${localReleaseDest}/"
+        println "Release ${pomVersion} can be found at ${localReleaseDestination}/"
         println "Release ${pomVersion} zipped can be found ${buildDir}/release-${pomVersion}.zip"
     }
 }
 
 generateRelease
-        .dependsOn(uploadArchives)
+        .dependsOn(publishing)
         .dependsOn(zipRelease)

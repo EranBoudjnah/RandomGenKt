@@ -1,19 +1,16 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
-import com.nhaarman.mockitokotlin2.given
+import java.util.Random
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import java.util.Random
 
-/**
- * Created by Eran Boudjnah on 10/08/2018.
- */
 @RunWith(MockitoJUnitRunner::class)
 class IntFieldDataProviderTest {
-    private lateinit var cut: IntFieldDataProvider<Any>
+    private lateinit var classUnderTest: IntFieldDataProvider<Any>
 
     @Mock
     private lateinit var random: Random
@@ -21,11 +18,11 @@ class IntFieldDataProviderTest {
     @Test
     fun givenRandomDoubleValueWhenGenerateThenReturnsIntegerValue() {
         // Given
-        cut = IntFieldDataProvider(random)
+        classUnderTest = IntFieldDataProvider(random)
         given(random.nextDouble()).willReturn(0.0)
 
         // When
-        var result = cut.invoke()
+        var result = classUnderTest.invoke()
 
         // Then
         assertEquals(Int.MIN_VALUE, result)
@@ -34,7 +31,7 @@ class IntFieldDataProviderTest {
         given(random.nextDouble()).willReturn(0.99999999999)
 
         // When
-        result = cut.invoke()
+        result = classUnderTest()
 
         // Then
         assertEquals(Int.MAX_VALUE, result)
@@ -43,11 +40,11 @@ class IntFieldDataProviderTest {
     @Test
     fun givenRandomFloatValueAndRangeWhenGenerateThenReturnsCorrectValue() {
         // Given
-        cut = IntFieldDataProvider(random, 0, 100)
+        classUnderTest = IntFieldDataProvider(random, 0, 100)
         given(random.nextDouble()).willReturn(0.0)
 
         // When
-        var result = cut.invoke()
+        var result = classUnderTest()
 
         // Then
         assertEquals(0, result)
@@ -56,7 +53,7 @@ class IntFieldDataProviderTest {
         given(random.nextDouble()).willReturn(0.99999999999)
 
         // When
-        result = cut.invoke()
+        result = classUnderTest.invoke()
 
         // Then
         assertEquals(100, result)

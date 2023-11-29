@@ -1,25 +1,18 @@
 package com.mitteloupe.randomgenktexample.data.generator
 
 import com.mitteloupe.randomgenkt.RandomGen
+import com.mitteloupe.randomgenkt.builder.RandomGenBuilder
+import com.mitteloupe.randomgenkt.model.DataProviderMap
 import com.mitteloupe.randomgenktexample.data.model.flat.DivisionType
 import com.mitteloupe.randomgenktexample.data.model.flat.Flat
 import com.mitteloupe.randomgenktexample.data.model.flat.Room
 import com.mitteloupe.randomgenktexample.data.model.flat.RoomType
-import dagger.Reusable
-
 import java.util.Random
 import javax.inject.Inject
 
-/**
- * Created by Eran Boudjnah on 19/08/2018.
- */
-@Reusable
-class FlatGeneratorFactory
-@Inject
-constructor(private val random: Random) {
-
+class FlatGeneratorFactory @Inject constructor(private val random: Random) {
     val newFlatGenerator by lazy {
-        RandomGen.Builder<Flat>()
+        RandomGenBuilder<Flat>()
             .withProvider { Flat(newRoom()) }
             .withField("rooms")
             .returning(newContainerRoomRandomGen())
@@ -27,29 +20,38 @@ constructor(private val random: Random) {
     }
 
     private fun newContainerRoomRandomGen() =
-        RandomGen.Builder<Room>()
-            .ofClass<Room>()
+        RandomGenBuilder<Room>()
+            .ofKotlinClass<Room>()
             .onGenerate { generatedInstance ->
-                val divisionType =
-                    if (random.nextBoolean()) DivisionType.HORIZONTAL else DivisionType.VERTICAL
                 val roomsRemaining = random.nextInt(7) + 1
-                splitRooms(generatedInstance, roomsRemaining - 1, divisionType)
+                splitRooms(generatedInstance, roomsRemaining - 1, generatedInstance.divisionType)
             }
+            .withField("divisionType")
+            .returning(
+                listOf(
+                    DivisionType.HORIZONTAL,
+                    DivisionType.VERTICAL
+                )
+            )
             .withField("roomType")
             .returning(RoomType::class.java)
             .build()
 
     private fun newRoomRandomGen() =
-        RandomGen.Builder<Room>()
-            .ofClass<Room>()
+        RandomGenBuilder<Room>()
+            .ofKotlinClass<Room>()
             .withField("roomType")
-            .returning(RoomType::class.java)
+            .returning(RoomType::class)
             .build()
 
-    private fun newRoom() = Room(RoomType.LIVING_ROOM, DivisionType.NONE, 0f, null, null)
+    private fun newRoom() = Room(RoomType.LIVING_ROOM, 0f, null, null)
 
-    private fun splitRoomUsingRandomGen(room: Room, roomRandomGen: RandomGen<Room>, divisionType: DivisionType) =
-        RandomGen.Builder<Room>()
+    private fun splitRoomUsingRandomGen(
+        room: Room,
+        roomRandomGen: RandomGen<Room>,
+        divisionType: DivisionType
+    ) =
+        RandomGenBuilder<Room>()
             .withProvider(getSpecificRoomProvider(room))
             .withField("firstRoom")
             .returning(roomRandomGen)
@@ -59,20 +61,26 @@ constructor(private val random: Random) {
             .returningExplicitly<Any>(divisionType)
             .withField("divisionRatio")
             .returning(0.25f, 0.75f)
-            .build()
-            .generate()
+            .build()()
 
-    private fun getSpecificRoomProvider(room: Room): () -> Room = { room }
+    private fun getSpecificRoomProvider(
+        room: Room
+    ): (dataProviders: DataProviderMap<Room>) -> Room = { room }
 
     private fun splitRooms(room: Room, roomsRemaining: Int, lastDivisionType: DivisionType) {
         if (roomsRemaining == 0) return
 
-        val newDivisionType = if (DivisionType.HORIZONTAL === lastDivisionType) DivisionType.VERTICAL else DivisionType.HORIZONTAL
+        val newDivisionType = if (DivisionType.HORIZONTAL === lastDivisionType) {
+            DivisionType.VERTICAL
+        } else {
+            DivisionType.HORIZONTAL
+        }
         splitRoomUsingRandomGen(room, newRoomRandomGen(), newDivisionType)
 
         val newRoomsRemaining = roomsRemaining - 1
 
-        val leftRoomsRemaining = if (newRoomsRemaining != 0) random.nextInt(newRoomsRemaining + 1) else 0
+        val leftRoomsRemaining =
+            if (newRoomsRemaining != 0) random.nextInt(newRoomsRemaining + 1) else 0
         val rightRoomsRemaining = newRoomsRemaining - leftRoomsRemaining
 
         splitRooms(room.firstRoom!!, leftRoomsRemaining, newDivisionType)

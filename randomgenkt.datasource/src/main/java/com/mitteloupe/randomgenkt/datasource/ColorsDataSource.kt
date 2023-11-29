@@ -1,15 +1,27 @@
 package com.mitteloupe.randomgenkt.datasource
 
-/**
- * Created by Eran Boudjnah on 29/04/2018.
- */
 @Suppress("unused")
 class ColorsDataSource private constructor() {
+    val colors: List<String>
+        by lazy {
+            listOf(
+                "Black",
+                "Blue",
+                "Brown",
+                "Cyan",
+                "Green",
+                "Grey",
+                "Magenta",
+                "Orange",
+                "Pink",
+                "Red",
+                "Violet",
+                "White",
+                "Yellow"
+            )
+        }
 
-	val colors: List<String>
-		get() = listOf("Black", "Blue", "Brown", "Cyan", "Green", "Grey", "Magenta", "Orange", "Pink", "Red", "Violet", "White", "Yellow")
-
-	companion object {
-		val instance = ColorsDataSource()
-	}
+    companion object {
+        val instance = ColorsDataSource()
+    }
 }

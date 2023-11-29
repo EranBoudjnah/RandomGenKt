@@ -1,385 +1,621 @@
 package com.mitteloupe.randomgenkt
 
 import com.mitteloupe.randomgenkt.fielddataprovider.RgbFieldDataProvider
-import com.nhaarman.mockitokotlin2.mock
+import java.util.Random
+import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import java.lang.reflect.Modifier
-import java.util.Random
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.given
+import org.mockito.kotlin.isNull
+import org.mockito.kotlin.mock
 
-/**
- * Created by Eran Boudjnah on 11/08/2018.
- */
 @RunWith(MockitoJUnitRunner::class)
 class SimpleFieldDataProviderFactoryTest {
-    private lateinit var cut: SimpleFieldDataProviderFactory<Any>
+    private lateinit var classUnderTest: SimpleFieldDataProviderFactory<Any>
 
     @Mock
     private lateinit var random: Random
+
     @Mock
     private lateinit var uuidGenerator: UuidGenerator
 
     @Before
     fun setUp() {
-        cut = SimpleFieldDataProviderFactory(random, uuidGenerator)
+        classUnderTest = SimpleFieldDataProviderFactory(random, uuidGenerator)
     }
 
     @Test
-    fun `When getExplicitFieldDataProvider then returns instance with expected value`() {
+    fun `Given explicit FieldDataProvider when invoked then returns explicit value`() {
         // Given
-        val popcorn = "Popcorn"
+        val expectedInstance = "Popcorn"
+        val dataProvider = classUnderTest.getExplicitFieldDataProvider(expectedInstance)
 
         // When
-        val dataProvider = cut.getExplicitFieldDataProvider(popcorn)
+        val actualValue = dataProvider()
 
         // Then
-        assertFieldEquals(dataProvider, "value", popcorn)
+        assertEquals(expectedInstance, actualValue)
     }
 
     @Test
-    fun `Given list of values when getGenericListFieldDataProvider then returns instance with correct field values`() {
+    @Suppress("ktlint:max-line-length")
+    fun `Given generic List FieldDataProvider, list of values, minimum random when invoked then returns first value`() {
         // Given
-        val list = listOf("A", "B")
+        val expectedInstance = "A"
+        val givenInstances = listOf(expectedInstance, "B")
+        val dataProvider = classUnderTest.getGenericListFieldDataProvider(givenInstances)
 
         // When
-        val dataProvider = cut.getGenericListFieldDataProvider(list)
+        val actualValue = dataProvider()
 
         // Then
-        assertFieldEquals(dataProvider, "random", random)
-        assertFieldEquals(dataProvider, "list", list)
+        assertEquals(expectedInstance, actualValue)
     }
 
     @Test
-    fun `When getBooleanFieldDataProvider then returns instance with random set`() {
-        // When
-        val dataProvider = cut.booleanFieldDataProvider
-
-        // Then
-        assertFieldEquals(dataProvider, "random", random)
-    }
-
-    @Test
-    fun `When getByteFieldDataProvider then returns instance with RandomSet`() {
-        // When
-        val dataProvider = cut.byteFieldDataProvider
-
-        // Then
-        assertFieldEquals(dataProvider, "random", random)
-    }
-
-    @Test
-    fun `Given fixed size when getByteListFieldDataProvider then returns instance with correct field values`() {
+    @Suppress("ktlint:max-line-length")
+    fun `Given generic List FieldDataProvider, list of values, maximum random when invoked then returns last value`() {
         // Given
-        val size = 4
+        val expectedInstance = "C"
+        val givenInstances = listOf("A", "B", expectedInstance)
+        val dataProvider = classUnderTest.getGenericListFieldDataProvider(givenInstances)
+        given { random.nextInt(givenInstances.size) }.willReturn(givenInstances.size - 1)
 
         // When
-        val dataProvider = cut.getByteListFieldDataProvider(size)
+        val actualValue = dataProvider()
 
         // Then
-        assertFieldEquals(dataProvider, "random", random)
-        assertFieldEquals(dataProvider, "minSize", size)
-        assertFieldEquals(dataProvider, "maxSize", size)
+        assertEquals(expectedInstance, actualValue)
     }
 
     @Test
-    fun `Given ranged size when getByteListFieldDataProvider then returns instance with correct field values`() {
+    fun `Given Boolean FieldDataProvider, false random when invoked then returns false`() {
         // Given
-        val minSize = 3
-        val maxSize = 5
+        val dataProvider = classUnderTest.booleanFieldDataProvider
+        given { random.nextBoolean() }.willReturn(false)
 
         // When
-        val dataProvider = cut.getByteListFieldDataProvider(minSize, maxSize)
+        val actualValue = dataProvider()
 
         // Then
-        assertFieldEquals(dataProvider, "random", random)
-        assertFieldEquals(dataProvider, "minSize", minSize)
-        assertFieldEquals(dataProvider, "maxSize", maxSize)
+        assertFalse(actualValue)
     }
 
     @Test
-    fun `When getDoubleFieldDataProvider then returns instance with correct min and max`() {
+    fun `Given Boolean FieldDataProvider, true random when invoked then returns true`() {
+        // Given
+        val dataProvider = classUnderTest.booleanFieldDataProvider
+        given { random.nextBoolean() }.willReturn(true)
+
         // When
-        val dataProvider = cut.getDoubleFieldDataProvider()
+        val actualValue = dataProvider()
 
         // Then
-        assertFieldEquals(dataProvider, "random", random)
-        assertFieldEquals(dataProvider, "minimum", 0.0)
-        assertFieldEquals(dataProvider, "maximum", 1.0)
+        assertTrue(actualValue)
     }
 
     @Test
-    fun `Given range when getDoubleFieldDataProvider then returns instance with correct min and max`() {
+    fun `Given Byte FieldDataProvider when invoked then returns expected Byte`() {
+        // Given
+        val dataProvider = classUnderTest.byteFieldDataProvider
+        val expectedInstance = Byte.MAX_VALUE
+        given { random.nextBytes(any()) }.willAnswer { invocation ->
+            val byteArray: ByteArray = invocation.getArgument(0)
+            byteArray[0] = expectedInstance
+            Unit
+        }
+
+        // When
+        val actualValue = dataProvider()
+
+        // Then
+        assertEquals(expectedInstance, actualValue)
+    }
+
+    @Test
+    @Suppress("ktlint:max-line-length")
+    fun `Given ByteArray FieldDataProvider, fixed size when invoked then returns fixed number of random Bytes`() {
+        // Given
+        val givenSize = 4
+        val dataProvider = classUnderTest.getByteArrayFieldDataProvider(givenSize)
+        val expectedValue = listOf(4.toByte(), 6.toByte(), 8.toByte(), 10.toByte()).toByteArray()
+        given { random.nextBytes(any()) }.willAnswer { invocation ->
+            val byteArray: ByteArray = invocation.getArgument(0)
+            repeat(4) { index ->
+                byteArray[index] = expectedValue[index]
+            }
+        }
+
+        // When
+        val actualValue = dataProvider()
+
+        // Then
+        assertArrayEquals(expectedValue, actualValue)
+    }
+
+    @Test
+    @Suppress("ktlint:max-line-length")
+    fun `Given ByteArray FieldDataProvider, ranged size, minimum random when invoked then returns shortest ByteArray`() {
+        // Given
+        val minimumSize = 3
+        val maximumSize = 5
+        val dataProvider = classUnderTest.getByteArrayFieldDataProvider(minimumSize, maximumSize)
+        val givenInstance = listOf(4.toByte(), 6.toByte(), 8.toByte(), 10.toByte(), 12.toByte())
+        given { random.nextInt(3) }.willReturn(0)
+        given { random.nextBytes(any()) }.willAnswer { invocation ->
+            val byteArray: ByteArray = invocation.getArgument(0)
+            repeat(5) { index ->
+                byteArray[index] = givenInstance[index]
+            }
+        }
+        val expectedValue = givenInstance.subList(0, minimumSize).toByteArray()
+
+        // When
+        val actualValue = dataProvider()
+
+        // Then
+        assertArrayEquals(expectedValue, actualValue)
+    }
+
+    @Test
+    @Suppress("ktlint:max-line-length")
+    fun `Given ByteArray FieldDataProvider, ranged size, maximum random when invoked then returns longest ByteArray`() {
+        // Given
+        val minimumSize = 3
+        val maximumSize = 5
+        val dataProvider = classUnderTest.getByteArrayFieldDataProvider(minimumSize, maximumSize)
+        given { random.nextInt(3) }.willReturn(2)
+        val expectedValue = listOf(4.toByte(), 6.toByte(), 8.toByte(), 10.toByte(), 12.toByte())
+            .toByteArray()
+        given { random.nextBytes(any()) }.willAnswer { invocation ->
+            val byteArray: ByteArray = invocation.getArgument(0)
+            repeat(5) { index ->
+                byteArray[index] = expectedValue[index]
+            }
+        }
+
+        // When
+        val actualValue = dataProvider()
+
+        // Then
+        assertArrayEquals(expectedValue, actualValue)
+    }
+
+    @Test
+    fun `Given Double FieldDataProvider when invoked then returns expected value`() {
+        // Given
+        val dataProvider = classUnderTest.getDoubleFieldDataProvider()
+        val expectedInstance = 0.7
+        given { random.nextDouble() }.willReturn(expectedInstance)
+
+        // When
+        val actualValue = dataProvider()
+
+        // Then
+        assertEquals(expectedInstance, actualValue, 0.000001)
+    }
+
+    @Test
+    fun `Given Double FieldDataProvider, range when invoked then returns expected value`() {
         // Given
         val minValue = -3.0
         val maxValue = 3.0
+        val dataProvider = classUnderTest.getDoubleFieldDataProvider(minValue, maxValue)
+        given { random.nextDouble() }.willReturn(0.7)
+        val expectedInstance = 1.2
 
         // When
-        val dataProvider = cut.getDoubleFieldDataProvider(minValue, maxValue)
+        val actualValue = dataProvider()
 
         // Then
-        assertFieldEquals(dataProvider, "random", random)
-        assertFieldEquals(dataProvider, "minimum", minValue)
-        assertFieldEquals(dataProvider, "maximum", maxValue)
+        assertEquals(expectedInstance, actualValue, 0.000001)
     }
 
     @Test
-    fun `When getFloatFieldDataProvider then returns instance with correct min and max`() {
-        // When
-        val dataProvider = cut.getFloatFieldDataProvider()
-
-        // Then
-        assertFieldEquals(dataProvider, "random", random)
-        assertFieldEquals(dataProvider, "minimum", 0f)
-        assertFieldEquals(dataProvider, "maximum", 1f)
-    }
-
-    @Test
-    fun `Given range when getFloatFieldDataProvider then returns instance with correct min and max`() {
+    fun `Given Float FieldDataProvider when invoked then returns value between 0 and 1`() {
         // Given
-        val minValue = -3f
-        val maxValue = 3f
+        val dataProvider = classUnderTest.getFloatFieldDataProvider()
+        val expectedInstance = 0.7f
+        given { random.nextFloat() }.willReturn(expectedInstance)
 
         // When
-        val dataProvider = cut.getFloatFieldDataProvider(minValue, maxValue)
+        val actualValue = dataProvider()
 
         // Then
-        assertFieldEquals(dataProvider, "random", random)
-        assertFieldEquals(dataProvider, "minimum", minValue)
-        assertFieldEquals(dataProvider, "maximum", maxValue)
+        assertEquals(expectedInstance, actualValue, 0.00001f)
     }
 
     @Test
-    fun `When getIntFieldDataProvider then returns instance with correct min and max`() {
-        // When
-        val dataProvider = cut.getIntFieldDataProvider()
-
-        // Then
-        assertFieldEquals(dataProvider, "random", random)
-        assertFieldEquals(dataProvider, "minimum", Integer.MIN_VALUE)
-        assertFieldEquals(dataProvider, "maximum", Integer.MAX_VALUE)
-    }
-
-    @Test
-    fun `Given range when getIntFieldDataProvider then returns instance with correct min and max`() {
+    fun `Given Float FieldDataProvider, range when invoked then returns expected value`() {
         // Given
-        val minValue = -3
-        val maxValue = 3
+        val minimumValue = -3f
+        val maximumValue = 3f
+        val dataProvider = classUnderTest.getFloatFieldDataProvider(minimumValue, maximumValue)
+        given { random.nextFloat() }.willReturn(0.7f)
+        val expectedInstance = 1.2f
 
         // When
-        val dataProvider = cut.getIntFieldDataProvider(minValue, maxValue)
+        val actualValue = dataProvider()
 
         // Then
-        assertFieldEquals(dataProvider, "random", random)
-        assertFieldEquals(dataProvider, "minimum", minValue)
-        assertFieldEquals(dataProvider, "maximum", maxValue)
+        assertEquals(expectedInstance, actualValue, 0.00001f)
     }
 
     @Test
-    fun `When getLongFieldDataProvider then returns instance with correct min and max`() {
-        // When
-        val dataProvider = cut.getLongFieldDataProvider()
-
-        // Then
-        assertFieldEquals(dataProvider, "random", random)
-        assertFieldEquals(dataProvider, "minimum", java.lang.Long.MIN_VALUE)
-        assertFieldEquals(dataProvider, "maximum", java.lang.Long.MAX_VALUE)
-    }
-
-    @Test
-    fun `Given range when getLongFieldDataProvider then returns instance with correct min and max`() {
+    fun `Given Int FieldDataProvider then returns maximal value`() {
         // Given
-        val minValue = -3L
-        val maxValue = 3L
+        val dataProvider = classUnderTest.getIntFieldDataProvider()
+        given { random.nextDouble() }.willReturn(0.99999999999)
+        val expectedInstance = Int.MAX_VALUE
 
         // When
-        val dataProvider = cut.getLongFieldDataProvider(minValue, maxValue)
+        val actualValue = dataProvider()
 
         // Then
-        assertFieldEquals(dataProvider, "random", random)
-        assertFieldEquals(dataProvider, "minimum", minValue)
-        assertFieldEquals(dataProvider, "maximum", maxValue)
+        assertEquals(expectedInstance, actualValue)
     }
 
     @Test
-    fun `When getSequentialIntegerFieldDataProvider then returns instance with counter at default`() {
+    fun `Given Int FieldDataProvider, range then returns maximal value`() {
+        // Given
+        val minimumValue = -3
+        val maximumValue = 3
+        val dataProvider = classUnderTest.getIntFieldDataProvider(minimumValue, maximumValue)
+        given { random.nextDouble() }.willReturn(0.99999999999)
+
         // When
-        val dataProvider = cut.sequentialIntegerFieldDataProvider
+        val actualValue = dataProvider()
 
         // Then
-        assertFieldEquals(dataProvider, "counter", 1)
+        assertEquals(maximumValue, actualValue)
     }
 
     @Test
-    fun `Given initial value when getSequentialIntegerFieldDataProvider then returns instance with counter set`() {
+    fun `Given Long FieldDataProvider when invoked then returns maximal value`() {
+        // Given
+        val dataProvider = classUnderTest.getLongFieldDataProvider()
+        given { random.nextDouble() }.willReturn(0.9999999999999999)
+        val expectedInstance = Long.MAX_VALUE
+
         // When
+        val actualValue = dataProvider()
+
+        // Then
+        assertEquals(expectedInstance, actualValue)
+    }
+
+    @Test
+    fun `Given Long FieldDataProvider, range when invoked then returns maximal value`() {
+        // Given
+        val minimalValue = -3L
+        val maximalValue = 3L
+        val dataProvider = classUnderTest.getLongFieldDataProvider(minimalValue, maximalValue)
+        given { random.nextDouble() }.willReturn(0.9999999999999999)
+
+        // When
+        val actualValue = dataProvider()
+
+        // Then
+        assertEquals(maximalValue, actualValue)
+    }
+
+    @Test
+    fun `Given sequential Integer FieldDataProvider invoked when invoked again then returns 2`() {
+        // Given
+        val dataProvider = classUnderTest.sequentialIntegerFieldDataProvider
+        dataProvider()
+
+        // When
+        val actualValue = dataProvider()
+
+        // Then
+        assertEquals(2, actualValue)
+    }
+
+    @Test
+    @Suppress("ktlint:max-line-length")
+    fun `Given sequential Integer FieldDataProvider, initial value when invoked then returns initial value`() {
+        // Given
         val startValue = 42
-        val dataProvider = cut.getSequentialIntegerFieldDataProvider(startValue)
+        val dataProvider = classUnderTest.getSequentialIntegerFieldDataProvider(startValue)
+
+        // When
+        val actualValue = dataProvider()
 
         // Then
-        assertFieldEquals(dataProvider, "counter", startValue)
+        assertEquals(startValue, actualValue)
     }
 
     @Test
-    fun `When getUuidFieldDataProvider then returns instance with UuidGenerator set`() {
-        // When
-        val dataProvider = cut.uuidFieldDataProvider
-
-        // Then
-        assertFieldEquals(dataProvider, "uuidGenerator", uuidGenerator)
-    }
-
-    @Test
-    fun `Given alpha when getRgbFieldDataProvider then returns instance with correct alpha flag and random set`() {
-        // When
-        var dataProvider: RgbFieldDataProvider<*> = cut.getRgbFieldDataProvider(true)
-
-        // Then
-        assertFieldEquals(dataProvider, "random", random)
-        assertFieldEquals(dataProvider, "provideAlpha", true)
-
-        // When
-        dataProvider = cut.getRgbFieldDataProvider(false)
-
-        // Then
-        assertFieldEquals(dataProvider, "random", random)
-        assertFieldEquals(dataProvider, "provideAlpha", false)
-    }
-
-    @Test
-    fun `When getLoremIpsumFieldDataProvider then returns instance with min and maxLength set to one whole Lorem Ipsum`() {
-        // When
-        val dataProvider = cut.loremIpsumFieldDataProvider
-
-        // Then
-        assertFieldEquals(dataProvider, "minLength", 442)
-        assertFieldEquals(dataProvider, "maxLength", 442)
-    }
-
-    @Test
-    fun `Given length when getLoremIpsumFieldDataProvider then returns instance with correct properties set`() {
+    fun `Given UUID FieldDataProvider, UuidGenerator when invoked then returns generated UUID`() {
         // Given
-        val length = 64
+        val dataProvider = classUnderTest.uuidFieldDataProvider
+        val expectedUUID = "SOME-UUID"
+        given { uuidGenerator.randomUUID() }.willReturn(expectedUUID)
 
         // When
-        val dataProvider = cut.getLoremIpsumFieldDataProvider(length)
+        val actualValue = dataProvider()
 
         // Then
-        assertFieldEquals(dataProvider, "minLength", length)
-        assertFieldEquals(dataProvider, "maxLength", length)
-        assertFieldEquals(dataProvider, "paragraphDelimiter", "\n\n")
+        assertEquals(expectedUUID, actualValue)
     }
 
     @Test
-    fun `Given ranged length when getLoremIpsumFieldDataProvider then returns instance with correct properties set`() {
+    fun `Given rgbFieldDataProvider, alpha when invoked then returns random ARGB value`() {
         // Given
-        val minLength = 74
-        val maxLength = 75
+        val dataProvider: RgbFieldDataProvider<*> = classUnderTest.getRgbFieldDataProvider(true)
+        val expectedValue = "#00000000"
 
         // When
-        val dataProvider = cut.getLoremIpsumFieldDataProvider(minLength, maxLength)
+        val actualValue = dataProvider()
 
         // Then
-        assertFieldEquals(dataProvider, "random", random)
-        assertFieldEquals(dataProvider, "minLength", minLength)
-        assertFieldEquals(dataProvider, "maxLength", maxLength)
-        assertFieldEquals(dataProvider, "paragraphDelimiter", "\n\n")
+        assertEquals(expectedValue, actualValue)
     }
 
     @Test
-    fun `Given range, length and delimiter when getLoremIpsumFieldDataProvider then returns instance with correct properties set`() {
+    fun `Given rgbFieldDataProvider, no alpha when invoked then returns random RGB value`() {
         // Given
-        val minLength = 74
-        val maxLength = 75
+        val dataProvider = classUnderTest.getRgbFieldDataProvider(false)
+        val expectedValue = "#000000"
+
+        // When
+        val actualValue = dataProvider()
+
+        // Then
+        assertEquals(expectedValue, actualValue)
+    }
+
+    @Test
+    fun `Given Lorem Ipsum FieldDataProvider when invoked then returns whole Lorem Ipsum`() {
+        // Given
+        val dataProvider = classUnderTest.loremIpsumFieldDataProvider
+        val expectedValue =
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+                "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, " +
+                "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo " +
+                "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse " +
+                "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non " +
+                "proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+        // When
+        val actualValue = dataProvider()
+
+        // Then
+        assertEquals(expectedValue, actualValue)
+    }
+
+    @Test
+    @Suppress("ktlint:max-line-length")
+    fun `Given Lorem Ipsum FieldDataProvider, length when invoked then returns fixed length Lorem Ipsum`() {
+        // Given
+        val length = 63
+        val dataProvider = classUnderTest.getLoremIpsumFieldDataProvider(length)
+        val expectedValue = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do"
+
+        // When
+        val actualValue = dataProvider()
+
+        // Then
+        assertEquals(expectedValue, actualValue)
+    }
+
+    @Test
+    @Suppress("ktlint:max-line-length")
+    fun `Given Lorem Ipsum FieldDataProvider, ranged length, minimum random when invoked then returns minimal length Lorem Ipsum`() {
+        // Given
+        val minimumLength = 60
+        val maximumLength = 375
+        val dataProvider = classUnderTest.getLoremIpsumFieldDataProvider(
+            minimumLength = minimumLength,
+            maximumLength = maximumLength
+        )
+        given { random.nextInt(maximumLength - minimumLength + 1) }.willReturn(0)
+        val expectedValue = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed"
+
+        // When
+        val actualValue = dataProvider()
+
+        // Then
+        assertEquals(expectedValue, actualValue)
+    }
+
+    @Test
+    @Suppress("ktlint:max-line-length")
+    fun `Given Lorem Ipsum FieldDataProvider, ranged length, maximum random when invoked then returns maximal length, default delimiter Lorem Ipsum`() {
+        // Given
+        val minimumLength = 60
+        val maximumLength = 448
+        val dataProvider = classUnderTest.getLoremIpsumFieldDataProvider(
+            minimumLength = minimumLength,
+            maximumLength = maximumLength
+        )
+        given {
+            random.nextInt(maximumLength - minimumLength + 1)
+        }.willReturn(maximumLength - minimumLength)
+        val expectedValue =
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+                "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, " +
+                "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo " +
+                "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse " +
+                "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non " +
+                "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\nL"
+
+        // When
+        val actualValue = dataProvider()
+
+        // Then
+        assertEquals(expectedValue, actualValue)
+    }
+
+    @Test
+    @Suppress("ktlint:max-line-length")
+    fun `Given Lorem Ipsum FieldDataProvider, range, length, delimiter, minimum random when invoked then returns expected Lorem Ipsum`() {
+        // Given
+        val minimumLength = 474
+        val maximumLength = 480
         val paragraphDelimiter = "... "
+        given { random.nextInt(7) }.willReturn(0)
+        val expectedInstance = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
+            "eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim " +
+            "veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo " +
+            "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum " +
+            "dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, " +
+            "sunt in culpa qui officia deserunt mollit anim id est laborum.... Lorem ipsum dolor " +
+            "sit ame"
+        val dataProvider = classUnderTest.getLoremIpsumFieldDataProvider(
+            minimumLength,
+            maximumLength,
+            paragraphDelimiter
+        )
 
         // When
-        val dataProvider = cut.getLoremIpsumFieldDataProvider(minLength, maxLength, paragraphDelimiter)
+        val actualValue = dataProvider()
 
         // Then
-        assertFieldEquals(dataProvider, "random", random)
-        assertFieldEquals(dataProvider, "minLength", minLength)
-        assertFieldEquals(dataProvider, "maxLength", maxLength)
-        assertFieldEquals(dataProvider, "paragraphDelimiter", paragraphDelimiter)
+        assertEquals(expectedInstance, actualValue)
     }
 
     @Test
-    fun `When getRandomEnumFieldDataProvider then returns instance with random set`() {
+    @Suppress("ktlint:max-line-length")
+    fun `Given range, length, delimiter, maximum random when getLoremIpsumFieldDataProvider then returns instance with correct properties set`() {
+        // Given
+        val minLength = 474
+        val maxLength = 480
+        given { random.nextInt(7) }.willReturn(6)
+        val paragraphDelimiter = "||| "
+        val expectedInstance = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do " +
+            "eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim " +
+            "veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo " +
+            "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum " +
+            "dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, " +
+            "sunt in culpa qui officia deserunt mollit anim id est laborum.||| Lorem ipsum dolor " +
+            "sit amet, con"
+
         // When
-        val dataProvider = cut.getRandomEnumFieldDataProvider(Rings::class.java)
+        val dataProvider =
+            classUnderTest.getLoremIpsumFieldDataProvider(minLength, maxLength, paragraphDelimiter)
+        val actualValue = dataProvider()
 
         // Then
-        assertFieldEquals(dataProvider, "random", random)
-        val values = getFieldValue<Array<Rings>>(dataProvider, "possibleValues")
-        assertEquals(listOf(Rings.ONE_RING_TO_RULE_THEM_ALL, Rings.ONE_RING_TO_FIND_THEM, Rings.ONE_RING_TO_BRING_THEM_ALL),
-            values.asList())
+        assertEquals(expectedInstance, actualValue)
     }
 
     @Test
-    fun `Given params and fieldDataProvider when getPaddedFieldDataProvider then returns instance with correct properties set`() {
+    @Suppress("ktlint:max-line-length")
+    fun `Given random Enum FieldDataProvider, minimum random when invoked then returns first value`() {
+        // Given
+        val dataProvider = classUnderTest.getRandomEnumFieldDataProvider(Rings::class.java)
+        given { random.nextInt(Rings.values().size) }.willReturn(0)
+        val expectedValue = Rings.ONE_RING_TO_RULE_THEM_ALL
+
+        // When
+        val actualValue = dataProvider()
+
+        // Then
+        assertEquals(expectedValue, actualValue)
+    }
+
+    @Test
+    @Suppress("ktlint:max-line-length")
+    fun `Given random Enum FieldDataProvider, maximum random when invoked then returns last value`() {
+        // Given
+        val dataProvider = classUnderTest.getRandomEnumFieldDataProvider(Rings::class.java)
+        val enumValuesCount = Rings.values().size
+        given { random.nextInt(enumValuesCount) }.willReturn(enumValuesCount - 1)
+        val expectedValue = Rings.ONE_RING_TO_BRING_THEM_ALL
+
+        // When
+        val actualValue = dataProvider()
+
+        // Then
+        assertEquals(expectedValue, actualValue)
+    }
+
+    @Test
+    @Suppress("ktlint:max-line-length")
+    fun `Given paddedFieldDataProvider, fieldDataProvider, padding, length when invoked then returns minimal string`() {
         // Given
         val paddingString = "00"
-        val minimumLength = 2
-        val provider = mock<(Any?) -> String>()
+        val minimumLength = 10
+        val provider: FieldDataProvider<Any?, String> = object : FieldDataProvider<Any?, String>() {
+            override fun invoke(instance: Any?): String = "123"
+        }
+        val dataProvider =
+            classUnderTest.getPaddedFieldDataProvider(provider, minimumLength, paddingString)
+        val expectedValue = "0000000123"
 
         // When
-        val dataProvider = cut.getPaddedFieldDataProvider(minimumLength, paddingString, provider)
+        val actualValue = dataProvider()
 
         // Then
-        assertFieldEquals(dataProvider, "minimumLength", minimumLength)
-        assertFieldEquals(dataProvider, "paddingString", paddingString)
-        assertFieldEquals(dataProvider, "fieldDataProvider", provider)
+        assertEquals(expectedValue, actualValue)
     }
 
     @Test
+    @Suppress("ktlint:max-line-length")
     fun `Given instances count and fieldDataProvider when getCustomListFieldDataProvider then returns instance with correct properties set`() {
         // Given
-        val instances = 5
-        val provider = mock<(Any?) -> String>()
+        val expectedInstance = "Test"
+        val provider: FieldDataProvider<Any?, String> = givenFieldDataProvider(expectedInstance)
+        val expectedInstancesCount = 5
+        val expectedInstances = List(expectedInstancesCount) { expectedInstance }
 
         // When
-        val dataProvider = cut.getCustomListFieldDataProvider(instances, provider)
+        val dataProvider = classUnderTest.getCustomListFieldDataProvider(
+            provider,
+            expectedInstancesCount
+        )
+        val actualValues = dataProvider()
 
         // Then
-        assertFieldEquals(dataProvider, "instances", instances)
-        assertFieldEquals(dataProvider, "fieldDataProvider", provider)
+        assertEquals(expectedInstances, actualValues)
+        assertThat(actualValues, `is`(equalTo(expectedInstances)))
     }
 
     @Test
+    @Suppress("ktlint:max-line-length")
     fun `Given instances count, range and fieldDataProvider when getCustomListRangeFieldDataProvider then returns instance with correct properties set`() {
         // Given
-        val provider = mock<(Any?) -> String>()
-        val minInstances = 5
-        val maxInstances = 5
+        val expectedInstance = "Testing"
+        val provider: FieldDataProvider<Any?, String> = givenFieldDataProvider(expectedInstance)
+        given {
+            @Suppress("KotlinConstantConditions")
+            random.nextInt(1)
+        }.willReturn(0)
+        val minimumInstances = 5
+        val maximumInstances = 5
+        val expectedInstancesCount = 5
+        val expectedInstances = List(expectedInstancesCount) { expectedInstance }
 
         // When
-        val dataProvider = cut.getCustomListRangeFieldDataProvider(minInstances, maxInstances, provider)
+        val dataProvider = classUnderTest.getCustomListFieldDataProvider(
+            provider,
+            minimumInstances = minimumInstances,
+            maximumInstances = maximumInstances
+        )
+        val actualValues = dataProvider()
 
         // Then
-        assertFieldEquals(dataProvider, "random", random)
-        assertFieldEquals(dataProvider, "minInstances", minInstances)
-        assertFieldEquals(dataProvider, "maxInstances", maxInstances)
-        assertFieldEquals(dataProvider, "fieldDataProvider", provider)
+        assertThat(actualValues, `is`(equalTo(expectedInstances)))
     }
 
-    private fun <DATA_TYPE> assertFieldEquals(anyObject: Any, fieldName: String, expectedValue: DATA_TYPE?) {
-        val value = getFieldValue<DATA_TYPE>(anyObject, fieldName)
-
-        assertEquals(expectedValue, value)
-    }
-
-    private fun <DATA_TYPE> getFieldValue(fieldOwner: Any, fieldName: String): DATA_TYPE {
-        val field = fieldOwner.javaClass.getDeclaredField(fieldName)
-
-        if (Modifier.isPrivate(field.modifiers)) {
-            field.isAccessible = true
+    private fun givenFieldDataProvider(expectedInstance: String): FieldDataProvider<Any?, String> {
+        val provider: FieldDataProvider<Any?, String> = mock {
+            on { invoke(isNull()) } doReturn expectedInstance
         }
-
-        @Suppress("UNCHECKED_CAST")
-        return field.get(fieldOwner) as DATA_TYPE
+        return provider
     }
 
     private enum class Rings {

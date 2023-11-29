@@ -1,8 +1,5 @@
 package com.mitteloupe.randomgenktexample.data.model.planet
 
-/**
- * Created by Eran Boudjnah on 24/04/2018.
- */
 data class Planet(
     val id: Int,
     val diameterEarthRatio: Float,
