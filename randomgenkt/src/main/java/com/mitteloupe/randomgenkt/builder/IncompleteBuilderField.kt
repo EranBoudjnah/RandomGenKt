@@ -12,8 +12,7 @@ import com.mitteloupe.randomgenkt.model.MutableDataProviderMap
 import com.mitteloupe.randomgenkt.model.MutableDataProviderMap.ConfiguredFieldDataProvider
 import kotlin.reflect.KClass
 
-open class IncompleteBuilderField<GENERATED_INSTANCE : Any>
-private constructor(
+open class IncompleteBuilderField<GENERATED_INSTANCE : Any> private constructor(
     internal val factory: FieldDataProviderFactory<GENERATED_INSTANCE>
 ) {
     internal constructor(

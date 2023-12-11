@@ -17,7 +17,7 @@ private const val SECOND_VALUE = "Spider Man"
 private const val THIRD_VALUE = "Batman"
 
 private typealias ClassUnderTest<OUTPUT_CLASS> =
-WeightedFieldDataProvidersFieldDataProvider<OUTPUT_CLASS, String>
+    WeightedFieldDataProvidersFieldDataProvider<OUTPUT_CLASS, String>
 
 @RunWith(MockitoJUnitRunner::class)
 class WeightedFieldDataProvidersFieldDataProviderTest {

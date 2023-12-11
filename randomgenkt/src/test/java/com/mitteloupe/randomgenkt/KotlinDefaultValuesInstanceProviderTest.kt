@@ -13,7 +13,7 @@ import org.junit.Test
 
 class KotlinDefaultValuesInstanceProviderTest {
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given constructor with parameters when provideInstance then returns instance with default values`() {
         // Given
         val classUnderTest = KotlinDefaultValuesInstanceProvider(TestClassWithFields::class)
@@ -47,7 +47,7 @@ class KotlinDefaultValuesInstanceProviderTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given public constructor with no parameters when provide instance then uses constructor`() {
         // Given
         val classUnderTest = KotlinDefaultValuesInstanceProvider(TestClassWithNoFields::class)

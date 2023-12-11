@@ -8,9 +8,7 @@ class BuilderReturnValue<RETURN_TYPE : Any> internal constructor(
     private val builderField: BuilderField<RETURN_TYPE>,
     private val factory: FieldDataProviderFactory<RETURN_TYPE>
 ) {
-    fun <VALUE_TYPE : Any> returningExplicitly(
-        value: VALUE_TYPE
-    ) = getBuilderFieldFromIncomplete(
+    fun <VALUE_TYPE : Any> returningExplicitly(value: VALUE_TYPE) = getBuilderFieldFromIncomplete(
         builderField.returning(factory.getExplicitFieldDataProvider(value))
     )
 
@@ -27,14 +25,12 @@ class BuilderReturnValue<RETURN_TYPE : Any> internal constructor(
         builderField.returning(factory.byteFieldDataProvider)
     )
 
-    fun returningBytes(
-        minimumSize: Int,
-        maximumSize: Int = minimumSize
-    ) = getBuilderFieldFromIncomplete(
-        builderField.returning(
-            factory.getByteArrayFieldDataProvider(minimumSize, maximumSize)
+    fun returningBytes(minimumSize: Int, maximumSize: Int = minimumSize) =
+        getBuilderFieldFromIncomplete(
+            builderField.returning(
+                factory.getByteArrayFieldDataProvider(minimumSize, maximumSize)
+            )
         )
-    )
 
     fun returningDouble() = getBuilderFieldFromIncomplete(
         builderField.returning(factory.getDoubleFieldDataProvider())
@@ -44,15 +40,13 @@ class BuilderReturnValue<RETURN_TYPE : Any> internal constructor(
         builderField.returning(factory.getFloatFieldDataProvider())
     )
 
-    fun returningInt() =
-        getBuilderFieldFromIncomplete(
-            builderField.returning(factory.getIntFieldDataProvider())
-        )
+    fun returningInt() = getBuilderFieldFromIncomplete(
+        builderField.returning(factory.getIntFieldDataProvider())
+    )
 
-    fun returningLong() =
-        getBuilderFieldFromIncomplete(
-            builderField.returning(factory.getLongFieldDataProvider())
-        )
+    fun returningLong() = getBuilderFieldFromIncomplete(
+        builderField.returning(factory.getLongFieldDataProvider())
+    )
 
     fun returningShort() = getBuilderFieldFromIncomplete(
         builderField.returning(factory.getShortFieldDataProvider())
@@ -64,31 +58,19 @@ class BuilderReturnValue<RETURN_TYPE : Any> internal constructor(
         )
     )
 
-    fun returning(
-        minimum: Float,
-        maximum: Float
-    ) = getBuilderFieldFromIncomplete(
+    fun returning(minimum: Float, maximum: Float) = getBuilderFieldFromIncomplete(
         builderField.returning(factory.getFloatFieldDataProvider(minimum, maximum))
     )
 
-    fun returning(
-        minimum: Int,
-        maximum: Int
-    ) = getBuilderFieldFromIncomplete(
+    fun returning(minimum: Int, maximum: Int) = getBuilderFieldFromIncomplete(
         builderField.returning(factory.getIntFieldDataProvider(minimum, maximum))
     )
 
-    fun returning(
-        minimum: Long,
-        maximum: Long
-    ) = getBuilderFieldFromIncomplete(
+    fun returning(minimum: Long, maximum: Long) = getBuilderFieldFromIncomplete(
         builderField.returning(factory.getLongFieldDataProvider(minimum, maximum))
     )
 
-    fun returning(
-        minimum: Short,
-        maximum: Short
-    ) = getBuilderFieldFromIncomplete(
+    fun returning(minimum: Short, maximum: Short) = getBuilderFieldFromIncomplete(
         builderField.returning(factory.getShortFieldDataProvider(minimum, maximum))
     )
 
@@ -96,9 +78,7 @@ class BuilderReturnValue<RETURN_TYPE : Any> internal constructor(
         builderField.returning(factory.sequentialIntegerFieldDataProvider)
     )
 
-    fun returningSequentialInteger(
-        startValue: Int
-    ) = getBuilderFieldFromIncomplete(
+    fun returningSequentialInteger(startValue: Int) = getBuilderFieldFromIncomplete(
         builderField.returning(
             factory.getSequentialIntegerFieldDataProvider(startValue)
         )
@@ -116,31 +96,26 @@ class BuilderReturnValue<RETURN_TYPE : Any> internal constructor(
         builderField.returning(factory.loremIpsumFieldDataProvider)
     )
 
-    fun returningLoremIpsum(
-        minimumLength: Int,
-        maximumLength: Int = minimumLength
-    ) = getBuilderFieldFromIncomplete(
-        builderField.returning(
-            factory.getLoremIpsumFieldDataProvider(
-                minimumLength,
-                maximumLength
+    fun returningLoremIpsum(minimumLength: Int, maximumLength: Int = minimumLength) =
+        getBuilderFieldFromIncomplete(
+            builderField.returning(
+                factory.getLoremIpsumFieldDataProvider(
+                    minimumLength,
+                    maximumLength
+                )
             )
         )
-    )
 
-    fun returningLoremIpsum(
-        minimumLength: Int,
-        maximumLength: Int,
-        paragraphDelimiter: String
-    ) = getBuilderFieldFromIncomplete(
-        builderField.returning(
-            factory.getLoremIpsumFieldDataProvider(
-                minimumLength,
-                maximumLength,
-                paragraphDelimiter
+    fun returningLoremIpsum(minimumLength: Int, maximumLength: Int, paragraphDelimiter: String) =
+        getBuilderFieldFromIncomplete(
+            builderField.returning(
+                factory.getLoremIpsumFieldDataProvider(
+                    minimumLength,
+                    maximumLength,
+                    paragraphDelimiter
+                )
             )
         )
-    )
 
     inline fun <reified ENUM_TYPE : Enum<*>> returning() = returning(ENUM_TYPE::class.java)
 
@@ -183,27 +158,26 @@ class BuilderReturnValue<RETURN_TYPE : Any> internal constructor(
 
     private fun getBuilderFieldFromIncomplete(
         incompleteBuilderField: IncompleteBuilderField<RETURN_TYPE>
-    ) =
-        when (incompleteBuilderField.initializeType) {
-            IncompleteBuilderField.InitializeType.WITH_JAVA_CLASS -> {
-                BuilderField(
-                    incompleteBuilderField.generatedInstanceJavaClass,
-                    incompleteBuilderField
-                )
-            }
-
-            IncompleteBuilderField.InitializeType.WITH_KOTLIN_CLASS -> {
-                BuilderField(
-                    incompleteBuilderField.generatedInstanceKotlinClass,
-                    incompleteBuilderField
-                )
-            }
-
-            IncompleteBuilderField.InitializeType.WITH_INSTANCE_PROVIDER -> {
-                BuilderField(
-                    incompleteBuilderField.instanceProvider,
-                    incompleteBuilderField
-                )
-            }
+    ) = when (incompleteBuilderField.initializeType) {
+        IncompleteBuilderField.InitializeType.WITH_JAVA_CLASS -> {
+            BuilderField(
+                incompleteBuilderField.generatedInstanceJavaClass,
+                incompleteBuilderField
+            )
         }
+
+        IncompleteBuilderField.InitializeType.WITH_KOTLIN_CLASS -> {
+            BuilderField(
+                incompleteBuilderField.generatedInstanceKotlinClass,
+                incompleteBuilderField
+            )
+        }
+
+        IncompleteBuilderField.InitializeType.WITH_INSTANCE_PROVIDER -> {
+            BuilderField(
+                incompleteBuilderField.instanceProvider,
+                incompleteBuilderField
+            )
+        }
+    }
 }

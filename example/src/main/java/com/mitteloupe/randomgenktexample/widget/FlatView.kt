@@ -55,12 +55,11 @@ constructor(
         background = ColorDrawable(resources.getColor(R.color.primary, null))
     }
 
-    private fun setUpPaint() =
-        with(paint) {
-            color = -0x1
-            textAlign = Paint.Align.CENTER
-            textSize = 24f
-        }
+    private fun setUpPaint() = with(paint) {
+        color = -0x1
+        textAlign = Paint.Align.CENTER
+        textSize = 24f
+    }
 
     private fun drawWallOrRoomType(canvas: Canvas, room: Room, boundingWalls: RectF) {
         if (!room.isDivided()) {
@@ -104,8 +103,7 @@ constructor(
     }
 }
 
-fun Room.isDivided() =
-    this.firstRoom != null && this.secondRoom != null
+fun Room.isDivided() = this.firstRoom != null && this.secondRoom != null
 
 fun Room.divideHorizontally(boundingWalls: RectF, firstInnerWalls: RectF, secondInnerWalls: RectF) {
     val totalHeight = boundingWalls.height()

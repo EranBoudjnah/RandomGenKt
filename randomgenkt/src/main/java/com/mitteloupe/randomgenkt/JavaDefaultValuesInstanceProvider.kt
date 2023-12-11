@@ -61,25 +61,24 @@ internal class JavaDefaultValuesInstanceProvider<GENERATED_INSTANCE : Any>(
             generatedInstanceWithParameters(constructorToUse, *parameterValues)
         }
 
-    private fun getParameterValues(parameters: Array<Class<*>>) =
-        parameters.map { parameter ->
-            when (parameter) {
-                Short::class.javaPrimitiveType, Short::class.javaObjectType -> 0.toShort()
-                Int::class.javaPrimitiveType, Int::class.javaObjectType -> 0
-                Long::class.javaPrimitiveType, Long::class.javaObjectType -> 0L
-                Float::class.javaPrimitiveType, Float::class.javaObjectType -> 0f
-                Double::class.javaPrimitiveType, Double::class.javaObjectType -> 0.0
-                Byte::class.javaPrimitiveType, Byte::class.javaObjectType -> '\u0000'.code.toByte()
-                Boolean::class.javaPrimitiveType, Boolean::class.javaObjectType -> false
-                String::class.javaPrimitiveType, String::class.javaObjectType -> ""
-                Any::class.javaObjectType -> Any()
-                List::class.javaObjectType -> emptyList<Any>()
-                Array::class.javaObjectType -> emptyArray<Any>()
-                Map::class.javaObjectType -> emptyMap<Any, Any>()
-                Set::class.javaObjectType -> emptySet<Any>()
-                else -> null
-            }
-        }.toTypedArray()
+    private fun getParameterValues(parameters: Array<Class<*>>) = parameters.map { parameter ->
+        when (parameter) {
+            Short::class.javaPrimitiveType, Short::class.javaObjectType -> 0.toShort()
+            Int::class.javaPrimitiveType, Int::class.javaObjectType -> 0
+            Long::class.javaPrimitiveType, Long::class.javaObjectType -> 0L
+            Float::class.javaPrimitiveType, Float::class.javaObjectType -> 0f
+            Double::class.javaPrimitiveType, Double::class.javaObjectType -> 0.0
+            Byte::class.javaPrimitiveType, Byte::class.javaObjectType -> '\u0000'.code.toByte()
+            Boolean::class.javaPrimitiveType, Boolean::class.javaObjectType -> false
+            String::class.javaPrimitiveType, String::class.javaObjectType -> ""
+            Any::class.javaObjectType -> Any()
+            List::class.javaObjectType -> emptyList<Any>()
+            Array::class.javaObjectType -> emptyArray<Any>()
+            Map::class.javaObjectType -> emptyMap<Any, Any>()
+            Set::class.javaObjectType -> emptySet<Any>()
+            else -> null
+        }
+    }.toTypedArray()
 
     @Throws(Exception::class)
     private fun generatedInstanceWithParameters(

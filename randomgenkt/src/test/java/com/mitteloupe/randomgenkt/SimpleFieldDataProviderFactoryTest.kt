@@ -49,7 +49,7 @@ class SimpleFieldDataProviderFactoryTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given generic List FieldDataProvider, list of values, minimum random when invoked then returns first value`() {
         // Given
         val expectedInstance = "A"
@@ -64,7 +64,7 @@ class SimpleFieldDataProviderFactoryTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given generic List FieldDataProvider, list of values, maximum random when invoked then returns last value`() {
         // Given
         val expectedInstance = "C"
@@ -124,7 +124,7 @@ class SimpleFieldDataProviderFactoryTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given ByteArray FieldDataProvider, fixed size when invoked then returns fixed number of random Bytes`() {
         // Given
         val givenSize = 4
@@ -145,7 +145,7 @@ class SimpleFieldDataProviderFactoryTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given ByteArray FieldDataProvider, ranged size, minimum random when invoked then returns shortest ByteArray`() {
         // Given
         val minimumSize = 3
@@ -169,7 +169,7 @@ class SimpleFieldDataProviderFactoryTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given ByteArray FieldDataProvider, ranged size, maximum random when invoked then returns longest ByteArray`() {
         // Given
         val minimumSize = 3
@@ -324,7 +324,7 @@ class SimpleFieldDataProviderFactoryTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given sequential Integer FieldDataProvider, initial value when invoked then returns initial value`() {
         // Given
         val startValue = 42
@@ -397,7 +397,7 @@ class SimpleFieldDataProviderFactoryTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given Lorem Ipsum FieldDataProvider, length when invoked then returns fixed length Lorem Ipsum`() {
         // Given
         val length = 63
@@ -412,7 +412,7 @@ class SimpleFieldDataProviderFactoryTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given Lorem Ipsum FieldDataProvider, ranged length, minimum random when invoked then returns minimal length Lorem Ipsum`() {
         // Given
         val minimumLength = 60
@@ -432,7 +432,7 @@ class SimpleFieldDataProviderFactoryTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given Lorem Ipsum FieldDataProvider, ranged length, maximum random when invoked then returns maximal length, default delimiter Lorem Ipsum`() {
         // Given
         val minimumLength = 60
@@ -460,7 +460,7 @@ class SimpleFieldDataProviderFactoryTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given Lorem Ipsum FieldDataProvider, range, length, delimiter, minimum random when invoked then returns expected Lorem Ipsum`() {
         // Given
         val minimumLength = 474
@@ -488,7 +488,7 @@ class SimpleFieldDataProviderFactoryTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given range, length, delimiter, maximum random when getLoremIpsumFieldDataProvider then returns instance with correct properties set`() {
         // Given
         val minLength = 474
@@ -513,7 +513,7 @@ class SimpleFieldDataProviderFactoryTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given random Enum FieldDataProvider, minimum random when invoked then returns first value`() {
         // Given
         val dataProvider = classUnderTest.getRandomEnumFieldDataProvider(Rings::class.java)
@@ -528,7 +528,7 @@ class SimpleFieldDataProviderFactoryTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given random Enum FieldDataProvider, maximum random when invoked then returns last value`() {
         // Given
         val dataProvider = classUnderTest.getRandomEnumFieldDataProvider(Rings::class.java)
@@ -544,7 +544,7 @@ class SimpleFieldDataProviderFactoryTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given paddedFieldDataProvider, fieldDataProvider, padding, length when invoked then returns minimal string`() {
         // Given
         val paddingString = "00"
@@ -564,7 +564,7 @@ class SimpleFieldDataProviderFactoryTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given instances count and fieldDataProvider when getCustomListFieldDataProvider then returns instance with correct properties set`() {
         // Given
         val expectedInstance = "Test"
@@ -585,7 +585,7 @@ class SimpleFieldDataProviderFactoryTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given instances count, range and fieldDataProvider when getCustomListRangeFieldDataProvider then returns instance with correct properties set`() {
         // Given
         val expectedInstance = "Testing"

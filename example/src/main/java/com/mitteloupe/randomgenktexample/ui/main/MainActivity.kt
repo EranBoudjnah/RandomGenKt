@@ -67,16 +67,14 @@ class MainActivity : AppCompatActivity(), Observer<ViewState> {
         }
     }
 
-    private fun handleNavigationItemSelected(item: MenuItem) =
-        when (item.itemId) {
-            R.id.action_person -> viewModel.onGeneratePersonClick()
-            R.id.action_planetary_system -> viewModel.onGeneratePlanetarySystemClick()
-            R.id.action_flat -> viewModel.onGenerateFlatClick()
-            else -> null
-        }
+    private fun handleNavigationItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_person -> viewModel.onGeneratePersonClick()
+        R.id.action_planetary_system -> viewModel.onGeneratePlanetarySystemClick()
+        R.id.action_flat -> viewModel.onGenerateFlatClick()
+        else -> null
+    }
 
-    override fun onChanged(viewState: ViewState) =
-        updateViewWithViewState(viewState)
+    override fun onChanged(viewState: ViewState) = updateViewWithViewState(viewState)
 
     private fun updateViewWithViewState(viewState: ViewState) {
         when (viewState) {

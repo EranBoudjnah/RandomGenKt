@@ -13,10 +13,9 @@ class UseCaseExecutor @Inject constructor(
         CoroutineScope(coroutineContextProvider.main + job)
     }
 
-    fun <TYPE> execute(useCase: BaseUseCase<TYPE>, callback: (TYPE) -> Unit) =
-        uiScope.launch {
-            useCase.execute(callback)
-        }
+    fun <TYPE> execute(useCase: BaseUseCase<TYPE>, callback: (TYPE) -> Unit) = uiScope.launch {
+        useCase.execute(callback)
+    }
 
     fun abortAll() = job.cancel()
 }

@@ -49,8 +49,7 @@ internal open class SimpleFieldDataProviderFactory<OUTPUT_TYPE>(
 
     override fun <VALUE_TYPE : Any> getGenericListFieldDataProvider(
         fieldValueTypes: List<VALUE_TYPE>
-    ) =
-        GenericListFieldDataProvider<OUTPUT_TYPE, VALUE_TYPE>(random, fieldValueTypes)
+    ) = GenericListFieldDataProvider<OUTPUT_TYPE, VALUE_TYPE>(random, fieldValueTypes)
 
     override fun getByteArrayFieldDataProvider(size: Int) =
         ByteListFieldDataProvider<OUTPUT_TYPE>(random, size)

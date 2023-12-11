@@ -31,41 +31,39 @@ class PlanetarySystemGeneratorFactory @Inject constructor() {
             .build()
     }
 
-    private fun planetGenerator() =
-        RandomGenBuilder<Planet>()
-            .ofKotlinClass<Planet>()
-            .withField("id")
-            .returningSequentialInteger()
-            .withField("diameterEarthRatio")
-            .returning(0.3f, 12f)
-            .withField("solarMass")
-            .returning(0.05f, 350f)
-            .withField("orbitalPeriodYears")
-            .returning(0.2f, 200f)
-            .withField("rotationPeriodDays")
-            .returning(0.3f, 250f)
-            .withField("moons")
-            .returning(0, 100)
-            .withField("hasRings")
-            .returningBoolean()
-            .withField("atmosphere")
-            .returning(materialGenerator(), minimumInstances = 0, maximumInstances = 3)
-            .build()
+    private fun planetGenerator() = RandomGenBuilder<Planet>()
+        .ofKotlinClass<Planet>()
+        .withField("id")
+        .returningSequentialInteger()
+        .withField("diameterEarthRatio")
+        .returning(0.3f, 12f)
+        .withField("solarMass")
+        .returning(0.05f, 350f)
+        .withField("orbitalPeriodYears")
+        .returning(0.2f, 200f)
+        .withField("rotationPeriodDays")
+        .returning(0.3f, 250f)
+        .withField("moons")
+        .returning(0, 100)
+        .withField("hasRings")
+        .returningBoolean()
+        .withField("atmosphere")
+        .returning(materialGenerator(), minimumInstances = 0, maximumInstances = 3)
+        .build()
 
-    private fun materialGenerator(): RandomGen<Material> =
-        RandomGenBuilder<Material>()
-            .ofKotlinClass<Material>()
-            .withField("compounds", ProvidingMethod.Constructor)
-            .returning(
-                listOf(
-                    materialAr,
-                    materialCH4,
-                    materialCO2,
-                    materialH2,
-                    materialHe,
-                    materialN2,
-                    materialO2
-                )
+    private fun materialGenerator(): RandomGen<Material> = RandomGenBuilder<Material>()
+        .ofKotlinClass<Material>()
+        .withField("compounds", ProvidingMethod.Constructor)
+        .returning(
+            listOf(
+                materialAr,
+                materialCH4,
+                materialCO2,
+                materialH2,
+                materialHe,
+                materialN2,
+                materialO2
             )
-            .build()
+        )
+        .build()
 }

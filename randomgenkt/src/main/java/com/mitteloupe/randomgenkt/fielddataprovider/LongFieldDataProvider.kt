@@ -24,14 +24,13 @@ class LongFieldDataProvider<OUTPUT_TYPE>(
         return value.toLong()
     }
 
-    private fun Double.paddedPrecision() =
-        if (this == 0.0) {
-            "0".repeat(17)
-        } else {
-            val result = toString()
-                .substringAfter(".")
-                .take(16)
-                .padEnd(16, '0')
-            result
-        }
+    private fun Double.paddedPrecision() = if (this == 0.0) {
+        "0".repeat(17)
+    } else {
+        val result = toString()
+            .substringAfter(".")
+            .take(16)
+            .padEnd(16, '0')
+        result
+    }
 }

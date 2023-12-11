@@ -19,30 +19,28 @@ class FlatGeneratorFactory @Inject constructor(private val random: Random) {
             .build()
     }
 
-    private fun newContainerRoomRandomGen() =
-        RandomGenBuilder<Room>()
-            .ofKotlinClass<Room>()
-            .onGenerate { generatedInstance ->
-                val roomsRemaining = random.nextInt(7) + 1
-                splitRooms(generatedInstance, roomsRemaining - 1, generatedInstance.divisionType)
-            }
-            .withField("divisionType")
-            .returning(
-                listOf(
-                    DivisionType.HORIZONTAL,
-                    DivisionType.VERTICAL
-                )
+    private fun newContainerRoomRandomGen() = RandomGenBuilder<Room>()
+        .ofKotlinClass<Room>()
+        .onGenerate { generatedInstance ->
+            val roomsRemaining = random.nextInt(7) + 1
+            splitRooms(generatedInstance, roomsRemaining - 1, generatedInstance.divisionType)
+        }
+        .withField("divisionType")
+        .returning(
+            listOf(
+                DivisionType.HORIZONTAL,
+                DivisionType.VERTICAL
             )
-            .withField("roomType")
-            .returning(RoomType::class.java)
-            .build()
+        )
+        .withField("roomType")
+        .returning(RoomType::class.java)
+        .build()
 
-    private fun newRoomRandomGen() =
-        RandomGenBuilder<Room>()
-            .ofKotlinClass<Room>()
-            .withField("roomType")
-            .returning(RoomType::class)
-            .build()
+    private fun newRoomRandomGen() = RandomGenBuilder<Room>()
+        .ofKotlinClass<Room>()
+        .withField("roomType")
+        .returning(RoomType::class)
+        .build()
 
     private fun newRoom() = Room(RoomType.LIVING_ROOM, 0f, null, null)
 
@@ -50,18 +48,17 @@ class FlatGeneratorFactory @Inject constructor(private val random: Random) {
         room: Room,
         roomRandomGen: RandomGen<Room>,
         divisionType: DivisionType
-    ) =
-        RandomGenBuilder<Room>()
-            .withProvider(getSpecificRoomProvider(room))
-            .withField("firstRoom")
-            .returning(roomRandomGen)
-            .withField("secondRoom")
-            .returning(roomRandomGen)
-            .withField("divisionType")
-            .returningExplicitly<Any>(divisionType)
-            .withField("divisionRatio")
-            .returning(0.25f, 0.75f)
-            .build()()
+    ) = RandomGenBuilder<Room>()
+        .withProvider(getSpecificRoomProvider(room))
+        .withField("firstRoom")
+        .returning(roomRandomGen)
+        .withField("secondRoom")
+        .returning(roomRandomGen)
+        .withField("divisionType")
+        .returningExplicitly<Any>(divisionType)
+        .withField("divisionRatio")
+        .returning(0.25f, 0.75f)
+        .build()()
 
     private fun getSpecificRoomProvider(
         room: Room

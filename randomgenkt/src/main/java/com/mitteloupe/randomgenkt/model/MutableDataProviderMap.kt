@@ -5,10 +5,10 @@ import com.mitteloupe.randomgenkt.model.MutableDataProviderMap.ConfiguredFieldDa
 import kotlin.collections.MutableMap.MutableEntry
 
 private typealias DataProviders<GENERATED_INSTANCE> =
-MutableMap<String, ConfiguredFieldDataProvider<GENERATED_INSTANCE, Any>>
+    MutableMap<String, ConfiguredFieldDataProvider<GENERATED_INSTANCE, Any>>
 
 private typealias DataProvidersEntry<GENERATED_INSTANCE> =
-MutableEntry<String, ConfiguredFieldDataProvider<GENERATED_INSTANCE, Any>>
+    MutableEntry<String, ConfiguredFieldDataProvider<GENERATED_INSTANCE, Any>>
 
 class MutableDataProviderMap<GENERATED_INSTANCE : Any>(
     vararg keysValueProviders: Pair<String, ConfiguredFieldDataProvider<GENERATED_INSTANCE, Any>> =

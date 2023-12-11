@@ -37,30 +37,25 @@ class MainViewModel(
         useCaseExecutor.abortAll()
     }
 
-    fun onGeneratePersonClick() =
-        generatePerson()
+    fun onGeneratePersonClick() = generatePerson()
 
-    fun onGeneratePlanetarySystemClick() =
-        generatePlanetarySystem()
+    fun onGeneratePlanetarySystemClick() = generatePlanetarySystem()
 
-    fun onGenerateFlatClick() =
-        generateFlat()
+    fun onGenerateFlatClick() = generateFlat()
 
-    private fun generatePerson() =
-        useCaseExecutor.execute(generatePersonUseCase.get()) { person ->
-            people.add(0, person)
-            _viewState.value = ViewState.ShowPeople(people)
-        }
+    private fun generatePerson() = useCaseExecutor.execute(generatePersonUseCase.get()) { person ->
+        people.add(0, person)
+        _viewState.value = ViewState.ShowPeople(people)
+    }
 
     private fun generatePlanetarySystem() =
         useCaseExecutor.execute(generatePlanetarySystemUseCase.get()) { planetarySystem ->
             _viewState.value = ViewState.ShowPlanetarySystem(planetarySystem)
         }
 
-    private fun generateFlat() =
-        useCaseExecutor.execute(generateFlatUseCase.get()) { flat ->
-            _viewState.value = ViewState.ShowFlat(flat)
-        }
+    private fun generateFlat() = useCaseExecutor.execute(generateFlatUseCase.get()) { flat ->
+        _viewState.value = ViewState.ShowFlat(flat)
+    }
 }
 
 class MainViewModelFactory @Inject constructor(

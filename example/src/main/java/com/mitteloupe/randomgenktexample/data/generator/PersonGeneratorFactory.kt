@@ -84,9 +84,6 @@ class PersonGeneratorFactory @Inject constructor() {
         )
     }
 
-    private fun getFieldDataProviderWith3Digits(
-        random: Random,
-        length: Int,
-        maximumValue: Int
-    ) = PaddedFieldDataProvider<Person>(length, "0", IntFieldDataProvider(random, 0, maximumValue))
+    private fun getFieldDataProviderWith3Digits(random: Random, length: Int, maximumValue: Int) =
+        PaddedFieldDataProvider<Person>(length, "0", IntFieldDataProvider(random, 0, maximumValue))
 }

@@ -105,14 +105,13 @@ class RandomGen<GENERATED_INSTANCE : Any> internal constructor(
 
     private fun <ValueType> getValueAsLazy(value: ValueType?) = lazy { value }
 
-    private fun setFieldToRawValue(instance: GENERATED_INSTANCE, field: Field, value: Any?) =
-        try {
-            field.set(instance, value)
-        } catch (exception: IllegalAccessException) {
-            throw AssignmentException(exception)
-        } catch (exception: IllegalArgumentException) {
-            throw AssignmentException(exception)
-        }
+    private fun setFieldToRawValue(instance: GENERATED_INSTANCE, field: Field, value: Any?) = try {
+        field.set(instance, value)
+    } catch (exception: IllegalAccessException) {
+        throw AssignmentException(exception)
+    } catch (exception: IllegalArgumentException) {
+        throw AssignmentException(exception)
+    }
 
     private fun notifyOnGenerateCallbacks(instance: GENERATED_INSTANCE) {
         onGenerateCallbacks.forEach { onGenerateCallback ->

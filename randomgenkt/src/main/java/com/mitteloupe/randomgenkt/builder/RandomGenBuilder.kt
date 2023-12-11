@@ -33,23 +33,25 @@ class RandomGenBuilder<GENERATED_INSTANCE : Any> {
 
     internal inline fun <reified CLASS_TYPE : GENERATED_INSTANCE> ofJavaClassWithFactory(
         factory: FieldDataProviderFactory<GENERATED_INSTANCE>
-    ) = @Suppress("UNCHECKED_CAST")
-    (
-        IncompleteBuilderField(
-            CLASS_TYPE::class.java as Class<GENERATED_INSTANCE>,
-            factory
-        )
-        )
+    ) =
+        @Suppress("UNCHECKED_CAST")
+        (
+            IncompleteBuilderField(
+                CLASS_TYPE::class.java as Class<GENERATED_INSTANCE>,
+                factory
+            )
+            )
 
     internal inline fun <reified CLASS_TYPE : GENERATED_INSTANCE> ofKotlinClassWithFactory(
         factory: FieldDataProviderFactory<GENERATED_INSTANCE>
-    ) = @Suppress("UNCHECKED_CAST")
-    (
-        IncompleteBuilderField(
-            CLASS_TYPE::class as KClass<GENERATED_INSTANCE>,
-            factory
-        )
-        )
+    ) =
+        @Suppress("UNCHECKED_CAST")
+        (
+            IncompleteBuilderField(
+                CLASS_TYPE::class as KClass<GENERATED_INSTANCE>,
+                factory
+            )
+            )
 
     fun withProvider(
         instanceProvider: InstanceProvider<GENERATED_INSTANCE>

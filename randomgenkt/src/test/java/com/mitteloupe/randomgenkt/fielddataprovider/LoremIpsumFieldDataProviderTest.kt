@@ -94,7 +94,7 @@ class LoremIpsumFieldDataProviderTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given length, range, delimiter, minimum random when generate then returns substring of Lorem Ipsum`() {
         // Given
         classUnderTest = rangedLoremIpsumFieldDataProvider()
@@ -116,7 +116,7 @@ class LoremIpsumFieldDataProviderTest {
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given length, range, delimiter, maximum random when generate then returns substring of Lorem Ipsum`() {
         // Given
         classUnderTest = rangedLoremIpsumFieldDataProvider()
@@ -138,11 +138,10 @@ class LoremIpsumFieldDataProviderTest {
         )
     }
 
-    private fun rangedLoremIpsumFieldDataProvider() =
-        LoremIpsumFieldDataProvider<Any>(
-            random,
-            minimumLength = 445,
-            maximumLength = 450,
-            paragraphDelimiter = "**"
-        )
+    private fun rangedLoremIpsumFieldDataProvider() = LoremIpsumFieldDataProvider<Any>(
+        random,
+        minimumLength = 445,
+        maximumLength = 450,
+        paragraphDelimiter = "**"
+    )
 }

@@ -114,7 +114,7 @@ class RandomGenTest(
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning first item from list when invoked then instance has first value`() {
         // Given
         val name1 = "Rocksteady"
@@ -139,7 +139,7 @@ class RandomGenTest(
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning second item from list when invoked then instance has second value`() {
         // Given
         val name1 = "Rocksteady"
@@ -235,7 +235,7 @@ class RandomGenTest(
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning Byte list with range when generate then instance has correct value`() {
         // Given
         val byteListFieldDataProvider = mock<ByteListFieldDataProvider<TestPerson>>()
@@ -480,7 +480,7 @@ class RandomGenTest(
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning sequential Integer when generate then instance has correct value`() {
         // Given
         val sequentialIntegerFieldDataProvider =
@@ -504,7 +504,7 @@ class RandomGenTest(
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning sequential Integer with start value when generate then instance has correct value`() {
         // Given
         val sequentialIntegerFieldDataProvider =
@@ -609,7 +609,7 @@ class RandomGenTest(
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning Lorem Ipsum with length when generate then instance has correct value`() {
         // Given
         val loremIpsumFieldDataProvider = mock<LoremIpsumFieldDataProvider<TestPerson>>()
@@ -632,7 +632,7 @@ class RandomGenTest(
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning Lorem Ipsum with length range when generate then instance has correct value`() {
         // Given
         val loremIpsumFieldDataProvider = mock<LoremIpsumFieldDataProvider<TestPerson>>()
@@ -655,7 +655,7 @@ class RandomGenTest(
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning Lorem Ipsum with length range and delimiter when generate then instance has correct value`() {
         // Given
         val loremIpsumFieldDataProvider = mock<LoremIpsumFieldDataProvider<TestPerson>>()
@@ -698,7 +698,7 @@ class RandomGenTest(
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning FieldDataProvider when generate then instance has correct value`() {
         // Given
         val fieldDataProvider = mock<FieldDataProvider<TestPerson, String>>()
@@ -737,7 +737,7 @@ class RandomGenTest(
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning custom ListFieldDataProvider instances when generate then instance has correct value`() {
         // Given
         val fieldDataProvider = mock<FieldDataProvider<TestPerson, String>>()
@@ -762,7 +762,7 @@ class RandomGenTest(
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning RandomGen instances when generate then instance has correct value`() {
         // Given
         val randomGen = mock<FieldDataProvider<TestPerson, String>>()
@@ -785,7 +785,7 @@ class RandomGenTest(
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning range and custom ListFieldDataProvider when generate then instance has correct value`() {
         // Given
         val fieldDataProvider: FieldDataProvider<TestPerson, String> = mock()
@@ -813,7 +813,7 @@ class RandomGenTest(
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning range and RandomGen when generate then instance has correct value`() {
         // Given
         val randomGen = mock<FieldDataProvider<TestPerson, String>>()
@@ -895,7 +895,7 @@ class RandomGenTest(
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given non-list value for list field when generate then instance throws IllegalArgumentException`() {
         // Given
         val name = "Superman"
@@ -945,7 +945,7 @@ class RandomGenTest(
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given invalid value for list when generate then instance throws IllegalArgumentException`() {
         // Given
         val namesArray = arrayOf("Superman")
@@ -1053,7 +1053,7 @@ class RandomGenTest(
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning explicit value or another when generate then second provider added and instance has correct value`() {
         // Given
         val name1 = "Superman"
@@ -1098,7 +1098,7 @@ class RandomGenTest(
     }
 
     @Test
-    @Suppress("ktlint:max-line-length")
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning explicit value or another with weight when generate then second provider added and instance has correct value`() {
         // Given
         val name1 = "Superman"
@@ -1165,6 +1165,7 @@ class RandomGenTest(
     }
 
     enum class Gender {
-        MALE, FEMALE
+        MALE,
+        FEMALE
     }
 }
