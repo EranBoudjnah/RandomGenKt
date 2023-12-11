@@ -59,7 +59,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Publish to local maven
+      - name: Assemble
         run: ./gradlew randomgenkt:assemble randomgenkt.datasource:assemble
 
       - name: Publish to local maven
@@ -91,6 +91,12 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
+      - name: Assemble
+        run: ./gradlew randomgenkt:assemble randomgenkt.datasource:assemble
+
+      - name: Publish to local maven
+        run: ./gradlew randomgenkt:publishToMavenLocal randomgenkt.datasource:publishToMavenLocal
 
       - name: Run lint
         run: ./gradlew lint --no-daemon

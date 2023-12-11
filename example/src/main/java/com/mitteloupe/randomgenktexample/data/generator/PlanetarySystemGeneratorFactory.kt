@@ -2,7 +2,7 @@ package com.mitteloupe.randomgenktexample.data.generator
 
 import com.mitteloupe.randomgenkt.RandomGen
 import com.mitteloupe.randomgenkt.builder.RandomGenBuilder
-import com.mitteloupe.randomgenkt.model.ProvidingMethod
+import com.mitteloupe.randomgenkt.model.DeclarationSite
 import com.mitteloupe.randomgenktexample.data.model.planet.Material
 import com.mitteloupe.randomgenktexample.data.model.planet.Planet
 import com.mitteloupe.randomgenktexample.data.model.planet.PlanetarySystem
@@ -53,7 +53,7 @@ class PlanetarySystemGeneratorFactory @Inject constructor() {
 
     private fun materialGenerator(): RandomGen<Material> = RandomGenBuilder<Material>()
         .ofKotlinClass<Material>()
-        .withField("compounds", ProvidingMethod.Constructor)
+        .withField("compounds", DeclarationSite.Constructor)
         .returning(
             listOf(
                 materialAr,
