@@ -5,7 +5,7 @@
 
 [![Version - RandomGenKt](https://img.shields.io/maven-central/v/com.mitteloupe.randomgenkt/randomgenkt?label=RandomGenKt+|+MavenCentral)](https://mvnrepository.com/artifact/com.mitteloupe.randomgenkt/randomgenkt)
 [![Version - DataSource](https://img.shields.io/maven-central/v/com.mitteloupe.randomgenkt/randomgenkt.datasource?label=datasource+|+MavenCentral)](https://mvnrepository.com/artifact/com.mitteloupe.randomgenkt/randomgenkt.datasource)
-[![Build Status](https://travis-ci.com/EranBoudjnah/RandomGenKt.svg?branch=master)](https://travis-ci.com/EranBoudjnah/RandomGenKt)
+![Build Status](https://img.shields.io/github/actions/workflow/status/EranBoudjnah/RandomGenKt/gradle-checks.yml)
 [![License](https://img.shields.io/github/license/EranBoudjnah/RandomGenKt)](https://github.com/EranBoudjnah/RandomGenKt/blob/master/LICENSE)
 
 ![Example](https://github.com/EranBoudjnah/RandomGenKt/raw/master/example/videocap.gif)

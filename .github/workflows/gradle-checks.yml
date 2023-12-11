@@ -60,10 +60,13 @@ jobs:
         run: chmod +x gradlew
 
       - name: Publish to local maven
+        run: ./gradlew randomgenkt:assemble randomgenkt.datasource:assemble
+
+      - name: Publish to local maven
         run: ./gradlew randomgenkt:publishToMavenLocal randomgenkt.datasource:publishToMavenLocal
 
       - name: Run unit tests
-        run: ./gradlew test --no-daemon
+        run: ./gradlew test
 
   lint:
     needs: setup
