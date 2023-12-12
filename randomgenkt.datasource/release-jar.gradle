@@ -1,6 +1,7 @@
 apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
-task sourcesJar(type: Jar) {
+tasks.register('sourcesJar', Jar) {
     from sourceSets.main.kotlin.srcDirs
     archiveClassifier = "sources"
 }
@@ -22,11 +23,13 @@ if (propertiesFile.exists()) {
     properties.load(propertiesFile.newDataInputStream())
 }
 def pomVersion = project.PUBLISH_VERSION
-def localReleaseDestination = "${layout.buildDirectory}/release/${pomVersion}"
+def localReleaseDestination = "${layout.buildDirectory.get().asFile}/release/${pomVersion}"
 def ossrhUsername = properties['ossrhUsername']
 def ossrhPassword = properties['ossrhPassword']
 
-println "packageGroup = " + project.PUBLISH_GROUP_ID
+signing {
+    sign configurations.archives
+}
 
 nexusStaging {
     username = "${ossrhUsername}"
@@ -51,9 +54,12 @@ publishing {
     }
 
     publications {
-        mavenJava(MavenPublication) {
+        maven(MavenPublication) {
+            groupId = project.PUBLISH_GROUP_ID
+            artifactId = project.PUBLISH_ARTIFACT_ID
+            version = pomVersion
             from components.java
-            artifactId project.PUBLISH_ARTIFACT_ID
+
             pom {
                 name = project.PUBLISH_ARTIFACT_ID
                 description = 'Data sources for RandomGenKt.'
@@ -81,19 +87,23 @@ publishing {
     }
 }
 
-task zipRelease(type: Zip) {
+tasks.register('zipRelease', Zip) {
     from localReleaseDestination
-    setDestinationDirectory buildDir
+    setDestinationDirectory layout.buildDirectory.get().asFile
     setArchiveFileName "release-${pomVersion}.zip"
 }
 
-task generateRelease {
+tasks.register('generateRelease') {
     doLast {
         println "Release ${pomVersion} can be found at ${localReleaseDestination}/"
-        println "Release ${pomVersion} zipped can be found ${buildDir}/release-${pomVersion}.zip"
+        println "Release ${pomVersion} zipped can be found ${layout.buildDirectory.get().asFile}/release-${pomVersion}.zip"
     }
 }
 
+signing {
+    sign publishing.publications.maven
+}
+
 generateRelease
-        .dependsOn(publishing)
+        .dependsOn(publishMavenPublicationToSonatypeStagingRepository)
         .dependsOn(zipRelease)

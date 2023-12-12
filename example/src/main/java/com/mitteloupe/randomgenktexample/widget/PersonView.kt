@@ -8,7 +8,7 @@ import android.widget.TextView
 import com.mitteloupe.randomgenktexample.R
 import com.mitteloupe.randomgenktexample.data.model.person.Gender
 import com.mitteloupe.randomgenktexample.data.model.person.Person
-import com.mitteloupe.randomgenktexample.utils.StringFormatter.formatEnumValue
+import com.mitteloupe.randomgenktexample.format.StringFormatter.formatEnumValue
 
 class PersonView @JvmOverloads constructor(
     context: Context,

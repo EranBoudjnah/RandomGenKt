@@ -11,7 +11,7 @@ import com.mitteloupe.randomgenktexample.R
 import com.mitteloupe.randomgenktexample.data.model.flat.DivisionType
 import com.mitteloupe.randomgenktexample.data.model.flat.Flat
 import com.mitteloupe.randomgenktexample.data.model.flat.Room
-import com.mitteloupe.randomgenktexample.utils.StringFormatter.formatEnumValue
+import com.mitteloupe.randomgenktexample.format.StringFormatter.formatEnumValue
 
 /**
  * Created by Eran Boudjnah on 26/08/2018.

@@ -1,10 +1,7 @@
-package com.mitteloupe.randomgenktexample.utils
+package com.mitteloupe.randomgenktexample.format
 
-import java.util.Locale
+import java.util.*
 
-/**
- * Created by Eran Boudjnah on 29/08/2018.
- */
 object StringFormatter {
     private val stringBuilder = StringBuilder()
 
@@ -38,8 +35,8 @@ object StringFormatter {
 
     private fun addCapitalizedWord(word: String) {
         stringBuilder
-            .append(word.first().toUpperCase())
-            .append(word.substring(1).toLowerCase(Locale.ENGLISH))
+            .append(word.first().uppercaseChar())
+            .append(word.substring(1).lowercase(Locale.ENGLISH))
     }
 
     private fun addSpace() {

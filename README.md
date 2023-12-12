@@ -10,8 +10,6 @@
 
 ![Example](https://github.com/EranBoudjnah/RandomGenKt/raw/master/example/videocap.gif)
 
-Note: the codebase has been refreshed. This will be known as version 2. The documentation below has not yet been updated to reflect the changes, as it is still a work in progress.
-
 This is a Kotlin port of the Java library designed to generate random instances of any class.
 
 This is great for demoing your app with interesting content, manually testing it with varying data, and even populating it with smart, random generated data in production.
@@ -22,14 +20,14 @@ In your `build.gradle`, add the following:
 
 ```groovy
 dependencies {
-    implementation("com.mitteloupe.randomgenkt:randomgenkt:1.0.1")
+    implementation("com.mitteloupe.randomgenkt:randomgenkt:2.0.0")
 }
 ```
 
 To include the default data generators, also include
 ```groovy
 dependencies {
-    implementation("com.mitteloupe.randomgenkt:randomgenkt.datasource:1.0.1")
+    implementation("com.mitteloupe.randomgenkt:randomgenkt.datasource:2.0.0")
 }
 ```
 
@@ -38,7 +36,7 @@ dependencies {
 ### Kotlin
 ```kotlin
 val randomGen = RandomGen.Builder<ObjectClass>()
-	.ofClass<ObjectClass>()
+	.ofKotlinClass<ObjectClass>()
 	.withField("id")
 	.returningSequentialInteger()
 	.withField("uuid")
@@ -49,7 +47,7 @@ val randomGen = RandomGen.Builder<ObjectClass>()
 ### Java
 ```java
 RandomGen<ObjectClass> randomGen = new RandomGen.Builder<ObjectClass>()
-	.ofClass(ObjectClass.class)
+	.ofJavaClass(ObjectClass.class)
 	.withField("id")
 	.returningSequentialInteger()
 	.withField("uuid")
@@ -63,15 +61,21 @@ To use the newly generated `RandomGen`, simply call:
 
 ### Kotlin
 ```kotlin
-val instance = randomGen.generate()
+val instance = randomGen()
 ```
 
 ### Java
 ```java
-ObjectClass instance = randomGen.generate();
+ObjectClass instance = randomGen.invoke();
 ```
 
 ### What's New?
+
+Version 2.0
+
+This is an overhaul of RandomGenKt. It has been dusted, polished and refactored to align with modern conventions.
+
+--
 
 The Kotlin version adds the following:
 
