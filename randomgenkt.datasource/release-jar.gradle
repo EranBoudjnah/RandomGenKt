@@ -27,10 +27,6 @@ def localReleaseDestination = "${layout.buildDirectory.get().asFile}/release/${p
 def ossrhUsername = properties['ossrhUsername']
 def ossrhPassword = properties['ossrhPassword']
 
-signing {
-    sign configurations.archives
-}
-
 nexusStaging {
     username = "${ossrhUsername}"
     password = "${ossrhPassword}"
