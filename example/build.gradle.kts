@@ -54,7 +54,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     implementation("com.google.dagger:hilt-android:2.49")
-    kapt("com.google.dagger:hilt-android-compiler:2.48.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.49")
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.hamcrest:hamcrest-core:2.2")
