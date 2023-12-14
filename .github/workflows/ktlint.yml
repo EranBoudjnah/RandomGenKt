@@ -1,4 +1,4 @@
-name: Kotlin-Linter
+name: Kotlin linter
 
 on:
   pull_request:
