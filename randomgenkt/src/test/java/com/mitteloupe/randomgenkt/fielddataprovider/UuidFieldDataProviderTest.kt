@@ -1,27 +1,24 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
 import com.mitteloupe.randomgenkt.UuidGenerator
-import com.nhaarman.mockitokotlin2.given
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 
-/**
- * Created by Eran Boudjnah on 11/08/2018.
- */
 @RunWith(MockitoJUnitRunner::class)
 class UuidFieldDataProviderTest {
-    private lateinit var cut: UuidFieldDataProvider<Any>
+    private lateinit var classUnderTest: UuidFieldDataProvider<Any>
 
     @Mock
     private lateinit var uuidGenerator: UuidGenerator
 
     @Before
     fun setUp() {
-        cut = UuidFieldDataProvider(uuidGenerator)
+        classUnderTest = UuidFieldDataProvider(uuidGenerator)
     }
 
     @Test
@@ -31,7 +28,7 @@ class UuidFieldDataProviderTest {
         given(uuidGenerator.randomUUID()).willReturn(expectedValue)
 
         // When
-        val result = cut.invoke()
+        val result = classUnderTest.invoke()
 
         // Then
         assertEquals(expectedValue, result)

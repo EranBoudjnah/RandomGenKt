@@ -3,8 +3,6 @@ package com.mitteloupe.randomgenktexample.domain
 import com.mitteloupe.randomgenkt.RandomGen
 import com.mitteloupe.randomgenktexample.data.generator.FlatGeneratorFactory
 import com.mitteloupe.randomgenktexample.data.model.flat.Flat
-import com.nhaarman.mockitokotlin2.given
-import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -12,17 +10,18 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.given
+import org.mockito.kotlin.mock
 
-/**
- * Created by Eran Boudjnah on 01/11/2018.
- */
 @RunWith(MockitoJUnitRunner::class)
 class GenerateFlatUseCaseTest {
-    private lateinit var cut: GenerateFlatUseCase
+    private lateinit var classUnderTest: GenerateFlatUseCase
 
     private lateinit var coroutineContextProvider: CoroutineContextProvider
+
     @Mock
     lateinit var flatGeneratorFactory: FlatGeneratorFactory
+
     @Mock
     lateinit var flatGenerator: RandomGen<Flat>
 
@@ -31,7 +30,7 @@ class GenerateFlatUseCaseTest {
         coroutineContextProvider = testCoroutineContextProvider()
         given(flatGeneratorFactory.newFlatGenerator).willReturn(flatGenerator)
 
-        cut = GenerateFlatUseCase(coroutineContextProvider, flatGeneratorFactory)
+        classUnderTest = GenerateFlatUseCase(coroutineContextProvider, flatGeneratorFactory)
     }
 
     @Test
@@ -39,11 +38,11 @@ class GenerateFlatUseCaseTest {
         // Given
         val expectedResult = mock<Flat>()
         var actualResult: Flat? = null
-        given(flatGenerator.generate()).willReturn(expectedResult)
+        given(flatGenerator()).willReturn(expectedResult)
 
         // When
         runBlocking {
-            cut.execute { flat -> actualResult = flat }
+            classUnderTest.execute { flat -> actualResult = flat }
         }
 
         // Then

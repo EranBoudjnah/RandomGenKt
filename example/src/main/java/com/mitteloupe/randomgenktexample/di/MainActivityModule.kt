@@ -5,8 +5,8 @@ import dagger.Provides
 import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
-import kotlinx.coroutines.Job
 import java.util.Random
+import kotlinx.coroutines.Job
 
 @Module
 @InstallIn(ActivityComponent::class)

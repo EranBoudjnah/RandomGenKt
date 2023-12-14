@@ -11,7 +11,7 @@ import com.mitteloupe.randomgenktexample.R
 import com.mitteloupe.randomgenktexample.data.model.flat.DivisionType
 import com.mitteloupe.randomgenktexample.data.model.flat.Flat
 import com.mitteloupe.randomgenktexample.data.model.flat.Room
-import com.mitteloupe.randomgenktexample.utils.StringFormatter.formatEnumValue
+import com.mitteloupe.randomgenktexample.format.StringFormatter.formatEnumValue
 
 /**
  * Created by Eran Boudjnah on 26/08/2018.
@@ -55,12 +55,11 @@ constructor(
         background = ColorDrawable(resources.getColor(R.color.primary, null))
     }
 
-    private fun setUpPaint() =
-        with(paint) {
-            color = -0x1
-            textAlign = Paint.Align.CENTER
-            textSize = 24f
-        }
+    private fun setUpPaint() = with(paint) {
+        color = -0x1
+        textAlign = Paint.Align.CENTER
+        textSize = 24f
+    }
 
     private fun drawWallOrRoomType(canvas: Canvas, room: Room, boundingWalls: RectF) {
         if (!room.isDivided()) {
@@ -90,7 +89,12 @@ constructor(
 
     private fun writeRoomType(canvas: Canvas, room: Room, boundingWalls: RectF) {
         paint.style = Paint.Style.FILL
-        canvas.drawText(formatEnumValue(room.roomType), boundingWalls.centerX(), boundingWalls.centerY(), paint)
+        canvas.drawText(
+            formatEnumValue(room.roomType),
+            boundingWalls.centerX(),
+            boundingWalls.centerY(),
+            paint
+        )
     }
 
     private fun drawWall(canvas: Canvas, wall: RectF) {
@@ -99,8 +103,7 @@ constructor(
     }
 }
 
-fun Room.isDivided() =
-    this.firstRoom != null && this.secondRoom != null
+fun Room.isDivided() = this.firstRoom != null && this.secondRoom != null
 
 fun Room.divideHorizontally(boundingWalls: RectF, firstInnerWalls: RectF, secondInnerWalls: RectF) {
     val totalHeight = boundingWalls.height()

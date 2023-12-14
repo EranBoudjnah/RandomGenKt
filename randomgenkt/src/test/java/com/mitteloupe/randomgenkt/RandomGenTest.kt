@@ -1,5 +1,8 @@
 package com.mitteloupe.randomgenkt
 
+import com.mitteloupe.randomgenkt.KotlinDefaultValuesInstanceProvider.InstanceCreationException
+import com.mitteloupe.randomgenkt.builder.IncompleteBuilderField
+import com.mitteloupe.randomgenkt.builder.RandomGenBuilder
 import com.mitteloupe.randomgenkt.fielddataprovider.BooleanFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.ByteFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.ByteListFieldDataProvider
@@ -18,7 +21,10 @@ import com.mitteloupe.randomgenkt.fielddataprovider.SequentialIntegerFieldDataPr
 import com.mitteloupe.randomgenkt.fielddataprovider.ShortFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.UuidFieldDataProvider
 import com.mitteloupe.randomgenkt.fielddataprovider.WeightedFieldDataProvidersFieldDataProvider
-import com.nhaarman.mockitokotlin2.mock
+import org.hamcrest.CoreMatchers.anyOf
+import org.hamcrest.CoreMatchers.instanceOf
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -26,17 +32,17 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import org.junit.runners.Parameterized.Parameters
 import org.mockito.ArgumentMatchers.any
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.reset
 import org.mockito.Mockito.verify
+import org.mockito.kotlin.mock
 
-/**
- * Created by Eran Boudjnah on 07/08/2018.
- */
 @RunWith(Parameterized::class)
 class RandomGenTest(
-    private val incompleteBuilderField: RandomGen.IncompleteBuilderField<TestPerson>,
+    @Suppress("unused") private val testCase: String,
+    private val incompleteBuilderField: IncompleteBuilderField<TestPerson>,
     private val fieldDataProviderFactory: FieldDataProviderFactory<TestPerson>
 ) {
 
@@ -44,23 +50,40 @@ class RandomGenTest(
         private const val EQUALS_PRECISION = 0.0001
 
         @JvmStatic
-        @Parameterized.Parameters
+        @Parameters(name = "Given {0}")
         fun data(): Collection<Array<*>> {
-            val factory = mock<FieldDataProviderFactory<TestPerson>>()
-            val incompleteBuilderFieldWithProviderAndFactory = RandomGen.Builder<TestPerson>()
-                .withFactoryAndProvider(factory) { TestPerson() }
-
-            val incompleteBuilderFieldOfClassAndFactory = RandomGen.Builder<TestPerson>()
-                .ofClassWithFactory<TestPerson>(factory)
+            val factory: FieldDataProviderFactory<TestPerson> = mock()
 
             return listOf(
-                arrayOf(incompleteBuilderFieldWithProviderAndFactory, factory),
-                arrayOf(incompleteBuilderFieldOfClassAndFactory, factory)
+                factoryTestCase(factory),
+                javaBuilderTestCase(factory),
+                kotlinBuilderTestCase(factory)
             )
+        }
+
+        private fun factoryTestCase(factory: FieldDataProviderFactory<TestPerson>): Array<*> {
+            val incompleteBuilderFieldWithFieldFactoryAndProvider = RandomGenBuilder<TestPerson>()
+                .withFieldFactoryAndProvider(factory) { TestPerson() }
+
+            return arrayOf("Factory", incompleteBuilderFieldWithFieldFactoryAndProvider, factory)
+        }
+
+        private fun javaBuilderTestCase(factory: FieldDataProviderFactory<TestPerson>): Array<*> {
+            val incompleteBuilderFieldOfJavaClassAndFactory = RandomGenBuilder<TestPerson>()
+                .ofKotlinClassWithFactory<TestPerson>(factory)
+
+            return arrayOf("JavaBuilder", incompleteBuilderFieldOfJavaClassAndFactory, factory)
+        }
+
+        private fun kotlinBuilderTestCase(factory: FieldDataProviderFactory<TestPerson>): Array<*> {
+            val incompleteBuilderFieldOfKotlinClassAndFactory = RandomGenBuilder<TestPerson>()
+                .ofKotlinClassWithFactory<TestPerson>(factory)
+
+            return arrayOf("KotlinBuilder", incompleteBuilderFieldOfKotlinClassAndFactory, factory)
         }
     }
 
-    private lateinit var cut: RandomGen<TestPerson>
+    private lateinit var classUnderTest: RandomGen<TestPerson>
 
     @Before
     fun setUp() {
@@ -73,86 +96,88 @@ class RandomGenTest(
         val name = "Superman"
 
         val explicitFieldDataProvider = mock<ExplicitFieldDataProvider<TestPerson, String>>()
-        given(fieldDataProviderFactory.getExplicitFieldDataProvider(name)).willReturn(explicitFieldDataProvider)
+        given(fieldDataProviderFactory.getExplicitFieldDataProvider(name)).willReturn(
+            explicitFieldDataProvider
+        )
         given(explicitFieldDataProvider.invoke(any<TestPerson>())).willReturn(name)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("name")
             .returningExplicitly(name)
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(name, testPerson.name)
     }
 
     @Test
-    fun `Given builder returning explicitly for lazy field when generate then instance has correct value`() {
-        // Given
-        val explicitFieldDataProvider = mock<ExplicitFieldDataProvider<TestPerson, Boolean>>()
-        given(fieldDataProviderFactory.getExplicitFieldDataProvider(true)).willReturn(explicitFieldDataProvider)
-        given(explicitFieldDataProvider.invoke(any<TestPerson>())).willReturn(true)
-
-        cut = incompleteBuilderField
-            .withField("isLazy")
-            .returningExplicitly(true)
-            .build()
-
-        // When
-        val testPerson = cut.generate()
-
-        // Then
-        assertTrue(testPerson.isLazy)
-    }
-
-    @Test
-    fun `Given builder returning from list when generate then instance has correct value`() {
+    @Suppress("ktlint:standard:max-line-length")
+    fun `Given builder returning first item from list when invoked then instance has first value`() {
         // Given
         val name1 = "Rocksteady"
         val name2 = "Bebop"
 
         val namesList = listOf(name1, name2)
         val genericListFieldDataProvider = mock<GenericListFieldDataProvider<TestPerson, String>>()
-        given(fieldDataProviderFactory.getGenericListFieldDataProvider(namesList)).willReturn(genericListFieldDataProvider)
-        given(genericListFieldDataProvider.invoke(any<TestPerson>())).willReturn(name2)
+        given(fieldDataProviderFactory.getGenericListFieldDataProvider(namesList))
+            .willReturn(genericListFieldDataProvider)
+        given(genericListFieldDataProvider(any<TestPerson>())).willReturn(name1)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("name")
             .returning(namesList)
             .build()
 
         // When
-        var testPerson = cut.generate()
-
-        // Then
-        assertEquals(name2, testPerson.name)
-
-        // Given
-        given(genericListFieldDataProvider.invoke(any<TestPerson>())).willReturn(name1)
-
-        // When
-        testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(name1, testPerson.name)
     }
 
     @Test
+    @Suppress("ktlint:standard:max-line-length")
+    fun `Given builder returning second item from list when invoked then instance has second value`() {
+        // Given
+        val name1 = "Rocksteady"
+        val name2 = "Bebop"
+
+        val namesList = listOf(name1, name2)
+        val genericListFieldDataProvider = mock<GenericListFieldDataProvider<TestPerson, String>>()
+        given(fieldDataProviderFactory.getGenericListFieldDataProvider(namesList))
+            .willReturn(genericListFieldDataProvider)
+        given(genericListFieldDataProvider(any<TestPerson>())).willReturn(name2)
+
+        classUnderTest = incompleteBuilderField
+            .withField("name")
+            .returning(namesList)
+            .build()
+
+        // When
+        val testPerson = classUnderTest()
+
+        // Then
+        assertEquals(name2, testPerson.name)
+    }
+
+    @Test
     fun `Given builder returning Boolean when generate then instance has correct value`() {
         // Given
         val booleanFieldDataProvider = mock<BooleanFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.booleanFieldDataProvider).willReturn(booleanFieldDataProvider)
+        given(fieldDataProviderFactory.booleanFieldDataProvider)
+            .willReturn(booleanFieldDataProvider)
         given(booleanFieldDataProvider.invoke(any<TestPerson>())).willReturn(false)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("isBrave")
             .returningBoolean()
             .build()
 
         // When
-        var testPerson = cut.generate()
+        var testPerson = classUnderTest()
 
         // Then
         assertFalse(testPerson.isBrave)
@@ -161,7 +186,7 @@ class RandomGenTest(
         given(booleanFieldDataProvider.invoke(any<TestPerson>())).willReturn(true)
 
         // When
-        testPerson = cut.generate()
+        testPerson = classUnderTest()
 
         // Then
         assertTrue(testPerson.isBrave)
@@ -174,73 +199,82 @@ class RandomGenTest(
         given(fieldDataProviderFactory.byteFieldDataProvider).willReturn(byteFieldDataProvider)
         given(byteFieldDataProvider.invoke(any<TestPerson>())).willReturn(3.toByte())
 
-        cut = incompleteBuilderField
-            .withField("bite")
+        classUnderTest = incompleteBuilderField
+            .withField("byte")
             .returningByte()
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
-        assertEquals(3.toByte().toLong(), testPerson.bite.toLong())
+        assertEquals(3.toByte().toLong(), testPerson.byte.toLong())
     }
 
     @Test
     fun `Given builder returning Byte list when generate then instance has correct value`() {
         // Given
         val byteListFieldDataProvider = mock<ByteListFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.getByteListFieldDataProvider(5)).willReturn(byteListFieldDataProvider)
-        val byteList = listOf(1.toByte(), 2.toByte(), 3.toByte(), 4.toByte(), 5.toByte())
-        given(byteListFieldDataProvider.invoke(any<TestPerson>())).willReturn(byteList)
+        given(fieldDataProviderFactory.getByteArrayFieldDataProvider(5, 5))
+            .willReturn(byteListFieldDataProvider)
+        val bytes = ByteArray(5) { index ->
+            index.toByte()
+        }
+        given(byteListFieldDataProvider(any<TestPerson>())).willReturn(bytes)
 
-        cut = incompleteBuilderField
-            .withField("bites")
+        classUnderTest = incompleteBuilderField
+            .withField("bytes")
             .returningBytes(5)
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
-        assertEquals(byteList, listOf(*testPerson.bites!!))
+        assertEquals(bytes, testPerson.bytes)
     }
 
     @Test
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning Byte list with range when generate then instance has correct value`() {
         // Given
         val byteListFieldDataProvider = mock<ByteListFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.getByteListFieldDataProvider(4, 5)).willReturn(byteListFieldDataProvider)
-        val byteList = listOf(1.toByte(), 2.toByte(), 3.toByte(), 4.toByte(), 5.toByte())
-        given(byteListFieldDataProvider.invoke(any<TestPerson>())).willReturn(byteList)
+        given(fieldDataProviderFactory.getByteArrayFieldDataProvider(4, 5))
+            .willReturn(byteListFieldDataProvider)
+        val bytes = ByteArray(5) { index ->
+            index.toByte()
+        }
+        given(byteListFieldDataProvider(any<TestPerson>())).willReturn(bytes)
 
-        cut = incompleteBuilderField
-            .withField("bites")
+        classUnderTest = incompleteBuilderField
+            .withField("bytes")
             .returningBytes(4, 5)
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
-        assertEquals(byteList, listOf(*testPerson.bites!!))
+        assertEquals(bytes, testPerson.bytes)
     }
 
     @Test
     fun `Given builder returning Double when generate then instance has correct value`() {
         // Given
         val doubleFieldDataProvider = mock<DoubleFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.getDoubleFieldDataProvider()).willReturn(doubleFieldDataProvider)
+        given(fieldDataProviderFactory.getDoubleFieldDataProvider()).willReturn(
+            doubleFieldDataProvider
+        )
         val expectedValue = 1.2345
         given(doubleFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("wealth")
             .returningDouble()
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue, testPerson.wealth, 0.0001)
@@ -250,17 +284,19 @@ class RandomGenTest(
     fun `Given builder returning Double range when generate then instance has correct value`() {
         // Given
         val doubleRangeFieldDataProvider = mock<DoubleFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.getDoubleFieldDataProvider(1.0, 2.0)).willReturn(doubleRangeFieldDataProvider)
+        given(fieldDataProviderFactory.getDoubleFieldDataProvider(1.0, 2.0)).willReturn(
+            doubleRangeFieldDataProvider
+        )
         val expectedValue = 1.2345
         given(doubleRangeFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("wealth")
             .returning(1.0, 2.0)
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue, testPerson.wealth, 0.0001)
@@ -270,17 +306,19 @@ class RandomGenTest(
     fun `Given builder returning Float when generate then instance has correct value`() {
         // Given
         val floatFieldDataProvider = mock<FloatFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.getFloatFieldDataProvider()).willReturn(floatFieldDataProvider)
+        given(fieldDataProviderFactory.getFloatFieldDataProvider()).willReturn(
+            floatFieldDataProvider
+        )
         val expectedValue = 1.23f
         given(floatFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("height")
             .returningFloat()
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue.toDouble(), testPerson.height.toDouble(), 0.0001)
@@ -290,17 +328,19 @@ class RandomGenTest(
     fun `Given builder returning Float range when generate then instance has correct value`() {
         // Given
         val floatRangeFieldDataProvider = mock<FloatFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.getFloatFieldDataProvider(1f, 2f)).willReturn(floatRangeFieldDataProvider)
+        given(fieldDataProviderFactory.getFloatFieldDataProvider(1f, 2f)).willReturn(
+            floatRangeFieldDataProvider
+        )
         val expectedValue = 1.23f
         given(floatRangeFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("height")
             .returning(1f, 2f)
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue.toDouble(), testPerson.height.toDouble(), EQUALS_PRECISION)
@@ -310,17 +350,19 @@ class RandomGenTest(
     fun `Given builder returning Integer when generate then instance has correct value`() {
         // Given
         val integerFieldDataProvider = mock<IntFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.getIntFieldDataProvider()).willReturn(integerFieldDataProvider)
+        given(fieldDataProviderFactory.getIntFieldDataProvider()).willReturn(
+            integerFieldDataProvider
+        )
         val expectedValue = 400
         given(integerFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("candiesCount")
             .returningInt()
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue.toLong(), testPerson.candiesCount.toLong())
@@ -330,17 +372,19 @@ class RandomGenTest(
     fun `Given builder returning Integer range when generate then instance has correct value`() {
         // Given
         val integerFieldDataProvider = mock<IntFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.getIntFieldDataProvider(300, 500)).willReturn(integerFieldDataProvider)
+        given(fieldDataProviderFactory.getIntFieldDataProvider(300, 500)).willReturn(
+            integerFieldDataProvider
+        )
         val expectedValue = 400
         given(integerFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("candiesCount")
             .returning(300, 500)
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue.toLong(), testPerson.candiesCount.toLong())
@@ -354,13 +398,13 @@ class RandomGenTest(
         val expectedValue = 1337L
         given(longFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("soLong")
             .returningLong()
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue, testPerson.soLong)
@@ -370,17 +414,19 @@ class RandomGenTest(
     fun `Given builder returning Long range when generate then instance has correct value`() {
         // Given
         val longFieldDataProvider = mock<LongFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.getLongFieldDataProvider(1000L, 2000L)).willReturn(longFieldDataProvider)
+        given(fieldDataProviderFactory.getLongFieldDataProvider(1000L, 2000L)).willReturn(
+            longFieldDataProvider
+        )
         val expectedValue = 1337L
         given(longFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("soLong")
             .returning(1000L, 2000L)
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue, testPerson.soLong)
@@ -390,17 +436,19 @@ class RandomGenTest(
     fun `Given builder returning Short when generate then instance has correct value`() {
         // Given
         val shortFieldDataProvider = mock<ShortFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.getShortFieldDataProvider()).willReturn(shortFieldDataProvider)
+        given(fieldDataProviderFactory.getShortFieldDataProvider()).willReturn(
+            shortFieldDataProvider
+        )
         val expectedValue = 400.toShort()
         given(shortFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("soShort")
             .returningShort()
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue, testPerson.soShort)
@@ -410,57 +458,70 @@ class RandomGenTest(
     fun `Given builder returning Short range when generate then instance has correct value`() {
         // Given
         val shortFieldDataProvider = mock<ShortFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.getShortFieldDataProvider(1000.toShort(), 2000.toShort())).willReturn(shortFieldDataProvider)
+        given(
+            fieldDataProviderFactory.getShortFieldDataProvider(
+                1000.toShort(),
+                2000.toShort()
+            )
+        ).willReturn(shortFieldDataProvider)
         val expectedValue = 1337.toShort()
         given(shortFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("soShort")
             .returning(1000.toShort(), 2000.toShort())
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue, testPerson.soShort)
     }
 
     @Test
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning sequential Integer when generate then instance has correct value`() {
         // Given
-        val sequentialIntegerFieldDataProvider = mock<SequentialIntegerFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.sequentialIntegerFieldDataProvider).willReturn(sequentialIntegerFieldDataProvider)
+        val sequentialIntegerFieldDataProvider =
+            mock<SequentialIntegerFieldDataProvider<TestPerson>>()
+        given(fieldDataProviderFactory.sequentialIntegerFieldDataProvider)
+            .willReturn(sequentialIntegerFieldDataProvider)
         val expectedValue = 1234567
-        given(sequentialIntegerFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
+        given(sequentialIntegerFieldDataProvider.invoke(any<TestPerson>()))
+            .willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("id")
             .returningSequentialInteger()
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue.toLong(), testPerson.id.toLong())
     }
 
     @Test
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning sequential Integer with start value when generate then instance has correct value`() {
         // Given
-        val sequentialIntegerFieldDataProvider = mock<SequentialIntegerFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.getSequentialIntegerFieldDataProvider(5)).willReturn(sequentialIntegerFieldDataProvider)
+        val sequentialIntegerFieldDataProvider =
+            mock<SequentialIntegerFieldDataProvider<TestPerson>>()
+        given(fieldDataProviderFactory.getSequentialIntegerFieldDataProvider(5))
+            .willReturn(sequentialIntegerFieldDataProvider)
         val expectedValue = 5
-        given(sequentialIntegerFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
+        given(sequentialIntegerFieldDataProvider.invoke(any<TestPerson>()))
+            .willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("id")
             .returningSequentialInteger(5)
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue.toLong(), testPerson.id.toLong())
@@ -470,17 +531,18 @@ class RandomGenTest(
     fun `Given builder returning UUID when generate then instance has correct value`() {
         // Given
         val uuidFieldDataProvider = mock<UuidFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.uuidFieldDataProvider).willReturn(uuidFieldDataProvider as (TestPerson?) -> String)
+        given(fieldDataProviderFactory.uuidFieldDataProvider)
+            .willReturn(uuidFieldDataProvider as FieldDataProvider<TestPerson, String>)
         val expectedValue = "8b3728d0-9c1d-11e8-98d0-529269fb1459"
         given(uuidFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("uuid")
             .returningUuid()
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue, testPerson.uuid)
@@ -491,32 +553,34 @@ class RandomGenTest(
         // Given
         val rgbFieldDataProvider = mock<RgbFieldDataProvider<TestPerson>>()
         val rgbaFieldDataProvider = mock<RgbFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.getRgbFieldDataProvider(false)).willReturn(rgbFieldDataProvider as (TestPerson?) -> String)
-        given(fieldDataProviderFactory.getRgbFieldDataProvider(true)).willReturn(rgbaFieldDataProvider as (TestPerson?) -> String)
+        given(fieldDataProviderFactory.getRgbFieldDataProvider(false))
+            .willReturn(rgbFieldDataProvider as FieldDataProvider<TestPerson, String>)
+        given(fieldDataProviderFactory.getRgbFieldDataProvider(true))
+            .willReturn(rgbaFieldDataProvider as FieldDataProvider<TestPerson, String>)
         val expectedValueRGB = "#AABBAA"
         val expectedValueRGBA = "#FFAABBAA"
         given(rgbFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValueRGB)
         given(rgbaFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValueRGBA)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("shirtColor")
             .returningRgb(true)
             .build()
 
         // When
-        var testPerson = cut.generate()
+        var testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValueRGBA, testPerson.shirtColor)
 
         // Given
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("shirtColor")
             .returningRgb(false)
             .build()
 
         // When
-        testPerson = cut.generate()
+        testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValueRGB, testPerson.shirtColor)
@@ -526,77 +590,88 @@ class RandomGenTest(
     fun `Given builder returning Lorem Ipsum when generate then instance has correct value`() {
         // Given
         val loremIpsumFieldDataProvider = mock<LoremIpsumFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.loremIpsumFieldDataProvider).willReturn(loremIpsumFieldDataProvider as (TestPerson?) -> String)
+        given(fieldDataProviderFactory.loremIpsumFieldDataProvider).willReturn(
+            loremIpsumFieldDataProvider as FieldDataProvider<TestPerson, String>
+        )
         val expectedValue = "Lorem ipsum and stuff"
         given(loremIpsumFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("biography")
             .returningLoremIpsum()
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue, testPerson.biography)
     }
 
     @Test
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning Lorem Ipsum with length when generate then instance has correct value`() {
         // Given
         val loremIpsumFieldDataProvider = mock<LoremIpsumFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.getLoremIpsumFieldDataProvider(21)).willReturn(loremIpsumFieldDataProvider as (TestPerson?) -> String)
+        given(fieldDataProviderFactory.getLoremIpsumFieldDataProvider(21)).willReturn(
+            loremIpsumFieldDataProvider as FieldDataProvider<TestPerson, String>
+        )
         val expectedValue = "Lorem ipsum and stuff"
-        given(loremIpsumFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
+        given(loremIpsumFieldDataProvider(any<TestPerson>())).willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("biography")
             .returningLoremIpsum(21)
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue, testPerson.biography)
     }
 
     @Test
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning Lorem Ipsum with length range when generate then instance has correct value`() {
         // Given
         val loremIpsumFieldDataProvider = mock<LoremIpsumFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.getLoremIpsumFieldDataProvider(20, 22)).willReturn(loremIpsumFieldDataProvider as (TestPerson?) -> String)
+        given(fieldDataProviderFactory.getLoremIpsumFieldDataProvider(20, 22)).willReturn(
+            loremIpsumFieldDataProvider as FieldDataProvider<TestPerson, String>
+        )
         val expectedValue = "Lorem ipsum and stuff"
         given(loremIpsumFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("biography")
             .returningLoremIpsum(20, 22)
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue, testPerson.biography)
     }
 
     @Test
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning Lorem Ipsum with length range and delimiter when generate then instance has correct value`() {
         // Given
         val loremIpsumFieldDataProvider = mock<LoremIpsumFieldDataProvider<TestPerson>>()
-        given(fieldDataProviderFactory.getLoremIpsumFieldDataProvider(20, 22, "\n")).willReturn(loremIpsumFieldDataProvider as (TestPerson?) -> String)
+        given(fieldDataProviderFactory.getLoremIpsumFieldDataProvider(20, 22, "\n")).willReturn(
+            loremIpsumFieldDataProvider as FieldDataProvider<TestPerson, String>
+        )
         val expectedValue = "Lorem ipsum and stuff"
         given(loremIpsumFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("biography")
             .returningLoremIpsum(20, 22, "\n")
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue, testPerson.biography)
@@ -606,35 +681,37 @@ class RandomGenTest(
     fun `Given builder returning Enum when generate then instance has correct value`() {
         // Given
         val randomEnumFieldDataProvider = mock<RandomEnumFieldDataProvider<TestPerson, Gender>>()
-        given(fieldDataProviderFactory.getRandomEnumFieldDataProvider(Gender::class.java)).willReturn(randomEnumFieldDataProvider)
+        given(fieldDataProviderFactory.getRandomEnumFieldDataProvider(Gender::class.java))
+            .willReturn(randomEnumFieldDataProvider)
         given(randomEnumFieldDataProvider.invoke(any<TestPerson>())).willReturn(Gender.MALE)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("gender")
             .returning(Gender::class.java)
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(Gender.MALE, testPerson.gender)
     }
 
     @Test
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning FieldDataProvider when generate then instance has correct value`() {
         // Given
-        val fieldDataProvider = mock<(TestPerson?) -> String>()
+        val fieldDataProvider = mock<FieldDataProvider<TestPerson, String>>()
         val expectedValue = "Inigo Montoya"
         given(fieldDataProvider.invoke(any())).willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("name")
             .returning(fieldDataProvider)
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue, testPerson.name)
@@ -647,97 +724,118 @@ class RandomGenTest(
         val expectedValue = "Inigo Montoya"
         given(randomGen.invoke(any(TestPerson::class.java))).willReturn(expectedValue)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("name")
             .returning(randomGen)
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValue, testPerson.name)
     }
 
     @Test
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning custom ListFieldDataProvider instances when generate then instance has correct value`() {
         // Given
-        val fieldDataProvider = mock<(TestPerson?) -> String>()
+        val fieldDataProvider = mock<FieldDataProvider<TestPerson, String>>()
         val customListFieldDataProvider = mock<CustomListFieldDataProvider<TestPerson, String>>()
-        given(fieldDataProviderFactory.getCustomListFieldDataProvider(3, fieldDataProvider)).willReturn(customListFieldDataProvider)
+        given(
+            fieldDataProviderFactory
+                .getCustomListFieldDataProvider(fieldDataProvider, minimumInstances = 3)
+        ).willReturn(customListFieldDataProvider)
         val expectedValues = listOf("The Shadow", "Captain Hammer", "Mr. Nobody")
         given(customListFieldDataProvider.invoke(any())).willReturn(expectedValues)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("aliases")
-            .returning(3, fieldDataProvider)
+            .returning(fieldDataProvider, 3)
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValues, testPerson.aliases)
     }
 
     @Test
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning RandomGen instances when generate then instance has correct value`() {
         // Given
-        val randomGen = mock<(TestPerson?) -> String>()
+        val randomGen = mock<FieldDataProvider<TestPerson, String>>()
         val customListFieldDataProvider = mock<CustomListFieldDataProvider<TestPerson, String>>()
-        given(fieldDataProviderFactory.getCustomListFieldDataProvider(3, randomGen)).willReturn(customListFieldDataProvider)
+        given(fieldDataProviderFactory.getCustomListFieldDataProvider(randomGen, 3))
+            .willReturn(customListFieldDataProvider)
         val expectedValues = listOf("The Shadow", "Captain Hammer", "Mr. Nobody")
         given(customListFieldDataProvider.invoke(any())).willReturn(expectedValues)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("aliases")
-            .returning(3, randomGen)
+            .returning(randomGen, 3)
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValues, testPerson.aliases)
     }
 
     @Test
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning range and custom ListFieldDataProvider when generate then instance has correct value`() {
         // Given
-        val fieldDataProvider = mock<(TestPerson?) -> String>()
-        val customListRangeFieldDataProvider = mock<(TestPerson?) -> List<String>>()
-        given(fieldDataProviderFactory.getCustomListRangeFieldDataProvider(2, 4, fieldDataProvider)).willReturn(customListRangeFieldDataProvider)
+        val fieldDataProvider: FieldDataProvider<TestPerson, String> = mock()
+        val customListRangeFieldDataProvider: FieldDataProvider<TestPerson, List<String>> = mock()
+        given(
+            fieldDataProviderFactory.getCustomListFieldDataProvider(
+                fieldDataProvider,
+                minimumInstances = 2,
+                maximumInstances = 4
+            )
+        ).willReturn(customListRangeFieldDataProvider)
         val expectedValues = listOf("The Shadow", "Captain Hammer", "Mr. Nobody")
         given(customListRangeFieldDataProvider.invoke(any())).willReturn(expectedValues)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("aliases")
-            .returning(2, 4, fieldDataProvider)
+            .returning(fieldDataProvider, minimumInstances = 2, maximumInstances = 4)
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValues, testPerson.aliases)
     }
 
     @Test
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning range and RandomGen when generate then instance has correct value`() {
         // Given
-        val randomGen = mock<(TestPerson?) -> String>()
-        val customListRangeFieldDataProvider = mock<CustomListRangeFieldDataProvider<TestPerson, String>>()
-        given(fieldDataProviderFactory.getCustomListRangeFieldDataProvider(2, 4, randomGen)).willReturn(customListRangeFieldDataProvider)
+        val randomGen = mock<FieldDataProvider<TestPerson, String>>()
+        val customListRangeFieldDataProvider =
+            mock<CustomListRangeFieldDataProvider<TestPerson, String>>()
+        given(
+            fieldDataProviderFactory.getCustomListFieldDataProvider(
+                randomGen,
+                minimumInstances = 2,
+                maximumInstances = 4
+            )
+        ).willReturn(customListRangeFieldDataProvider)
         val expectedValues = listOf("The Shadow", "Captain Hammer", "Mr. Nobody")
         given(customListRangeFieldDataProvider.invoke(any<TestPerson>())).willReturn(expectedValues)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("aliases")
-            .returning(2, 4, randomGen)
+            .returning(randomGen, minimumInstances = 2, maximumInstances = 4)
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         assertEquals(expectedValues, testPerson.aliases)
@@ -749,10 +847,12 @@ class RandomGenTest(
         val name = "Superman"
 
         val explicitFieldDataProvider = mock<ExplicitFieldDataProvider<TestPerson, String>>()
-        given(fieldDataProviderFactory.getExplicitFieldDataProvider(name)).willReturn(explicitFieldDataProvider)
+        given(fieldDataProviderFactory.getExplicitFieldDataProvider(name)).willReturn(
+            explicitFieldDataProvider
+        )
         given(explicitFieldDataProvider.invoke(any())).willReturn(name)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("candiesCount")
             .returningExplicitly(name)
             .build()
@@ -761,28 +861,53 @@ class RandomGenTest(
 
         try {
             // When
-            cut.generate()
+            classUnderTest()
         } catch (exception: Throwable) {
             // Then
             caughtException = exception
         }
 
-        assertTrue(caughtException is IllegalArgumentException)
-        assertEquals("Cannot set field candiesCount due to invalid value", caughtException!!.message)
-        assertEquals("java.lang.IllegalArgumentException: Can not set final int field com.mitteloupe.randomgenkt.RandomGenTest\$TestPerson.candiesCount to java.lang.String", caughtException.cause?.message)
+        assertThat(
+            caughtException,
+            anyOf(
+                `is`(instanceOf(RuntimeException::class.java)),
+                `is`(instanceOf(InstanceCreationException::class.java))
+            )
+        )
+        assertThat(
+            caughtException!!.message,
+            anyOf(
+                `is`("Cannot set field candiesCount due to an invalid value"),
+                `is`("Failed to instantiate TestPerson. Try providing a ValuesInstanceProvider.")
+            )
+        )
+        assertThat(
+            caughtException.cause?.message,
+            anyOf(
+                `is`("java.lang.RuntimeException: No usable public constructors found."),
+                `is`(
+                    "java.lang.IllegalArgumentException: Can not set final int field " +
+                        "com.mitteloupe.randomgenkt.RandomGenTest\$TestPerson.candiesCount " +
+                        "to java.lang.String"
+                )
+            )
+        )
     }
 
     @Test
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given non-list value for list field when generate then instance throws IllegalArgumentException`() {
         // Given
         val name = "Superman"
 
         val explicitFieldDataProvider = mock<ExplicitFieldDataProvider<TestPerson, String>>()
-        given(fieldDataProviderFactory.getExplicitFieldDataProvider(name)).willReturn(explicitFieldDataProvider)
+        given(fieldDataProviderFactory.getExplicitFieldDataProvider(name)).willReturn(
+            explicitFieldDataProvider
+        )
         given(explicitFieldDataProvider.invoke(any<TestPerson>())).willReturn(name)
 
-        cut = incompleteBuilderField
-            .withField("bites")
+        classUnderTest = incompleteBuilderField
+            .withField("bytes")
             .returningExplicitly(name)
             .build()
 
@@ -790,29 +915,50 @@ class RandomGenTest(
 
         try {
             // When
-            cut.generate()
+            classUnderTest()
         } catch (exception: Throwable) {
             // Then
             caughtException = exception
         }
 
-        assertTrue(caughtException is IllegalArgumentException)
-        assertEquals("Cannot set field bites due to invalid value", caughtException!!.message)
-        assertEquals("java.lang.RuntimeException: Expected collection value", caughtException.cause?.message)
+        assertThat(
+            caughtException,
+            anyOf(
+                `is`(instanceOf(RuntimeException::class.java)),
+                `is`(instanceOf(InstanceCreationException::class.java))
+            )
+        )
+        assertThat(
+            caughtException!!.message,
+            anyOf(
+                `is`("Cannot set field bytes due to an invalid value"),
+                `is`("Failed to instantiate TestPerson. Try providing a ValuesInstanceProvider.")
+            )
+        )
+        assertThat(
+            caughtException.cause?.message,
+            anyOf(
+                `is`("java.lang.RuntimeException: Expected collection value"),
+                `is`("java.lang.RuntimeException: No usable public constructors found.")
+            )
+        )
     }
 
     @Test
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given invalid value for list when generate then instance throws IllegalArgumentException`() {
         // Given
         val namesArray = arrayOf("Superman")
         val namesList = namesArray.toList()
 
         val explicitFieldDataProvider = mock<ExplicitFieldDataProvider<TestPerson, List<String>>>()
-        given(fieldDataProviderFactory.getExplicitFieldDataProvider(namesList)).willReturn(explicitFieldDataProvider)
+        given(fieldDataProviderFactory.getExplicitFieldDataProvider(namesList)).willReturn(
+            explicitFieldDataProvider
+        )
         given(explicitFieldDataProvider.invoke(any<TestPerson>())).willReturn(namesList)
 
-        cut = incompleteBuilderField
-            .withField("bites")
+        classUnderTest = incompleteBuilderField
+            .withField("bytes")
             .returningExplicitly(namesList)
             .build()
 
@@ -820,15 +966,37 @@ class RandomGenTest(
 
         try {
             // When
-            cut.generate()
+            classUnderTest()
         } catch (exception: Throwable) {
             // Then
             caughtException = exception
         }
 
-        assertTrue(caughtException is IllegalArgumentException)
-        assertEquals("Cannot set field bites due to invalid value", caughtException!!.message)
-        assertEquals("java.lang.ArrayStoreException", caughtException.cause?.message)
+        assertThat(
+            caughtException,
+            anyOf(
+                `is`(instanceOf(RuntimeException::class.java)),
+                `is`(instanceOf(InstanceCreationException::class.java))
+            )
+        )
+        assertThat(
+            caughtException!!.message,
+            anyOf(
+                `is`("Cannot set field bytes due to an invalid value"),
+                `is`("Failed to instantiate TestPerson. Try providing a ValuesInstanceProvider.")
+            )
+        )
+        assertThat(
+            caughtException.cause?.message,
+            anyOf(
+                `is`("java.lang.RuntimeException: No usable public constructors found."),
+                `is`(
+                    "java.lang.ClassCastException: class [B cannot be cast to class " +
+                        "[Ljava.lang.Object; ([B and [Ljava.lang.Object; are in module java.base " +
+                        "of loader 'bootstrap')"
+                )
+            )
+        )
     }
 
     @Test
@@ -837,10 +1005,12 @@ class RandomGenTest(
         val name = "Superman"
 
         val explicitFieldDataProvider = mock<ExplicitFieldDataProvider<TestPerson, String>>()
-        given(fieldDataProviderFactory.getExplicitFieldDataProvider(name)).willReturn(explicitFieldDataProvider)
-        given(explicitFieldDataProvider.invoke(any<TestPerson>())).willReturn(name)
+        given(fieldDataProviderFactory.getExplicitFieldDataProvider(name)).willReturn(
+            explicitFieldDataProvider
+        )
+        given(explicitFieldDataProvider(any<TestPerson>())).willReturn(name)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("unknownField")
             .returningExplicitly(name)
             .build()
@@ -849,14 +1019,14 @@ class RandomGenTest(
 
         try {
             // When
-            cut.generate()
+            classUnderTest()
         } catch (exception: Throwable) {
             // Then
             caughtException = exception
         }
 
-        assertTrue(caughtException is IllegalArgumentException)
-        assertEquals("Cannot set field unknownField - field not found", caughtException!!.message)
+        assertThat(caughtException, `is`(instanceOf(IllegalArgumentException::class.java)))
+        assertEquals("Field(s) not found: unknownField", caughtException!!.message)
     }
 
     @Test
@@ -864,41 +1034,52 @@ class RandomGenTest(
         // Given
         val onGenerateCallback = mock<RandomGen.OnGenerateCallback<TestPerson>>()
 
-        // Minimal requirement for instance creation is one value.
         val explicitFieldDataProvider = mock<ExplicitFieldDataProvider<TestPerson, String>>()
-        given(fieldDataProviderFactory.getExplicitFieldDataProvider("")).willReturn(explicitFieldDataProvider)
+        given(fieldDataProviderFactory.getExplicitFieldDataProvider("")).willReturn(
+            explicitFieldDataProvider
+        )
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .onGenerate(onGenerateCallback)
             .withField("name")
             .returningExplicitly("")
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
         verify(onGenerateCallback).onGenerate(testPerson)
     }
 
     @Test
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning explicit value or another when generate then second provider added and instance has correct value`() {
         // Given
         val name1 = "Superman"
         val name2 = "Spider Man"
 
         val explicitFieldDataProvider1 = mock<ExplicitFieldDataProvider<TestPerson, String>>()
-        given(fieldDataProviderFactory.getExplicitFieldDataProvider(name1)).willReturn(explicitFieldDataProvider1)
+        given(fieldDataProviderFactory.getExplicitFieldDataProvider(name1)).willReturn(
+            explicitFieldDataProvider1
+        )
         val explicitFieldDataProvider2 = mock<ExplicitFieldDataProvider<Any, Nothing>>()
-        given(fieldDataProviderFactory.getExplicitFieldDataProvider(name2)).willReturn(explicitFieldDataProvider2)
+        given(fieldDataProviderFactory.getExplicitFieldDataProvider(name2)).willReturn(
+            explicitFieldDataProvider2
+        )
 
-        val weightedFieldDataProvidersFieldDataProvider = mock<WeightedFieldDataProvidersFieldDataProvider<TestPerson, String>>()
-        given(fieldDataProviderFactory.getWeightedFieldDataProvidersFieldDataProvider(explicitFieldDataProvider1))
+        val weightedFieldDataProvidersFieldDataProvider =
+            mock<WeightedFieldDataProvidersFieldDataProvider<TestPerson, String>>()
+        given(
+            fieldDataProviderFactory.getWeightedFieldDataProvidersFieldDataProvider(
+                explicitFieldDataProvider1
+            )
+        )
             .willReturn(weightedFieldDataProvidersFieldDataProvider)
         given(weightedFieldDataProvidersFieldDataProvider.invoke(any<TestPerson>()))
             .willReturn(name1)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("name")
             .returningExplicitly(name1)
             .or()
@@ -906,14 +1087,18 @@ class RandomGenTest(
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
-        verify(weightedFieldDataProvidersFieldDataProvider).addFieldDataProvider(explicitFieldDataProvider2, 1.0)
+        verify(weightedFieldDataProvidersFieldDataProvider).addFieldDataProvider(
+            explicitFieldDataProvider2,
+            1.0
+        )
         assertEquals(name1, testPerson.name)
     }
 
     @Test
+    @Suppress("ktlint:standard:max-line-length")
     fun `Given builder returning explicit value or another with weight when generate then second provider added and instance has correct value`() {
         // Given
         val name1 = "Superman"
@@ -921,17 +1106,26 @@ class RandomGenTest(
         val weight = 2.0
 
         val explicitFieldDataProvider1 = mock<ExplicitFieldDataProvider<TestPerson, String>>()
-        given(fieldDataProviderFactory.getExplicitFieldDataProvider(name1)).willReturn(explicitFieldDataProvider1)
+        given(fieldDataProviderFactory.getExplicitFieldDataProvider(name1)).willReturn(
+            explicitFieldDataProvider1
+        )
         val explicitFieldDataProvider2 = mock<ExplicitFieldDataProvider<Any, Nothing>>()
-        given(fieldDataProviderFactory.getExplicitFieldDataProvider(name2)).willReturn(explicitFieldDataProvider2)
+        given(fieldDataProviderFactory.getExplicitFieldDataProvider(name2)).willReturn(
+            explicitFieldDataProvider2
+        )
 
-        val weightedFieldDataProvidersFieldDataProvider = mock<WeightedFieldDataProvidersFieldDataProvider<TestPerson, String>>()
-        given(fieldDataProviderFactory.getWeightedFieldDataProvidersFieldDataProvider(explicitFieldDataProvider1))
+        val weightedFieldDataProvidersFieldDataProvider =
+            mock<WeightedFieldDataProvidersFieldDataProvider<TestPerson, String>>()
+        given(
+            fieldDataProviderFactory.getWeightedFieldDataProvidersFieldDataProvider(
+                explicitFieldDataProvider1
+            )
+        )
             .willReturn(weightedFieldDataProvidersFieldDataProvider)
         given(weightedFieldDataProvidersFieldDataProvider.invoke(any()))
             .willReturn(name1)
 
-        cut = incompleteBuilderField
+        classUnderTest = incompleteBuilderField
             .withField("name")
             .returningExplicitly(name1)
             .orWithWeight(weight)
@@ -939,34 +1133,39 @@ class RandomGenTest(
             .build()
 
         // When
-        val testPerson = cut.generate()
+        val testPerson = classUnderTest()
 
         // Then
-        verify(weightedFieldDataProvidersFieldDataProvider).addFieldDataProvider(explicitFieldDataProvider2, weight)
+        verify(weightedFieldDataProvidersFieldDataProvider).addFieldDataProvider(
+            explicitFieldDataProvider2,
+            weight
+        )
         assertEquals(name1, testPerson.name)
     }
 
-    // Setting is done via RandomGen :)
-    class TestPerson {
-        internal val id: Int = 0
-        internal val name: String? = null
-        internal val aliases: List<String>? = null
-        internal val isBrave: Boolean = false
-        internal val bite: Byte = 0 // Everybody gets hungry sometimes!
-        internal val bites: Array<Byte>? = null // Sometimes you get even hungrier!
-        internal val wealth: Double = 0.toDouble()
-        internal val height: Float = 0.toFloat()
-        internal val candiesCount: Int = 0 // Like taking candies from a baby!
-        internal val soLong: Long = 0
-        internal val soShort: Short = 0
-        internal val uuid: String? = null
-        internal val shirtColor: String? = null
-        internal val biography: String? = null
-        internal val gender: Gender? = null
-        internal val isLazy by lazy { true }
+    class TestPerson(
+        internal val id: Int = 0,
+        internal val name: String? = null,
+        internal val aliases: List<String>? = null,
+        internal val isBrave: Boolean = false,
+        internal val byte: Byte = 0,
+        internal val bytes: ByteArray? = null,
+        internal val wealth: Double = 0.0,
+        internal val height: Float = 0f,
+        internal val candiesCount: Int = 0,
+        internal val soLong: Long = 0,
+        internal val soShort: Short = 0,
+        internal val uuid: String? = null,
+        internal val shirtColor: String? = null,
+        internal val biography: String? = null,
+        internal val gender: Gender? = null,
+        constructorAndField: Int = 0
+    ) {
+        internal val constructorAndField: String = constructorAndField.toString()
     }
 
     enum class Gender {
-        MALE, FEMALE
+        MALE,
+        FEMALE
     }
 }

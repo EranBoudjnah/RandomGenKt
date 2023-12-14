@@ -1,19 +1,16 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
-import com.nhaarman.mockitokotlin2.given
+import java.util.Random
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import java.util.Random
 
-/**
- * Created by Eran Boudjnah on 10/08/2018.
- */
 @RunWith(MockitoJUnitRunner::class)
 class DoubleFieldDataProviderTest {
-    private lateinit var cut: DoubleFieldDataProvider<Any>
+    private lateinit var classUnderTest: DoubleFieldDataProvider<Any>
 
     @Mock
     private lateinit var random: Random
@@ -21,11 +18,11 @@ class DoubleFieldDataProviderTest {
     @Test
     fun givenRandomDoubleValueWhenGenerateThenReturnsSameValue() {
         // Given
-        cut = DoubleFieldDataProvider.getInstance(random)
+        classUnderTest = DoubleFieldDataProvider(random)
         given(random.nextDouble()).willReturn(0.0)
 
         // When
-        var result = cut.invoke()
+        var result = classUnderTest.invoke()
 
         // Then
         assertEquals(0.0, result, 0.00001)
@@ -34,7 +31,7 @@ class DoubleFieldDataProviderTest {
         given(random.nextDouble()).willReturn(0.99999999999)
 
         // When
-        result = cut.invoke()
+        result = classUnderTest.invoke()
 
         // Then
         assertEquals(1.0, result, 0.00001)
@@ -43,11 +40,15 @@ class DoubleFieldDataProviderTest {
     @Test
     fun givenRandomDoubleValueAndRangeWhenGenerateThenReturnsCorrectValue() {
         // Given
-        cut = DoubleFieldDataProvider.getInstanceWithRange(random, Double.MIN_VALUE, Double.MAX_VALUE)
+        classUnderTest = DoubleFieldDataProvider(
+            random,
+            minimum = Double.MIN_VALUE,
+            maximum = Double.MAX_VALUE
+        )
         given(random.nextDouble()).willReturn(0.0)
 
         // When
-        var result = cut.invoke()
+        var result = classUnderTest.invoke()
 
         // Then
         assertEquals(Double.MIN_VALUE, result, 0.00001)
@@ -56,7 +57,7 @@ class DoubleFieldDataProviderTest {
         given(random.nextDouble()).willReturn(0.999999999999999999)
 
         // When
-        result = cut.invoke()
+        result = classUnderTest.invoke()
 
         // Then
         assertEquals(Double.MAX_VALUE, result, 0.00001)

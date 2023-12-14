@@ -1,33 +1,32 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-	id("org.jetbrains.kotlin.jvm")
+    kotlin("jvm")
 }
 
 dependencies {
-	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
 
 ext {
-	set("PUBLISH_GROUP_ID", "com.mitteloupe.randomgenkt")
-	set("PUBLISH_ARTIFACT_ID", "randomgenkt.datasource")
-	set("PUBLISH_VERSION", "1.0.1")
+    set("PUBLISH_GROUP_ID", "com.mitteloupe.randomgenkt")
+    set("PUBLISH_ARTIFACT_ID", "randomgenkt.datasource")
+    set("PUBLISH_VERSION", "2.0.0")
 }
 
 apply {
-	from("release-jar.gradle")
+    from("release-jar.gradle")
 }
 
-repositories {
-	mavenCentral()
-}
-
-val compileKotlin: KotlinCompile by tasks
-compileKotlin.kotlinOptions {
-	jvmTarget = "1.6"
-}
-
-val compileTestKotlin: KotlinCompile by tasks
-compileTestKotlin.kotlinOptions {
-	jvmTarget = "1.6"
+tasks.withType(Test::class) {
+    testLogging {
+        exceptionFormat = TestExceptionFormat.FULL
+        events = setOf(
+            TestLogEvent.SKIPPED,
+            TestLogEvent.PASSED,
+            TestLogEvent.FAILED
+        )
+        showStandardStreams = true
+    }
 }

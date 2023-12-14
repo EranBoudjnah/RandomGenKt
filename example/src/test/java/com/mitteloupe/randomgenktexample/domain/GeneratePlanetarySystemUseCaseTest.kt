@@ -3,8 +3,6 @@ package com.mitteloupe.randomgenktexample.domain
 import com.mitteloupe.randomgenkt.RandomGen
 import com.mitteloupe.randomgenktexample.data.generator.PlanetarySystemGeneratorFactory
 import com.mitteloupe.randomgenktexample.data.model.planet.PlanetarySystem
-import com.nhaarman.mockitokotlin2.given
-import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -12,26 +10,32 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.given
+import org.mockito.kotlin.mock
 
-/**
- * Created by Eran Boudjnah on 01/11/2018.
- */
 @RunWith(MockitoJUnitRunner::class)
 class GeneratePlanetarySystemUseCaseTest {
-    private lateinit var cut: GeneratePlanetarySystemUseCase
+    private lateinit var classUnderTest: GeneratePlanetarySystemUseCase
 
     private lateinit var coroutineContextProvider: CoroutineContextProvider
+
     @Mock
     lateinit var planetarySystemGeneratorFactory: PlanetarySystemGeneratorFactory
+
     @Mock
     lateinit var planetarySystemGenerator: RandomGen<PlanetarySystem>
 
     @Before
     fun setUp() {
         coroutineContextProvider = testCoroutineContextProvider()
-        given(planetarySystemGeneratorFactory.newPlanetarySystemGenerator).willReturn(planetarySystemGenerator)
+        given(planetarySystemGeneratorFactory.planetarySystemGenerator).willReturn(
+            planetarySystemGenerator
+        )
 
-        cut = GeneratePlanetarySystemUseCase(coroutineContextProvider, planetarySystemGeneratorFactory)
+        classUnderTest = GeneratePlanetarySystemUseCase(
+            coroutineContextProvider,
+            planetarySystemGeneratorFactory
+        )
     }
 
     @Test
@@ -39,11 +43,11 @@ class GeneratePlanetarySystemUseCaseTest {
         // Given
         val expectedResult = mock<PlanetarySystem>()
         var actualResult: PlanetarySystem? = null
-        given(planetarySystemGenerator.generate()).willReturn(expectedResult)
+        given(planetarySystemGenerator()).willReturn(expectedResult)
 
         // When
         runBlocking {
-            cut.execute { planetarySystem -> actualResult = planetarySystem }
+            classUnderTest.execute { planetarySystem -> actualResult = planetarySystem }
         }
 
         // Then

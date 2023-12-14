@@ -1,6 +1,7 @@
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
-task sourcesJar(type: Jar) {
+tasks.register('sourcesJar', Jar) {
     from sourceSets.main.kotlin.srcDirs
     archiveClassifier = "sources"
 }
@@ -22,11 +23,9 @@ if (propertiesFile.exists()) {
     properties.load(propertiesFile.newDataInputStream())
 }
 def pomVersion = project.PUBLISH_VERSION
-def localReleaseDest = "${buildDir}/release/${pomVersion}"
+def localReleaseDestination = "${layout.buildDirectory.get().asFile}/release/${pomVersion}"
 def ossrhUsername = properties['ossrhUsername']
 def ossrhPassword = properties['ossrhPassword']
-
-println "packageGroup = " + project.PUBLISH_GROUP_ID
 
 nexusStaging {
     username = "${ossrhUsername}"
@@ -34,62 +33,79 @@ nexusStaging {
     packageGroup = project.PUBLISH_GROUP_ID
 }
 
-uploadArchives {
-    repositories.mavenDeployer {
-        pom {
-            project {
-                name project.PUBLISH_ARTIFACT_ID
-                description 'Data sources for RandomGenKt.'
-                packaging 'jar'
-                url gitUrl
-                licenses {
-                    license {
-                        name 'MIT'
-                        url 'https://github.com/EranBoudjnah/RandomGenKt/blob/master/LICENSE'
-                    }
-                }
-                scm {
-                    connection gitUrl
-                    developerConnection gitUrl
-                    url gitUrl
-                }
-                developers {
-                    developer {
-                        id "EranBoudjnah"
-                        name "Eran Boudjnah"
-                        email "eranbou+randomgenkt@gmail.com"
-                    }
-                }
+publishing {
+    repositories {
+        maven {
+            name = "Local"
+            url = "file://${localReleaseDestination}"
+        }
+        maven {
+            name = "SonatypeStaging"
+            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = ossrhUsername
+                password = ossrhPassword
             }
+        }
+    }
+
+    publications {
+        maven(MavenPublication) {
             groupId = project.PUBLISH_GROUP_ID
             artifactId = project.PUBLISH_ARTIFACT_ID
             version = pomVersion
-        }
+            from components.java
 
-        repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-            authentication(userName: ossrhUsername, password: ossrhPassword)
+            pom {
+                name = project.PUBLISH_ARTIFACT_ID
+                description = 'Data sources for RandomGenKt.'
+                url = gitUrl
+                licenses {
+                    license {
+                        name = 'MIT'
+                        url = 'https://github.com/EranBoudjnah/RandomGenKt/blob/master/LICENSE'
+                    }
+                }
+                scm {
+                    connection = gitUrl
+                    developerConnection = gitUrl
+                    url = gitUrl
+                }
+                developers {
+                    developer {
+                        id = "EranBoudjnah"
+                        name = "Eran Boudjnah"
+                        email = "eranbou+randomgenkt@gmail.com"
+                    }
+                }
+            }
         }
-        snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-            authentication(userName: ossrhUsername, password: ossrhPassword)
-        }
-
-        repository(url: "file://${localReleaseDest}")
     }
 }
 
-task zipRelease(type: Zip) {
-    from localReleaseDest
-    setDestinationDirectory buildDir
+tasks.register('zipRelease', Zip) {
+    from localReleaseDestination
+    setDestinationDirectory layout.buildDirectory.get().asFile
     setArchiveFileName "release-${pomVersion}.zip"
 }
 
-task generateRelease {
+tasks.register('generateRelease') {
     doLast {
-        println "Release ${pomVersion} can be found at ${localReleaseDest}/"
-        println "Release ${pomVersion} zipped can be found ${buildDir}/release-${pomVersion}.zip"
+        println "Release ${pomVersion} can be found at ${localReleaseDestination}/"
+        println "Release ${pomVersion} zipped can be found ${layout.buildDirectory.get().asFile}/release-${pomVersion}.zip"
     }
 }
 
+signing {
+    sign publishing.publications.maven
+}
+
 generateRelease
-        .dependsOn(uploadArchives)
+        .dependsOn(publishMavenPublicationToSonatypeStagingRepository)
         .dependsOn(zipRelease)
+
+gradle.taskGraph.whenReady { taskGraph ->
+    if (!taskGraph.hasTask(generateRelease)) {
+        signMavenPublication.enabled = false
+    }
+}

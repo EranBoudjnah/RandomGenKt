@@ -1,20 +1,18 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
-import com.nhaarman.mockitokotlin2.given
+import java.util.Random
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import org.junit.runners.Parameterized.Parameters
+import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
-import java.util.Random
 
-/**
- * Created by Eran Boudjnah on 11/08/2018.
- */
 @RunWith(Parameterized::class)
 class RandomEnumFieldDataProviderTest(
     private val randomValue: Int,
@@ -22,7 +20,7 @@ class RandomEnumFieldDataProviderTest(
 ) {
     companion object {
         @JvmStatic
-        @Parameterized.Parameters
+        @Parameters
         fun data(): Collection<Array<*>> {
             return listOf(
                 arrayOf(0, MagicColors.WHITE),
@@ -32,7 +30,7 @@ class RandomEnumFieldDataProviderTest(
         }
     }
 
-    private lateinit var cut: RandomEnumFieldDataProvider<Any, MagicColors>
+    private lateinit var classUnderTest: RandomEnumFieldDataProvider<Any, MagicColors>
 
     @get:Rule
     val mockitoRule: MockitoRule = MockitoJUnit.rule()
@@ -42,7 +40,7 @@ class RandomEnumFieldDataProviderTest(
 
     @Before
     fun setUp() {
-        cut = RandomEnumFieldDataProvider(random, MagicColors::class.java)
+        classUnderTest = RandomEnumFieldDataProvider(random, MagicColors::class.java)
     }
 
     @Test
@@ -51,7 +49,7 @@ class RandomEnumFieldDataProviderTest(
         given(random.nextInt(5)).willReturn(randomValue)
 
         // When
-        val result = cut.invoke()
+        val result = classUnderTest()
 
         // Then
         assertEquals(expectedColor, result)

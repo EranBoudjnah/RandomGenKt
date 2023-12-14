@@ -12,10 +12,10 @@ import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.util.HumanReadables
 import androidx.test.espresso.util.TreeIterables
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.util.concurrent.TimeoutException
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matcher
 import org.hamcrest.StringDescription
-import java.util.concurrent.TimeoutException
 
 /**
  * Created by Eran Boudjnah on 02/11/2018.

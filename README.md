@@ -5,7 +5,7 @@
 
 [![Version - RandomGenKt](https://img.shields.io/maven-central/v/com.mitteloupe.randomgenkt/randomgenkt?label=RandomGenKt+|+MavenCentral)](https://mvnrepository.com/artifact/com.mitteloupe.randomgenkt/randomgenkt)
 [![Version - DataSource](https://img.shields.io/maven-central/v/com.mitteloupe.randomgenkt/randomgenkt.datasource?label=datasource+|+MavenCentral)](https://mvnrepository.com/artifact/com.mitteloupe.randomgenkt/randomgenkt.datasource)
-[![Build Status](https://travis-ci.com/EranBoudjnah/RandomGenKt.svg?branch=master)](https://travis-ci.com/EranBoudjnah/RandomGenKt)
+![Build Status](https://img.shields.io/github/actions/workflow/status/EranBoudjnah/RandomGenKt/gradle-checks.yml)
 [![License](https://img.shields.io/github/license/EranBoudjnah/RandomGenKt)](https://github.com/EranBoudjnah/RandomGenKt/blob/master/LICENSE)
 
 ![Example](https://github.com/EranBoudjnah/RandomGenKt/raw/master/example/videocap.gif)
@@ -20,14 +20,14 @@ In your `build.gradle`, add the following:
 
 ```groovy
 dependencies {
-    implementation("com.mitteloupe.randomgenkt:randomgenkt:1.0.1")
+    implementation("com.mitteloupe.randomgenkt:randomgenkt:2.0.0")
 }
 ```
 
 To include the default data generators, also include
 ```groovy
 dependencies {
-    implementation("com.mitteloupe.randomgenkt:randomgenkt.datasource:1.0.1")
+    implementation("com.mitteloupe.randomgenkt:randomgenkt.datasource:2.0.0")
 }
 ```
 
@@ -36,7 +36,7 @@ dependencies {
 ### Kotlin
 ```kotlin
 val randomGen = RandomGen.Builder<ObjectClass>()
-	.ofClass<ObjectClass>()
+	.ofKotlinClass<ObjectClass>()
 	.withField("id")
 	.returningSequentialInteger()
 	.withField("uuid")
@@ -47,7 +47,7 @@ val randomGen = RandomGen.Builder<ObjectClass>()
 ### Java
 ```java
 RandomGen<ObjectClass> randomGen = new RandomGen.Builder<ObjectClass>()
-	.ofClass(ObjectClass.class)
+	.ofJavaClass(ObjectClass.class)
 	.withField("id")
 	.returningSequentialInteger()
 	.withField("uuid")
@@ -61,15 +61,21 @@ To use the newly generated `RandomGen`, simply call:
 
 ### Kotlin
 ```kotlin
-val instance = randomGen.generate()
+val instance = randomGen()
 ```
 
 ### Java
 ```java
-ObjectClass instance = randomGen.generate();
+ObjectClass instance = randomGen.invoke();
 ```
 
 ### What's New?
+
+Version 2.0
+
+This is an overhaul of RandomGenKt. It has been dusted, polished and refactored to align with modern conventions.
+
+--
 
 The Kotlin version adds the following:
 

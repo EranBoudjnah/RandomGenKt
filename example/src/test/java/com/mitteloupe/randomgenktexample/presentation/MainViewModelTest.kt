@@ -8,11 +8,6 @@ import com.mitteloupe.randomgenktexample.domain.GenerateFlatUseCase
 import com.mitteloupe.randomgenktexample.domain.GeneratePersonUseCase
 import com.mitteloupe.randomgenktexample.domain.GeneratePlanetarySystemUseCase
 import com.mitteloupe.randomgenktexample.domain.UseCaseExecutor
-import com.nhaarman.mockitokotlin2.argumentCaptor
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.given
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -20,10 +15,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.given
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 
-/**
- * Created by Eran Boudjnah on 31/10/2018.
- */
 @RunWith(MockitoJUnitRunner::class)
 class MainViewModelTest {
     @get:Rule
@@ -31,16 +28,22 @@ class MainViewModelTest {
 
     @Mock
     lateinit var useCaseExecutor: UseCaseExecutor
+
     @Mock
     lateinit var generatePersonUseCaseLazy: dagger.Lazy<GeneratePersonUseCase>
+
     @Mock
     lateinit var generatePersonUseCase: GeneratePersonUseCase
+
     @Mock
     lateinit var generatePlanetarySystemUseCaseLazy: dagger.Lazy<GeneratePlanetarySystemUseCase>
+
     @Mock
     lateinit var generatePlanetarySystemUseCase: GeneratePlanetarySystemUseCase
+
     @Mock
     lateinit var generateFlatUseCaseLazy: dagger.Lazy<GenerateFlatUseCase>
+
     @Mock
     lateinit var generateFlatUseCase: GenerateFlatUseCase
 
@@ -52,7 +55,12 @@ class MainViewModelTest {
         given(generatePlanetarySystemUseCaseLazy.get()).willReturn(generatePlanetarySystemUseCase)
         given(generateFlatUseCaseLazy.get()).willReturn(generateFlatUseCase)
 
-        cut = MainViewModel(useCaseExecutor, generatePersonUseCaseLazy, generatePlanetarySystemUseCaseLazy, generateFlatUseCaseLazy)
+        cut = MainViewModel(
+            useCaseExecutor,
+            generatePersonUseCaseLazy,
+            generatePlanetarySystemUseCaseLazy,
+            generateFlatUseCaseLazy
+        )
     }
 
     @Test
@@ -85,7 +93,10 @@ class MainViewModelTest {
         cut.onGeneratePlanetarySystemClick()
 
         // Then
-        verify(useCaseExecutor).execute(eq(generatePlanetarySystemUseCase), callbackCaptor.capture())
+        verify(useCaseExecutor).execute(
+            eq(generatePlanetarySystemUseCase),
+            callbackCaptor.capture()
+        )
         val callback = callbackCaptor.firstValue
 
         // When

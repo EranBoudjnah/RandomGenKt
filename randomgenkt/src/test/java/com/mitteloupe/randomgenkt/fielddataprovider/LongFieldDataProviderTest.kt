@@ -1,66 +1,71 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
-import com.nhaarman.mockitokotlin2.given
+import java.util.Random
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import java.util.Random
-import kotlin.math.absoluteValue
 
-/**
- * Created by Eran Boudjnah on 10/08/2018.
- */
 @RunWith(MockitoJUnitRunner::class)
 class LongFieldDataProviderTest {
-    private lateinit var cut: LongFieldDataProvider<Any>
+    private lateinit var classUnderTest: LongFieldDataProvider<Any>
 
     @Mock
     private lateinit var random: Random
 
     @Test
-    fun givenRandomDoubleValueWhenGenerateThenReturnsLongValue() {
+    fun `Given minimum random when invoked then returns minimal value`() {
         // Given
-        cut = LongFieldDataProvider(random)
+        classUnderTest = LongFieldDataProvider(random)
         given(random.nextDouble()).willReturn(0.0)
 
         // When
-        var result = cut.invoke()
+        val actualResult = classUnderTest()
 
         // Then
-        assertEquals(Long.MIN_VALUE, result)
-
-        // Given
-        given(random.nextDouble()).willReturn(0.99999999999999999999999)
-
-        // When
-        result = cut.invoke()
-
-        // Then
-        assertTrue((Long.MAX_VALUE - result).absoluteValue < 10L)
+        assertEquals(Long.MIN_VALUE, actualResult)
     }
 
     @Test
-    fun givenRandomFloatValueAndRangeWhenGenerateThenReturnsCorrectValue() {
+    fun `Given maximum random when invoked then returns maximal value`() {
         // Given
-        cut = LongFieldDataProvider(random, 0L, 100L)
-        given(random.nextDouble()).willReturn(0.0)
-
-        // When
-        var result = cut.invoke()
-
-        // Then
-        assertEquals(0, result)
-
-        // Given
+        classUnderTest = LongFieldDataProvider(random)
         given(random.nextDouble()).willReturn(0.9999999999999999)
 
         // When
-        result = cut.invoke()
+        val actualResult = classUnderTest()
 
         // Then
-        assertEquals(100, result)
+        assertEquals(Long.MAX_VALUE, actualResult)
+    }
+
+    @Test
+    fun `Given range, minimum random when invoked then returns minimal value`() {
+        // Given
+        val minimum = 0L
+        classUnderTest = LongFieldDataProvider(random, minimum, 100L)
+        given(random.nextDouble()).willReturn(0.0)
+
+        // When
+        val actualResult = classUnderTest()
+
+        // Then
+        assertEquals(minimum, actualResult)
+    }
+
+    @Test
+    fun `Given range, maximum random when invoked then returns maximal value`() {
+        // Given
+        val maximum = 100L
+        classUnderTest = LongFieldDataProvider(random, 0L, maximum)
+        given(random.nextDouble()).willReturn(0.9999999999999999)
+
+        // When
+        val actualResult = classUnderTest()
+
+        // Then
+        assertEquals(maximum, actualResult)
     }
 }

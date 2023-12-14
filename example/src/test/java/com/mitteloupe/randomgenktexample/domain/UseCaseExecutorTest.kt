@@ -1,16 +1,13 @@
 package com.mitteloupe.randomgenktexample.domain
 
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.spy
+import org.mockito.Mockito.verify
 
-/**
- * Created by Eran Boudjnah on 01/11/2018.
- */
 class UseCaseExecutorTest {
     private lateinit var useCaseExecutor: UseCaseExecutor
 
