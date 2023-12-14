@@ -188,9 +188,7 @@ class PlanetarySystemView @JvmOverloads constructor(
         return planetAnimation
     }
 
-    private fun PlanetAnimation.determineRotationDirection(
-        planet: Planet
-    ) {
+    private fun PlanetAnimation.determineRotationDirection(planet: Planet) {
         if (planet.moons % 2 == 0) {
             velocity = -velocity
         }
@@ -472,6 +470,6 @@ class PlanetarySystemView @JvmOverloads constructor(
     private data class PlanetAnimation(
         val planet: Planet,
         var velocity: Float = 0f,
-        var angle: Float = 0f,
+        var angle: Float = 0f
     )
 }
