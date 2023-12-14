@@ -2,17 +2,21 @@ package com.mitteloupe.randomgenktexample.widget
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PointF
+import android.graphics.Rect
 import android.graphics.RectF
 import android.os.Handler
+import android.os.Looper
 import android.os.Message
 import android.text.Html
 import android.text.Html.FROM_HTML_MODE_COMPACT
 import android.util.AttributeSet
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import com.mitteloupe.randomgenktexample.R
 import com.mitteloupe.randomgenktexample.data.model.planet.Material
 import com.mitteloupe.randomgenktexample.data.model.planet.Planet
@@ -30,22 +34,17 @@ private const val RING_TO_STAR_RATIO = 1.4f
 
 private const val RADIANS_TO_DEGREES = Math.PI.toFloat() / 180f
 
-/**
- * Created by Eran Boudjnah on 19/08/2018.
- */
 class PlanetarySystemView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
-
+) : ConstraintLayout(context, attrs, defStyleAttr) {
     private val planetAnimations = mutableListOf<PlanetAnimation>()
     private lateinit var planetarySystem: PlanetarySystem
     private var planetsCount = 0
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
-    private val visualRect = RectF()
     private var visualSize = 0f
     private val visualCenter = PointF()
     private var orbitRingSpacing = 0f
@@ -58,19 +57,55 @@ class PlanetarySystemView @JvmOverloads constructor(
     private val backgroundColor: Int by lazy { resources.getColor(R.color.primary, null) }
 
     private val renderFrame: View
-    private lateinit var starAgeTextView: TextView
-    private lateinit var starDiameterTextView: TextView
-    private lateinit var starMassTextView: TextView
-    private lateinit var starPlanetsCountTextView: TextView
+    private val renderFrameBounds = Rect()
+    private val renderBounds = RectF()
 
-    private lateinit var starPlanetNameTextView: TextView
-    private lateinit var starPlanetDiameterTextView: TextView
-    private lateinit var starPlanetMassTextView: TextView
-    private lateinit var starPlanetOrbitalPeriodTextView: TextView
-    private lateinit var starRotationPeriodTextView: TextView
-    private lateinit var starMoonsTextView: TextView
-    private lateinit var starRingsTextView: TextView
-    private lateinit var starAtmosphereTextView: TextView
+    private val starAgeTextView: TextView by lazy { findViewById(R.id.text_star_age_value) }
+    private val starDiameterTextView: TextView by lazy {
+        findViewById(R.id.text_star_diameter_value)
+    }
+    private val starMassTextView: TextView by lazy { findViewById(R.id.text_star_mass_value) }
+    private val starPlanetsCountTextView: TextView by lazy {
+        findViewById(R.id.text_planets_count_value)
+    }
+
+    private val selectedPlanetLabels: View by lazy {
+        findViewById(R.id.planetary_system_selected_labels)
+    }
+    private val starPlanetNameTextView: TextView by lazy {
+        findViewById(R.id.text_planet_name_value)
+    }
+    private val starPlanetDiameterTextView: TextView by lazy {
+        findViewById(R.id.text_planet_diameter_value)
+    }
+    private val starPlanetMassTextView: TextView by lazy {
+        findViewById(R.id.text_planet_mass_value)
+    }
+    private val starPlanetOrbitalPeriodTextView: TextView by lazy {
+        findViewById(R.id.text_planet_orbital_period_value)
+    }
+    private val starRotationPeriodTextView: TextView by lazy {
+        findViewById(R.id.text_planet_rotation_period_value)
+    }
+    private val starMoonsTextView: TextView by lazy { findViewById(R.id.text_planet_moons_value) }
+    private val starRingsTextView: TextView by lazy { findViewById(R.id.text_planet_rings_value) }
+    private val starAtmosphereTextView: TextView by lazy {
+        findViewById(R.id.text_planet_atmosphere_value)
+    }
+
+    private val selectedPlanetViews by lazy {
+        setOf(
+            starPlanetNameTextView,
+            starPlanetDiameterTextView,
+            starPlanetMassTextView,
+            starPlanetOrbitalPeriodTextView,
+            starRotationPeriodTextView,
+            starMoonsTextView,
+            starRingsTextView,
+            starAtmosphereTextView,
+            selectedPlanetLabels
+        )
+    }
 
     private lateinit var animationTimeHandler: TimeHandler
     private lateinit var planetTimeHandler: TimeHandler
@@ -83,10 +118,6 @@ class PlanetarySystemView @JvmOverloads constructor(
         setWillNotDraw(false)
 
         renderFrame = findViewById(R.id.render_frame)
-
-        initStarTextViews()
-
-        initPlanetTextViews()
 
         initTimers()
     }
@@ -101,40 +132,19 @@ class PlanetarySystemView @JvmOverloads constructor(
         }
     }
 
-    private fun initStarTextViews() {
-        starAgeTextView = findViewById(R.id.text_star_age_value)
-        starDiameterTextView = findViewById(R.id.text_star_diameter_value)
-        starMassTextView = findViewById(R.id.text_star_mass_value)
-        starPlanetsCountTextView = findViewById(R.id.text_planets_count_value)
-    }
-
-    private fun initPlanetTextViews() {
-        starPlanetNameTextView = findViewById(R.id.text_planet_name_value)
-        starPlanetDiameterTextView = findViewById(R.id.text_planet_diameter_value)
-        starPlanetMassTextView = findViewById(R.id.text_planet_mass_value)
-        starPlanetOrbitalPeriodTextView = findViewById(R.id.text_planet_orbital_period_value)
-        starRotationPeriodTextView = findViewById(R.id.text_planet_rotation_period_value)
-        starMoonsTextView = findViewById(R.id.text_planet_moons_value)
-        starRingsTextView = findViewById(R.id.text_planet_rings_value)
-        starAtmosphereTextView = findViewById(R.id.text_planet_atmosphere_value)
-    }
-
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
 
-        visualRect.set(
-            renderFrame.left.toFloat(),
-            renderFrame.top.toFloat(),
-            renderFrame.right.toFloat(),
-            renderFrame.bottom.toFloat()
-        )
+        renderFrame.getDrawingRect(renderFrameBounds)
+        renderFrameBounds.offset(renderFrame.left, renderFrame.top)
+        renderBounds.set(renderFrameBounds)
 
-        val widthX = visualRect.right - visualRect.left
-        val heightX = visualRect.bottom - visualRect.top
+        val widthX = renderBounds.width()
+        val heightX = renderBounds.height()
         visualSize = max(widthX, heightX)
         visualCenter.set(
-            (visualRect.left + visualRect.right) / 2f,
-            (visualRect.top + visualRect.bottom) / 2f
+            renderBounds.centerX(),
+            renderBounds.centerY()
         )
     }
 
@@ -170,13 +180,20 @@ class PlanetarySystemView @JvmOverloads constructor(
     }
 
     private fun getPlanetAnimation(planet: Planet): PlanetAnimation {
-        val planetAnimation = PlanetAnimation()
+        val planetAnimation = PlanetAnimation(planet)
         planetAnimation.angle = Math.random().toFloat() * 360f
         planetAnimation.velocity = 25f / planet.orbitalPeriodYears
 
-        // We need some fixed rule to determine the direction of rotation. This will do for a demo.
-        if (planet.moons % 2 == 0) planetAnimation.velocity = -planetAnimation.velocity
+        planetAnimation.determineRotationDirection(planet)
         return planetAnimation
+    }
+
+    private fun PlanetAnimation.determineRotationDirection(
+        planet: Planet
+    ) {
+        if (planet.moons % 2 == 0) {
+            velocity = -velocity
+        }
     }
 
     private fun populateStarTextViews(planetarySystem: PlanetarySystem) {
@@ -192,25 +209,15 @@ class PlanetarySystemView @JvmOverloads constructor(
     }
 
     private fun hidePlanetTextViews() {
-        starPlanetNameTextView.visibility = View.INVISIBLE
-        starPlanetDiameterTextView.visibility = View.INVISIBLE
-        starPlanetMassTextView.visibility = View.INVISIBLE
-        starPlanetOrbitalPeriodTextView.visibility = View.INVISIBLE
-        starRotationPeriodTextView.visibility = View.INVISIBLE
-        starMoonsTextView.visibility = View.INVISIBLE
-        starRingsTextView.visibility = View.INVISIBLE
-        starAtmosphereTextView.visibility = View.INVISIBLE
+        selectedPlanetViews.forEach { view ->
+            view.isVisible = false
+        }
     }
 
     private fun showPlanetTextViews() {
-        starPlanetNameTextView.visibility = View.VISIBLE
-        starPlanetDiameterTextView.visibility = View.VISIBLE
-        starPlanetMassTextView.visibility = View.VISIBLE
-        starPlanetOrbitalPeriodTextView.visibility = View.VISIBLE
-        starRotationPeriodTextView.visibility = View.VISIBLE
-        starMoonsTextView.visibility = View.VISIBLE
-        starRingsTextView.visibility = View.VISIBLE
-        starAtmosphereTextView.visibility = View.VISIBLE
+        selectedPlanetViews.forEach { view ->
+            view.isVisible = true
+        }
     }
 
     private fun populatePlanetTextViews(planet: Planet, position: Int) {
@@ -270,15 +277,18 @@ class PlanetarySystemView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
+        canvas.save()
+        canvas.clipRect(renderBounds)
+
         drawBackground(canvas)
 
-        drawOrbitRings(canvas)
-
-        drawStar(canvas)
+        drawOrbits(canvas)
 
         advanceAllPlanetAnimations()
 
-        drawPlanets(canvas)
+        canvas.drawStarAndPlanets()
+
+        canvas.restore()
     }
 
     private fun drawBackground(canvas: Canvas) {
@@ -287,24 +297,41 @@ class PlanetarySystemView @JvmOverloads constructor(
             color = backgroundColor
         }
 
-        canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
+        canvas.drawRect(renderBounds, paint)
     }
 
-    private fun drawStar(canvas: Canvas) {
-        drawCircle(canvas, visualCenter, planetarySystem.starDiameterSunRadii.toFloat() / 10f, -0x1)
+    private fun Canvas.drawStar() {
+        drawCircle(
+            this,
+            visualCenter,
+            planetarySystem.starDiameterSunRadii.toFloat() / 10f,
+            Color.argb(192, 255, 255, 255)
+        )
     }
 
-    private fun drawPlanets(canvas: Canvas) {
-        repeat(planetsCount) { index ->
-            drawPlanetAtIndex(canvas, index)
+    private fun Canvas.drawStarAndPlanets() {
+        var drawnStar = false
+        planetAnimations.map { planetAnimation ->
+            planetAnimation to planetAnimation.planetY()
+        }.sortedBy { planetAnimationAndY -> planetAnimationAndY.second }
+            .forEach { planetAnimationAndY ->
+                if (planetAnimationAndY.second > 0 && !drawnStar) {
+                    drawStar()
+                    drawnStar = true
+                }
+                drawPlanet(planetAnimationAndY.first)
+            }
+
+        if (!drawnStar) {
+            drawStar()
         }
     }
 
-    private fun drawOrbitRings(canvas: Canvas) {
+    private fun drawOrbits(canvas: Canvas) {
         with(paint) {
             style = Paint.Style.STROKE
             strokeWidth = 0f
-            color = 0x7fffffff
+            color = 0x5fffffff
         }
 
         repeat(planetsCount) { index ->
@@ -325,22 +352,22 @@ class PlanetarySystemView @JvmOverloads constructor(
         canvas.drawArc(planetRingRect, 0f, 360f, false, paint)
     }
 
-    private fun drawPlanetAtIndex(canvas: Canvas, index: Int) {
-        updatePlanetCenter(index)
+    private fun Canvas.drawPlanet(planetAnimation: PlanetAnimation) {
+        updatePlanetCenter(planetAnimation)
 
-        val planet = planetarySystem.planets[index]
-
+        val planet = planetAnimation.planet
         planetSize = planet.diameterEarthRatio * 1.5f
 
+        val position = planetarySystem.planets.indexOf(planet)
         drawCircle(
-            canvas,
+            this,
             planetCenter,
             planetSize,
-            if (index == planetDataIndex) -0x1 else -0x5f4f01
+            if (position == planetDataIndex) -0x1 else -0x5f4f01
         )
 
         if (planet.hasRings) {
-            drawPlanetRing(canvas)
+            drawPlanetRing()
         }
     }
 
@@ -351,16 +378,24 @@ class PlanetarySystemView @JvmOverloads constructor(
         canvas.drawCircle(center.x, center.y, size, paint)
     }
 
-    private fun updatePlanetCenter(position: Int) {
-        val planetAnimation = planetAnimations[position]
-        val relativeRadius = 0.1f + orbitRingSpacing * position
-        val actualRadius = visualSize * relativeRadius
+    private fun updatePlanetCenter(planetAnimation: PlanetAnimation) {
         planetCenter.set(
-            sin((planetAnimation.angle * RADIANS_TO_DEGREES).toDouble()).toFloat() * actualRadius,
-            (-cos((planetAnimation.angle * RADIANS_TO_DEGREES).toDouble())).toFloat() *
-                actualRadius * ASPECT_RATIO
+            sin((planetAnimation.angle * RADIANS_TO_DEGREES).toDouble()).toFloat() *
+                planetAnimation.actualRadius(),
+            planetAnimation.planetY()
         )
         planetCenter.offset(visualCenter.x, visualCenter.y)
+    }
+
+    private fun PlanetAnimation.planetY(): Float {
+        return (-cos((angle * RADIANS_TO_DEGREES).toDouble())).toFloat() *
+            actualRadius() * ASPECT_RATIO
+    }
+
+    private fun PlanetAnimation.actualRadius(): Float {
+        val position = planetarySystem.planets.indexOf(planet)
+        val relativeRadius = 0.1f + orbitRingSpacing * position
+        return visualSize * relativeRadius
     }
 
     private fun advanceAllPlanetAnimations() {
@@ -376,7 +411,7 @@ class PlanetarySystemView @JvmOverloads constructor(
         while (planetAnimation.angle < 0) planetAnimation.angle += 360f
     }
 
-    private fun drawPlanetRing(canvas: Canvas) {
+    private fun Canvas.drawPlanetRing() {
         val ringWidth = planetSize * RING_TO_STAR_RATIO
         val ringHeight = ringWidth * RING_ASPECT_RATIO
 
@@ -390,7 +425,7 @@ class PlanetarySystemView @JvmOverloads constructor(
         paint.strokeWidth = planetSize * 0.25f
         paint.style = Paint.Style.STROKE
 
-        canvas.drawArc(planetRingRect, 0f, 360f, false, paint)
+        drawArc(planetRingRect, 0f, 360f, false, paint)
     }
 
     override fun onAttachedToWindow() {
@@ -408,7 +443,7 @@ class PlanetarySystemView @JvmOverloads constructor(
     private class TimeHandler(
         private val delayMilliseconds: Long,
         private val runnable: Runnable
-    ) : Handler() {
+    ) : Handler(Looper.getMainLooper()) {
         private var message: Message? = null
 
         override fun handleMessage(msg: Message) {
@@ -435,7 +470,8 @@ class PlanetarySystemView @JvmOverloads constructor(
     }
 
     private data class PlanetAnimation(
+        val planet: Planet,
         var velocity: Float = 0f,
-        var angle: Float = 0f
+        var angle: Float = 0f,
     )
 }
