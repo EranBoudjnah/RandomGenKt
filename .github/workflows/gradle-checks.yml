@@ -1,4 +1,4 @@
-name: Android CI
+name: Gradle checks
 
 env:
   cache-name: android-gradle
