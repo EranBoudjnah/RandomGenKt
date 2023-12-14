@@ -111,3 +111,9 @@ signing {
 generateRelease
 		.dependsOn(publishMavenPublicationToLocalRepository)
 		.dependsOn(zipRelease)
+
+gradle.taskGraph.whenReady { taskGraph ->
+    if (!taskGraph.hasTask(generateRelease)) {
+        signMavenPublication.enabled = false
+    }
+}
