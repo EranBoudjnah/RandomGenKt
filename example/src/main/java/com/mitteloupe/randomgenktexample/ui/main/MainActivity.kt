@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), Observer<ViewState> {
 
         setUpPeopleView()
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         viewModel.viewState.observe(this, this)
     }
 
@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity(), Observer<ViewState> {
         bottomNavigation.selectedItemId = R.id.action_none
     }
 
-    private enum class Page constructor(val pageNumber: Int) {
+    private enum class Page(val pageNumber: Int) {
         NONE(0),
         PERSON(1),
         PLANETARY_SYSTEM(2),

@@ -1,5 +1,6 @@
 package com.mitteloupe.randomgenkt.fielddataprovider
 
+import java.math.BigDecimal
 import java.util.Random
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -22,7 +23,7 @@ class DoubleFieldDataProviderTest {
         given(random.nextDouble()).willReturn(0.0)
 
         // When
-        var result = classUnderTest.invoke()
+        var result = classUnderTest()
 
         // Then
         assertEquals(0.0, result, 0.00001)
@@ -31,7 +32,7 @@ class DoubleFieldDataProviderTest {
         given(random.nextDouble()).willReturn(0.99999999999)
 
         // When
-        result = classUnderTest.invoke()
+        result = classUnderTest()
 
         // Then
         assertEquals(1.0, result, 0.00001)
@@ -48,16 +49,16 @@ class DoubleFieldDataProviderTest {
         given(random.nextDouble()).willReturn(0.0)
 
         // When
-        var result = classUnderTest.invoke()
+        var result = classUnderTest()
 
         // Then
         assertEquals(Double.MIN_VALUE, result, 0.00001)
 
         // Given
-        given(random.nextDouble()).willReturn(0.999999999999999999)
+        given(random.nextDouble()).willReturn(BigDecimal("0.999999999999999999").toDouble())
 
         // When
-        result = classUnderTest.invoke()
+        result = classUnderTest()
 
         // Then
         assertEquals(Double.MAX_VALUE, result, 0.00001)

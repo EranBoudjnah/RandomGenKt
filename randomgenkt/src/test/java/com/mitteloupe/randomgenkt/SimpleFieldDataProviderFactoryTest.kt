@@ -517,7 +517,7 @@ class SimpleFieldDataProviderFactoryTest {
     fun `Given random Enum FieldDataProvider, minimum random when invoked then returns first value`() {
         // Given
         val dataProvider = classUnderTest.getRandomEnumFieldDataProvider(Rings::class.java)
-        given { random.nextInt(Rings.values().size) }.willReturn(0)
+        given { random.nextInt(Rings.entries.size) }.willReturn(0)
         val expectedValue = Rings.ONE_RING_TO_RULE_THEM_ALL
 
         // When
@@ -532,7 +532,7 @@ class SimpleFieldDataProviderFactoryTest {
     fun `Given random Enum FieldDataProvider, maximum random when invoked then returns last value`() {
         // Given
         val dataProvider = classUnderTest.getRandomEnumFieldDataProvider(Rings::class.java)
-        val enumValuesCount = Rings.values().size
+        val enumValuesCount = Rings.entries.size
         given { random.nextInt(enumValuesCount) }.willReturn(enumValuesCount - 1)
         val expectedValue = Rings.ONE_RING_TO_BRING_THEM_ALL
 

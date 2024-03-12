@@ -37,7 +37,7 @@ class PersonView @JvmOverloads constructor(
             iconMale.visibility = if (gender == Gender.MALE) View.VISIBLE else View.GONE
 
             textNameValue.text = name
-            textAgeValue.text = context.getString(R.string.person_age, age)
+            textAgeValue.text = resources.getQuantityString(R.plurals.person_age, age, age)
             textOccupationValue.text = formatEnumValue(occupation)
             textPhoneValue.text = context.getString(R.string.person_phone_number, phoneNumber)
         }

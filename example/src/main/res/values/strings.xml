@@ -11,7 +11,10 @@
     <string name="main_instructions">Choose a data type below to generate a random instance.</string>
     <string name="planets">Planets</string>
 
-    <string name="person_age">%1$d years old</string>
+    <plurals name="person_age">
+        <item quantity="one">One year old</item>
+        <item quantity="other">%1$d years old</item>
+    </plurals>
     <string name="person_phone_number">☎ %1$s</string>
 
     <string name="star_age">Star Age</string>
