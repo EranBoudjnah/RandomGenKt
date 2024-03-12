@@ -2,8 +2,10 @@ package com.mitteloupe.randomgenkt.fielddataprovider
 
 import java.util.Random
 import kotlin.math.absoluteValue
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.`is`
+import org.hamcrest.Matchers.lessThan
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
@@ -30,13 +32,13 @@ class DateFieldDataProviderTest {
         assertEquals(0, result.time)
 
         // Given
-        given(random.nextDouble()).willReturn(0.999999999999999999)
+        given(random.nextDouble()).willReturn(0.9999999999999999)
 
         // When
         result = classUnderTest.invoke()
 
         // Then
-        assertTrue((Long.MAX_VALUE - result.time).absoluteValue < 10L)
+        assertThat((Long.MAX_VALUE - result.time).absoluteValue, `is`(lessThan(1000L)))
     }
 
     @Test

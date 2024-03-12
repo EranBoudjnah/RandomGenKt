@@ -79,5 +79,5 @@ sealed class ViewState {
     data class ShowPeople(val people: List<Person>) : ViewState()
     data class ShowPlanetarySystem(val planetarySystem: PlanetarySystem) : ViewState()
     data class ShowFlat(val flat: Flat) : ViewState()
-    object ShowNone : ViewState()
+    data object ShowNone : ViewState()
 }

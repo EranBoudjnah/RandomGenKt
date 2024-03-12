@@ -87,4 +87,4 @@ The Kotlin version adds the following:
 [Eran Boudjnah](https://www.linkedin.com/in/eranboudjnah)
 
 ## License
-MIT © [Eran Boudjnah](https://www.linkedin.com/in/eranboudjnah)
+[MIT](LICENSE) © [Eran Boudjnah](https://www.linkedin.com/in/eranboudjnah)
