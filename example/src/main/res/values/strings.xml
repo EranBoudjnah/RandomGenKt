@@ -13,7 +13,7 @@
 
     <plurals name="person_age">
         <item quantity="one">One year old</item>
-        <item quantity="many">%1$d years old</item>
+        <item quantity="other">%1$d years old</item>
     </plurals>
     <string name="person_phone_number">☎ %1$s</string>
 
