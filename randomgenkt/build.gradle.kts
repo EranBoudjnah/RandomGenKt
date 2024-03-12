@@ -25,7 +25,7 @@ dependencies {
 ext {
     set("PUBLISH_GROUP_ID", "com.mitteloupe.randomgenkt")
     set("PUBLISH_ARTIFACT_ID", "randomgenkt")
-    set("PUBLISH_VERSION", "2.0.0")
+    set("PUBLISH_VERSION", "2.0.1")
 }
 
 apply {

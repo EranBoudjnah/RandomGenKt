@@ -20,14 +20,14 @@ In your `build.gradle`, add the following:
 
 ```groovy
 dependencies {
-    implementation("com.mitteloupe.randomgenkt:randomgenkt:2.0.0")
+    implementation("com.mitteloupe.randomgenkt:randomgenkt:2.0.1")
 }
 ```
 
 To include the default data generators, also include
 ```groovy
 dependencies {
-    implementation("com.mitteloupe.randomgenkt:randomgenkt.datasource:2.0.0")
+    implementation("com.mitteloupe.randomgenkt:randomgenkt.datasource:2.0.1")
 }
 ```
 

@@ -68,5 +68,5 @@ dependencies {
     androidTestImplementation("androidx.test:rules:1.5.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
 
-    implementation("com.mitteloupe.randomgenkt:randomgenkt:2.0.0")
+    implementation("com.mitteloupe.randomgenkt:randomgenkt:2.0.1")
 }

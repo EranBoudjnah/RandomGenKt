@@ -17,103 +17,74 @@ artifacts {
 
 def gitUrl = 'https://github.com/EranBoudjnah/RandomGenKt.git'
 
-Properties properties = new Properties()
-File propertiesFile = project.rootProject.file("local.properties")
-if (propertiesFile.exists()) {
-    properties.load(propertiesFile.newDataInputStream())
-}
-def pomVersion = project.PUBLISH_VERSION
-def localReleaseDestination = "${layout.buildDirectory.get().asFile}/release/${pomVersion}"
-def ossrhUsername = properties['ossrhUsername']
-def ossrhPassword = properties['ossrhPassword']
-
-nexusStaging {
-    username = "${ossrhUsername}"
-    password = "${ossrhPassword}"
-    packageGroup = project.PUBLISH_GROUP_ID
-}
-
-publishing {
-    repositories {
-        maven {
-            name = "Local"
-            url = "file://${localReleaseDestination}"
-        }
-        maven {
-            name = "SonatypeStaging"
-            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            credentials {
-                username = ossrhUsername
-                password = ossrhPassword
-            }
-        }
-        maven {
-            name = "SonatypeSnapshots"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-            credentials {
-                username = ossrhUsername
-                password = ossrhPassword
-            }
-        }
+project.afterEvaluate {
+    Properties properties = new Properties()
+    File propertiesFile = project.rootProject.file("local.properties")
+    if (propertiesFile.exists()) {
+        properties.load(propertiesFile.newDataInputStream())
     }
+    def ossrhUsername = properties['ossrhUsername']
+    def ossrhPassword = properties['ossrhPassword']
+    def pomVersion = project.PUBLISH_VERSION
 
-    publications {
-        maven(MavenPublication) {
-            groupId = project.PUBLISH_GROUP_ID
-            artifactId = project.PUBLISH_ARTIFACT_ID
-            version = pomVersion
-            from components.java
-
-            pom {
-                name = project.PUBLISH_ARTIFACT_ID
-                description = 'Initialize instances of any class with generated data.'
-                url = gitUrl
-                licenses {
-                    license {
-                        name = 'MIT'
-                        url = 'https://github.com/EranBoudjnah/RandomGenKt/blob/master/LICENSE'
-                    }
+    publishing {
+        repositories {
+            mavenLocal()
+            maven {
+                name = "SonatypeStaging"
+                url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                credentials {
+                    username = ossrhUsername
+                    password = ossrhPassword
                 }
-                scm {
-                    connection = gitUrl
-                    developerConnection = gitUrl
+            }
+        }
+
+        publications {
+            maven(MavenPublication) {
+                groupId = project.PUBLISH_GROUP_ID
+                artifactId = project.PUBLISH_ARTIFACT_ID
+                version = pomVersion
+                from components.java
+
+                pom {
+                    name = project.PUBLISH_ARTIFACT_ID
+                    description = 'Initialize instances of any class with generated data.'
                     url = gitUrl
-                }
-                developers {
-                    developer {
-                        id = "EranBoudjnah"
-                        name = "Eran Boudjnah"
-                        email = "eranbou+randomgenkt@gmail.com"
+                    licenses {
+                        license {
+                            name = 'MIT'
+                            url = 'https://github.com/EranBoudjnah/RandomGenKt/blob/master/LICENSE'
+                        }
+                    }
+                    scm {
+                        connection = gitUrl
+                        developerConnection = gitUrl
+                        url = gitUrl
+                    }
+                    developers {
+                        developer {
+                            id = "EranBoudjnah"
+                            name = "Eran Boudjnah"
+                            email = "eranbou+randomgenkt@gmail.com"
+                        }
                     }
                 }
             }
         }
     }
-}
 
-tasks.register('zipRelease', Zip) {
-    from localReleaseDestination
-    setDestinationDirectory layout.buildDirectory.get().asFile
-    setArchiveFileName "release-${pomVersion}.zip"
-}
-
-tasks.register('generateRelease') {
-    doLast {
-        println "Release ${pomVersion} can be found at ${localReleaseDestination}/"
-        println "Release ${pomVersion} zipped can be found ${layout.buildDirectory.get().asFile}/release-${pomVersion}.zip"
+    signing {
+        sign publishing.publications.maven
     }
-}
 
-signing {
-	sign publishing.publications.maven
+    publishMavenPublicationToMavenLocal
+            .dependsOn(sourcesJar)
+            .dependsOn(assemble)
 }
-
-generateRelease
-		.dependsOn(publishMavenPublicationToLocalRepository)
-		.dependsOn(zipRelease)
 
 gradle.taskGraph.whenReady { taskGraph ->
-    if (!taskGraph.hasTask(generateRelease)) {
+    if (!taskGraph.hasTask(publishMavenPublicationToSonatypeRepository)) {
         signMavenPublication.enabled = false
     }
 }
