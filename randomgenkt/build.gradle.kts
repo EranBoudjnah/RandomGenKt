@@ -13,7 +13,7 @@ java {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.23")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.24")
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.hamcrest:hamcrest-core:2.2")
