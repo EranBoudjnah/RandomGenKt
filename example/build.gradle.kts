@@ -66,7 +66,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-contrib:3.6.0")
     androidTestImplementation("androidx.test:runner:1.6.0")
     androidTestImplementation("androidx.test:rules:1.5.0")
-    androidTestImplementation("androidx.test.ext:junit:1.2.0")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
 
     implementation("com.mitteloupe.randomgenkt:randomgenkt:2.0.1")
 }
