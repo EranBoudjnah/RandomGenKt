@@ -16,7 +16,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:2.0.0")
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.hamcrest:hamcrest-core:2.2")
+    testImplementation("org.hamcrest:hamcrest-core:3.0")
     testImplementation("org.hamcrest:hamcrest:2.2")
     testImplementation("org.mockito:mockito-inline:5.2.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")

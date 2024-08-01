@@ -57,7 +57,7 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.hamcrest:hamcrest-core:2.2")
+    testImplementation("org.hamcrest:hamcrest-core:3.0")
     testImplementation("org.mockito:mockito-inline:5.2.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     testImplementation("android.arch.core:core-testing:1.1.1")
