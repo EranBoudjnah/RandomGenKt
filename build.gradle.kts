@@ -4,7 +4,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     id("com.android.application") version "8.7.3" apply false
-    kotlin("android") version "2.0.21" apply false
+    kotlin("android") version "2.1.0" apply false
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
     id("com.google.dagger.hilt.android") version "2.53" apply false
 }
