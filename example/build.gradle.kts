@@ -53,7 +53,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1")
 
-    implementation("com.google.dagger:hilt-android:2.53.1")
+    implementation("com.google.dagger:hilt-android:2.54")
     kapt("com.google.dagger:hilt-android-compiler:2.54")
 
     testImplementation("junit:junit:4.13.2")
