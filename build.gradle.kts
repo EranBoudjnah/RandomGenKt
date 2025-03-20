@@ -6,7 +6,7 @@ plugins {
     id("com.android.application") version "8.9.0" apply false
     kotlin("android") version "2.1.10" apply false
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
-    id("com.google.dagger.hilt.android") version "2.55" apply false
+    id("com.google.dagger.hilt.android") version "2.56" apply false
 }
 
 tasks.withType(Test::class) {
