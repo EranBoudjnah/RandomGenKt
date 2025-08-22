@@ -3,10 +3,10 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    id("com.android.application") version "8.12.1" apply false
-    kotlin("android") version "2.2.10" apply false
-    id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
-    id("com.google.dagger.hilt.android") version "2.56.2" apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.gradle.nexus.publish)
+    alias(libs.plugins.hilt.android) apply false
 }
 
 tasks.withType(Test::class) {
