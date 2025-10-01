@@ -26,7 +26,7 @@ dependencies {
     testImplementation("org.hamcrest:hamcrest-core:3.0")
     testImplementation("org.hamcrest:hamcrest:3.0")
     testImplementation("org.mockito:mockito-inline:5.2.0")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:6.0.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:6.1.0")
 }
 
 ext {
