@@ -20,7 +20,7 @@ kotlin {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlin:kotlin-reflect:2.2.20")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:2.2.21")
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.hamcrest:hamcrest-core:3.0")
