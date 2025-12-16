@@ -1,6 +1,6 @@
 [versions]
 androidApplication = "8.13.2"
-kotlinAndroid = "2.2.21"
+kotlinAndroid = "2.3.0"
 androidxCore = "1.17.0"
 androidxAppcompat = "1.7.1"
 androidxConstraintlayout = "2.2.1"
