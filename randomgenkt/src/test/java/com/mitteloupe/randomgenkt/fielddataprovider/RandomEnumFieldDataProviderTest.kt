@@ -21,13 +21,12 @@ class RandomEnumFieldDataProviderTest(
     companion object {
         @JvmStatic
         @Parameters
-        fun data(): Collection<Array<*>> {
-            return listOf(
-                arrayOf(0, MagicColors.WHITE),
-                arrayOf(2, MagicColors.BLACK),
-                arrayOf(4, MagicColors.GREEN)
+        fun data(): Collection<Array<*>> =
+            listOf(
+                arrayOf<Any>(0, MagicColors.WHITE),
+                arrayOf<Any>(2, MagicColors.BLACK),
+                arrayOf<Any>(4, MagicColors.GREEN)
             )
-        }
     }
 
     private lateinit var classUnderTest: RandomEnumFieldDataProvider<Any, MagicColors>
