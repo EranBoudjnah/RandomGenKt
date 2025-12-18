@@ -47,13 +47,18 @@ kapt {
     correctErrorTypes = true
 }
 
+configurations.all {
+    resolutionStrategy {
+        force(libs.kotlin.metadata.jvm)
+    }
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.google.android.material)
     implementation(libs.androidx.lifecycle.extensions)
-
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 

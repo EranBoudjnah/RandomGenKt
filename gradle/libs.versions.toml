@@ -1,6 +1,6 @@
 [versions]
 androidApplication = "8.13.2"
-kotlinAndroid = "2.2.21"
+kotlin = "2.3.0"
 androidxCore = "1.17.0"
 androidxAppcompat = "1.7.1"
 androidxConstraintlayout = "2.2.1"
@@ -31,6 +31,9 @@ kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
+kotlin-metadata-jvm = { group = "org.jetbrains.kotlin", name = "kotlin-metadata-jvm", version.ref = "kotlin" }
+hamcrest = { group = "org.hamcrest", name = "hamcrest", version.ref = "hamcrest" }
 hamcrest-core = { group = "org.hamcrest", name = "hamcrest-core", version.ref = "hamcrest" }
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
 mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
@@ -44,6 +47,6 @@ randomgenkt = { group = "com.mitteloupe.randomgenkt", name = "randomgenkt", vers
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidApplication" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinAndroid" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 gradle-nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "gradleNexusPublish" }
