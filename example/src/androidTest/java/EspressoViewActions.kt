@@ -13,8 +13,8 @@ import androidx.test.espresso.util.HumanReadables
 import androidx.test.espresso.util.TreeIterables
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.concurrent.TimeoutException
-import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matcher
+import org.hamcrest.Matchers.allOf
 import org.hamcrest.StringDescription
 
 /**
@@ -37,7 +37,7 @@ object EspressoViewActions {
             }
 
             private fun getErrorMessage(menu: Menu, view: View): String {
-                val newLine = System.getProperty("line.separator")
+                val newLine = System.lineSeparator()
                 val errorMessage = StringBuilder("Menu item was not found, available menu items:")
                     .append(newLine)
 
@@ -56,7 +56,7 @@ object EspressoViewActions {
                                 errorMessage.append(", id=")
                                 val menuItemResourceName = resources.getResourceName(itemId)
                                 errorMessage.append(menuItemResourceName)
-                            } catch (nfe: Resources.NotFoundException) {
+                            } catch (_: Resources.NotFoundException) {
                                 errorMessage.append("not found")
                             }
                         }

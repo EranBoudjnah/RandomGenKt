@@ -23,7 +23,6 @@ dependencies {
     implementation(libs.kotlin.reflect)
 
     testImplementation(libs.junit)
-    testImplementation(libs.hamcrest.core)
     testImplementation(libs.hamcrest)
     testImplementation(libs.mockito.inline)
     testImplementation(libs.mockito.kotlin)
