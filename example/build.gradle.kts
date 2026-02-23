@@ -2,8 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    kotlin("kapt")
+    alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
 }
 
@@ -43,10 +42,6 @@ android {
     }
 }
 
-kapt {
-    correctErrorTypes = true
-}
-
 configurations.all {
     resolutionStrategy {
         force(libs.kotlin.metadata.jvm)
@@ -63,10 +58,10 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
 
     testImplementation(libs.junit)
-    testImplementation(libs.hamcrest.core)
+    testImplementation(libs.hamcrest)
     testImplementation(libs.mockito.inline)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.android.arch.core.testing)
@@ -76,6 +71,7 @@ dependencies {
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.hamcrest)
 
     implementation(libs.randomgenkt)
 }
