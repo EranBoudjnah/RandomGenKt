@@ -1,5 +1,5 @@
 [versions]
-androidApplication = "9.1.0"
+androidApplication = "9.1.1"
 kotlin = "2.3.20"
 androidxCore = "1.18.0"
 androidxAppcompat = "1.7.1"
