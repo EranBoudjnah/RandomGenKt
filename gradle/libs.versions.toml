@@ -2,7 +2,7 @@
 androidApplication = "9.3.1"
 kotlin = "2.3.21"
 androidxCore = "1.18.0"
-androidxAppcompat = "1.7.1"
+androidxAppcompat = "1.8.0"
 androidxConstraintlayout = "2.2.2"
 androidMaterial = "1.14.0"
 androidxLifecycleExtensions = "2.2.0"
